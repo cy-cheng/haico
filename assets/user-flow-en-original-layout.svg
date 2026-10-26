@@ -1,0 +1,178 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="5072.5" height="620" viewBox="0 0 5072.5 620"><defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#23201b"/></marker></defs>
+<path d="M232.5,330.0 L267.5,330.0" fill="none" stroke="#23201b" stroke-width="2.2" marker-end="url(#arr)"/>
+<path d="M472.5,330.0 L502.5,330.0" fill="none" stroke="#23201b" stroke-width="2.2" marker-end="url(#arr)"/>
+<path d="M610.0,274.0 L610.0,126.0" fill="none" stroke="#23201b" stroke-width="2.2" marker-end="url(#arr)"/>
+<text x="622.0" y="206.0" font-family="Newsreader 16pt" font-size="19" fill="#7a7164" text-anchor="start" font-style="italic">Yes</text>
+<path d="M610.0,386.0 L610.0,404.0" fill="none" stroke="#23201b" stroke-width="2.2" marker-end="url(#arr)"/>
+<text x="622.0" y="402.0" font-family="Newsreader 16pt" font-size="19" fill="#7a7164" text-anchor="start" font-style="italic">No</text>
+<path d="M712.5,80.0 L730.0,80.0 L730.0,330.0 L747.5,330.0" fill="none" stroke="#23201b" stroke-width="2.2" marker-end="url(#arr)"/>
+<path d="M712.5,450.0 L730.0,450.0 L730.0,330.0 L747.5,330.0" fill="none" stroke="#23201b" stroke-width="2.2" marker-end="url(#arr)"/>
+<path d="M952.5,330.0 L982.5,330.0" fill="none" stroke="#23201b" stroke-width="2.2" marker-end="url(#arr)"/>
+<path d="M1090.0,274.0 L1090.0,126.0" fill="none" stroke="#23201b" stroke-width="2.2" marker-end="url(#arr)"/>
+<text x="1102.0" y="206.0" font-family="Newsreader 16pt" font-size="19" fill="#7a7164" text-anchor="start" font-style="italic">Yes</text>
+<path d="M1090.0,386.0 L1090.0,404.0" fill="none" stroke="#23201b" stroke-width="2.2" marker-end="url(#arr)"/>
+<text x="1102.0" y="402.0" font-family="Newsreader 16pt" font-size="19" fill="#7a7164" text-anchor="start" font-style="italic">No</text>
+<path d="M1192.5,80.0 L1227.5,80.0" fill="none" stroke="#23201b" stroke-width="2.2" marker-end="url(#arr)"/>
+<path d="M1192.5,80.0 L1210.0,80.0 L1210.0,330.0 L1227.5,330.0" fill="none" stroke="#23201b" stroke-width="2.2" marker-end="url(#arr)"/>
+<path d="M1432.5,80.0 L1467.5,80.0" fill="none" stroke="#23201b" stroke-width="2.2" marker-end="url(#arr)"/>
+<path d="M1432.5,330.0 L1467.5,330.0" fill="none" stroke="#23201b" stroke-width="2.2" marker-end="url(#arr)"/>
+<path d="M1672.5,80.0 L1690.0,80.0 L1690.0,205.0 L1707.5,205.0" fill="none" stroke="#23201b" stroke-width="2.2" marker-end="url(#arr)"/>
+<path d="M1672.5,330.0 L1690.0,330.0 L1690.0,205.0 L1707.5,205.0" fill="none" stroke="#23201b" stroke-width="2.2" marker-end="url(#arr)"/>
+<path d="M1912.5,205.0 L1947.5,205.0" fill="none" stroke="#23201b" stroke-width="2.2" marker-end="url(#arr)"/>
+<path d="M2152.5,205.0 L2187.5,205.0" fill="none" stroke="#23201b" stroke-width="2.2" marker-end="url(#arr)"/>
+<path d="M2392.5,205.0 L2427.5,205.0" fill="none" stroke="#23201b" stroke-width="2.2" marker-end="url(#arr)"/>
+<path d="M2632.5,205.0 L2650.0,205.0 L2650.0,80.0 L2667.5,80.0" fill="none" stroke="#23201b" stroke-width="2.2" marker-end="url(#arr)"/>
+<path d="M2632.5,205.0 L2650.0,205.0 L2650.0,330.0 L2667.5,330.0" fill="none" stroke="#23201b" stroke-width="2.2" marker-end="url(#arr)"/>
+<path d="M2872.5,80.0 L2907.5,80.0" fill="none" stroke="#23201b" stroke-width="2.2" marker-end="url(#arr)"/>
+<path d="M3112.5,80.0 L3147.5,80.0" fill="none" stroke="#23201b" stroke-width="2.2" marker-end="url(#arr)"/>
+<path d="M3352.5,80.0 L3387.5,80.0" fill="none" stroke="#23201b" stroke-width="2.2" marker-end="url(#arr)"/>
+<path d="M3592.5,80.0 L3610.0,80.0 L3610.0,205.0 L3622.5,205.0" fill="none" stroke="#23201b" stroke-width="2.2" marker-end="url(#arr)"/>
+<path d="M3730.0,149.0 L3730.0,126.0" fill="none" stroke="#23201b" stroke-width="2.2" marker-end="url(#arr)"/>
+<text x="3742.0" y="143.5" font-family="Newsreader 16pt" font-size="19" fill="#7a7164" text-anchor="start" font-style="italic">Yes</text>
+<path d="M3730.0,261.0 L3730.0,404.0" fill="none" stroke="#23201b" stroke-width="2.2" marker-end="url(#arr)"/>
+<text x="3742.0" y="339.5" font-family="Newsreader 16pt" font-size="19" fill="#7a7164" text-anchor="start" font-style="italic">No</text>
+<path d="M3832.5,80.0 L3850.0,80.0 L3850.0,205.0 L3862.5,205.0" fill="none" stroke="#23201b" stroke-width="2.2" marker-end="url(#arr)"/>
+<path d="M3970.0,149.0 L3970.0,126.0" fill="none" stroke="#23201b" stroke-width="2.2" marker-end="url(#arr)"/>
+<text x="3982.0" y="143.5" font-family="Newsreader 16pt" font-size="19" fill="#7a7164" text-anchor="start" font-style="italic">Yes</text>
+<path d="M3970.0,261.0 L3970.0,404.0" fill="none" stroke="#23201b" stroke-width="2.2" marker-end="url(#arr)"/>
+<text x="3982.0" y="339.5" font-family="Newsreader 16pt" font-size="19" fill="#7a7164" text-anchor="start" font-style="italic">No</text>
+<path d="M4072.5,80.0 L4090.0,80.0 L4090.0,205.0 L4107.5,205.0" fill="none" stroke="#23201b" stroke-width="2.2" marker-end="url(#arr)"/>
+<path d="M4312.5,205.0 L4347.5,205.0" fill="none" stroke="#23201b" stroke-width="2.2" marker-end="url(#arr)"/>
+<path d="M4552.5,205.0 L4587.5,205.0" fill="none" stroke="#23201b" stroke-width="2.2" marker-end="url(#arr)"/>
+<path d="M4792.5,205.0 L4827.5,205.0" fill="none" stroke="#23201b" stroke-width="2.2" marker-end="url(#arr)"/>
+<path d="M3730.0,496.0 L3730.0,545.0 L2530.0,545.0 L2530.0,251.0" fill="none" stroke="#14988a" stroke-width="2.2" stroke-dasharray="7 6" marker-end="url(#arr)"/>
+<text x="3130.0" y="535.0" font-family="Newsreader 16pt" font-size="19" fill="#14988a" text-anchor="middle" font-style="italic">re-plan</text>
+<path d="M3970.0,496.0 L3970.0,590.0 L1570.0,590.0 L1570.0,376.0" fill="none" stroke="#14988a" stroke-width="2.2" stroke-dasharray="7 6" marker-end="url(#arr)"/>
+<text x="2770.0" y="580.0" font-family="Newsreader 16pt" font-size="19" fill="#14988a" text-anchor="middle" font-style="italic">keep collecting</text>
+<rect x="32.5" y="289.0" width="205" height="92" rx="7" fill="#23201b" opacity="0.28"/>
+<rect x="27.5" y="284.0" width="205" height="92" rx="7" fill="#fffdf8" stroke="#23201b" stroke-width="2"/>
+<text x="130.0" y="338.1" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">Plan a trip</text>
+<rect x="272.5" y="289.0" width="205" height="92" rx="7" fill="#23201b" opacity="0.28"/>
+<rect x="267.5" y="284.0" width="205" height="92" rx="7" fill="#fffdf8" stroke="#23201b" stroke-width="2"/>
+<text x="370.0" y="324.6" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">Find travel</text>
+<text x="370.0" y="351.6" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">companions</text>
+<polygon points="610,274.0 717.5,330 610,386.0 502.5,330" fill="#ece3cf" stroke="#23201b" stroke-width="2"/>
+<text x="610.0" y="324.6" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">Existing</text>
+<text x="610.0" y="351.6" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">group chat?</text>
+<rect x="512.5" y="39.0" width="205" height="92" rx="7" fill="#23201b" opacity="0.28"/>
+<rect x="507.5" y="34.0" width="205" height="92" rx="7" fill="#fffdf8" stroke="#23201b" stroke-width="2"/>
+<text x="610.0" y="74.5" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">Use the existing</text>
+<text x="610.0" y="101.5" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">group</text>
+<rect x="512.5" y="409.0" width="205" height="92" rx="7" fill="#23201b" opacity="0.28"/>
+<rect x="507.5" y="404.0" width="205" height="92" rx="7" fill="#fffdf8" stroke="#23201b" stroke-width="2"/>
+<text x="610.0" y="444.6" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">Create a new</text>
+<text x="610.0" y="471.6" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">group</text>
+<rect x="752.5" y="289.0" width="205" height="92" rx="7" fill="#23201b" opacity="0.28"/>
+<rect x="747.5" y="284.0" width="205" height="92" rx="7" fill="#fffdf8" stroke="#23201b" stroke-width="2"/>
+<text x="850.0" y="324.6" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">Invite Waymark</text>
+<text x="850.0" y="351.6" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">with @Waymark</text>
+<polygon points="1090,274.0 1197.5,330 1090,386.0 982.5,330" fill="#ece3cf" stroke="#23201b" stroke-width="2"/>
+<text x="1090.0" y="324.6" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">Let it read</text>
+<text x="1090.0" y="351.6" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">the chat?</text>
+<rect x="992.5" y="39.0" width="205" height="92" rx="7" fill="#14988a" opacity="0.28"/>
+<rect x="987.5" y="34.0" width="205" height="92" rx="7" fill="#d6eeea" stroke="#14988a" stroke-width="2"/>
+<text x="1090.0" y="74.5" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">Ask what it may</text>
+<text x="1090.0" y="101.5" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">read</text>
+<rect x="992.5" y="409.0" width="205" height="92" rx="7" fill="#23201b" opacity="0.28"/>
+<rect x="987.5" y="404.0" width="205" height="92" rx="7" fill="#fffdf8" stroke="#23201b" stroke-width="2"/>
+<text x="1090.0" y="444.6" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">Stop using</text>
+<text x="1090.0" y="471.6" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">Waymark</text>
+<rect x="1232.5" y="39.0" width="205" height="92" rx="7" fill="#23201b" opacity="0.28"/>
+<rect x="1227.5" y="34.0" width="205" height="92" rx="7" fill="#fffdf8" stroke="#23201b" stroke-width="2"/>
+<text x="1330.0" y="74.5" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">From now on: new</text>
+<text x="1330.0" y="101.5" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">messages only</text>
+<rect x="1232.5" y="289.0" width="205" height="92" rx="7" fill="#23201b" opacity="0.28"/>
+<rect x="1227.5" y="284.0" width="205" height="92" rx="7" fill="#fffdf8" stroke="#23201b" stroke-width="2"/>
+<text x="1330.0" y="324.6" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">Include earlier</text>
+<text x="1330.0" y="351.6" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">messages</text>
+<rect x="1472.5" y="39.0" width="205" height="92" rx="7" fill="#14988a" opacity="0.28"/>
+<rect x="1467.5" y="34.0" width="205" height="92" rx="7" fill="#d6eeea" stroke="#14988a" stroke-width="2"/>
+<text x="1570.0" y="74.5" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">Organize new</text>
+<text x="1570.0" y="101.5" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">messages</text>
+<rect x="1472.5" y="289.0" width="205" height="92" rx="7" fill="#14988a" opacity="0.28"/>
+<rect x="1467.5" y="284.0" width="205" height="92" rx="7" fill="#d6eeea" stroke="#14988a" stroke-width="2"/>
+<text x="1570.0" y="324.6" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">Organize history</text>
+<text x="1570.0" y="351.6" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">and new messages</text>
+<rect x="1712.5" y="164.0" width="205" height="92" rx="7" fill="#23201b" opacity="0.28"/>
+<rect x="1707.5" y="159.0" width="205" height="92" rx="7" fill="#fffdf8" stroke="#23201b" stroke-width="2"/>
+<text x="1810.0" y="213.1" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">Start planning</text>
+<rect x="1952.5" y="164.0" width="205" height="92" rx="7" fill="#14988a" opacity="0.28"/>
+<rect x="1947.5" y="159.0" width="205" height="92" rx="7" fill="#d6eeea" stroke="#14988a" stroke-width="2"/>
+<text x="2050.0" y="186.1" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">Ask for missing</text>
+<text x="2050.0" y="213.1" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">details and</text>
+<text x="2050.0" y="240.1" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">preferences</text>
+<rect x="2192.5" y="164.0" width="205" height="92" rx="7" fill="#14988a" opacity="0.28"/>
+<rect x="2187.5" y="159.0" width="205" height="92" rx="7" fill="#d6eeea" stroke="#14988a" stroke-width="2"/>
+<text x="2290.0" y="199.6" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">Draft an</text>
+<text x="2290.0" y="226.6" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">itinerary</text>
+<rect x="2432.5" y="164.0" width="205" height="92" rx="7" fill="#23201b" opacity="0.28"/>
+<rect x="2427.5" y="159.0" width="205" height="92" rx="7" fill="#fffdf8" stroke="#23201b" stroke-width="2"/>
+<text x="2530.0" y="186.1" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">Members share</text>
+<text x="2530.0" y="213.1" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">ideas and</text>
+<text x="2530.0" y="240.1" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">conditions</text>
+<rect x="2672.5" y="39.0" width="205" height="92" rx="7" fill="#23201b" opacity="0.28"/>
+<rect x="2667.5" y="34.0" width="205" height="92" rx="7" fill="#fffdf8" stroke="#23201b" stroke-width="2"/>
+<text x="2770.0" y="88.0" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">Ask for a change</text>
+<rect x="2672.5" y="289.0" width="205" height="92" rx="7" fill="#23201b" opacity="0.28"/>
+<rect x="2667.5" y="284.0" width="205" height="92" rx="7" fill="#fffdf8" stroke="#23201b" stroke-width="2"/>
+<text x="2770.0" y="324.6" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">Keep the original</text>
+<text x="2770.0" y="351.6" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">plan</text>
+<rect x="2912.5" y="39.0" width="205" height="92" rx="7" fill="#14988a" opacity="0.28"/>
+<rect x="2907.5" y="34.0" width="205" height="92" rx="7" fill="#d6eeea" stroke="#14988a" stroke-width="2"/>
+<text x="3010.0" y="74.5" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">Show the changes</text>
+<text x="3010.0" y="101.5" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">as differences</text>
+<rect x="3152.5" y="39.0" width="205" height="92" rx="7" fill="#23201b" opacity="0.28"/>
+<rect x="3147.5" y="34.0" width="205" height="92" rx="7" fill="#fffdf8" stroke="#23201b" stroke-width="2"/>
+<text x="3250.0" y="74.5" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">Review the</text>
+<text x="3250.0" y="101.5" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">proposal</text>
+<rect x="3392.5" y="39.0" width="205" height="92" rx="7" fill="#14988a" opacity="0.28"/>
+<rect x="3387.5" y="34.0" width="205" height="92" rx="7" fill="#d6eeea" stroke="#14988a" stroke-width="2"/>
+<text x="3490.0" y="61.0" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">Apply accepted</text>
+<text x="3490.0" y="88.0" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">changes as a new</text>
+<text x="3490.0" y="115.0" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">version</text>
+<polygon points="3730,149.0 3837.5,205 3730,261.0 3622.5,205" fill="#ece3cf" stroke="#23201b" stroke-width="2"/>
+<text x="3730.0" y="199.6" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">Agree with</text>
+<text x="3730.0" y="226.6" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">the plan?</text>
+<rect x="3632.5" y="39.0" width="205" height="92" rx="7" fill="#23201b" opacity="0.28"/>
+<rect x="3627.5" y="34.0" width="205" height="92" rx="7" fill="#fffdf8" stroke="#23201b" stroke-width="2"/>
+<text x="3730.0" y="74.5" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">Confirm the</text>
+<text x="3730.0" y="101.5" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">version</text>
+<rect x="3632.5" y="409.0" width="205" height="92" rx="7" fill="#23201b" opacity="0.28"/>
+<rect x="3627.5" y="404.0" width="205" height="92" rx="7" fill="#fffdf8" stroke="#23201b" stroke-width="2"/>
+<text x="3730.0" y="444.6" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">Re-plan with new</text>
+<text x="3730.0" y="471.6" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">conditions</text>
+<polygon points="3970,149.0 4077.5,205 3970,261.0 3862.5,205" fill="#ece3cf" stroke="#23201b" stroke-width="2"/>
+<text x="3970.0" y="199.6" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">Stop</text>
+<text x="3970.0" y="226.6" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">collecting?</text>
+<rect x="3872.5" y="39.0" width="205" height="92" rx="7" fill="#14988a" opacity="0.28"/>
+<rect x="3867.5" y="34.0" width="205" height="92" rx="7" fill="#d6eeea" stroke="#14988a" stroke-width="2"/>
+<text x="3970.0" y="74.5" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">Explain what</text>
+<text x="3970.0" y="101.5" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">saving keeps</text>
+<rect x="3872.5" y="409.0" width="205" height="92" rx="7" fill="#14988a" opacity="0.28"/>
+<rect x="3867.5" y="404.0" width="205" height="92" rx="7" fill="#d6eeea" stroke="#14988a" stroke-width="2"/>
+<text x="3970.0" y="444.6" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">Keep chatting and</text>
+<text x="3970.0" y="471.6" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">collecting</text>
+<rect x="4112.5" y="164.0" width="205" height="92" rx="7" fill="#23201b" opacity="0.28"/>
+<rect x="4107.5" y="159.0" width="205" height="92" rx="7" fill="#fffdf8" stroke="#23201b" stroke-width="2"/>
+<text x="4210.0" y="199.6" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">Choose Save and</text>
+<text x="4210.0" y="226.6" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">finish</text>
+<rect x="4352.5" y="164.0" width="205" height="92" rx="7" fill="#14988a" opacity="0.28"/>
+<rect x="4347.5" y="159.0" width="205" height="92" rx="7" fill="#d6eeea" stroke="#14988a" stroke-width="2"/>
+<text x="4450.0" y="199.6" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">Save the version;</text>
+<text x="4450.0" y="226.6" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">pause collection</text>
+<rect x="4592.5" y="164.0" width="205" height="92" rx="7" fill="#14988a" opacity="0.28"/>
+<rect x="4587.5" y="159.0" width="205" height="92" rx="7" fill="#d6eeea" stroke="#14988a" stroke-width="2"/>
+<text x="4690.0" y="186.1" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">Summarize; ask:</text>
+<text x="4690.0" y="213.1" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">too many or too</text>
+<text x="4690.0" y="240.1" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">few stops?</text>
+<rect x="4832.5" y="164.0" width="205" height="92" rx="7" fill="#23201b" opacity="0.28"/>
+<rect x="4827.5" y="159.0" width="205" height="92" rx="7" fill="#fffdf8" stroke="#23201b" stroke-width="2"/>
+<text x="4930.0" y="199.6" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">Plan saved, still</text>
+<text x="4930.0" y="226.6" font-family="Newsreader 16pt" font-size="23" fill="#23201b" text-anchor="middle">editable</text>
+<rect x="40" y="544" width="34" height="22" rx="4" fill="#fffdf8" stroke="#23201b" stroke-width="2"/>
+<text x="84.0" y="562.0" font-family="Newsreader 16pt" font-size="19" fill="#23201b" text-anchor="start">Member action</text>
+<rect x="240" y="544" width="34" height="22" rx="4" fill="#d6eeea" stroke="#14988a" stroke-width="2"/>
+<text x="284.0" y="562.0" font-family="Newsreader 16pt" font-size="19" fill="#23201b" text-anchor="start">Waymark</text>
+<polygon points="398,542 418,555 398,568 378,555" fill="#ece3cf" stroke="#23201b" stroke-width="2"/>
+<text x="428.0" y="562.0" font-family="Newsreader 16pt" font-size="19" fill="#23201b" text-anchor="start">Decision</text>
+</svg>

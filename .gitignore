@@ -1,0 +1,7 @@
+# Built slides and course material
+*.pdf
+# Source media kept out of the repo (large, or already extracted)
+*.pptx
+*.zip
+__MACOSX/
+.DS_Store
