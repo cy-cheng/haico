@@ -4,6 +4,8 @@ Slides for our Milestone 2 proof of concept: Waymark, an AI travel assistant tha
 
 ## Build
 
+On macOS, double-click `render.command` to download a verified official Typst 0.14.2 binary, compile the slides, and open the PDF. The compiler is cached in `.tools/`; errors are saved to `render.log`.
+
 Requires [Typst](https://typst.app) 0.14 or newer. The fonts are bundled, so no installation is needed:
 
 ```sh

@@ -5,3 +5,6 @@
 *.zip
 __MACOSX/
 .DS_Store
+# Local renderer and its diagnostic log
+.tools/
+render.log

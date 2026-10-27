@@ -129,114 +129,41 @@
   })
 ]
 
-#details([Four friends want one shared Osaka itinerary], [User goal], ("d-chat", "a-map"), (
-  ([Scenario], [Mia, Alex, Ben and Yuki are planning Osaka for Nov 20–22, staying in Namba.]),
-  ([Goal], [Keep discussing naturally in the existing group while building one itinerary they can confirm and edit together.]),
-  ([Current difficulty], [Places and preferences are scattered across messages. Repeated shares and later changes create more manual organizing.]),
+// Section 3: six interaction slides following the unchanged User Flow.
+#details([The user invites Waymark and chooses its scope], [User goal & activation], ("d-scope0", "a-map"), (
+  ([Shared goal], [Four friends are planning Osaka for Nov 20–22. They want one editable itinerary while continuing their group chat.]),
+  ([User action], [Mia mentions \@Waymark and chooses “From now on” or “Include earlier messages”. Organizing uses only that scope.]),
+  ([Shared workspace], [The draft appears in Discord. Members open the web app to inspect places and edit the itinerary.]),
+), accent: cobalt)
+
+#details([AI turns the selected discussion into a draft], [AI input, behavior & output], ("d-summary", "a-trip"), (
+  ([Input], [Selected messages provide dates, shared places and each member’s preferences. Shared links get place cards automatically.]),
+  ([AI behavior], [Merge repeated places and retain their sources. Ask about unclear venues instead of guessing. Check hours and travel times.]),
+  ([Output], [One progress message updates in place. The result is a draft itinerary with source links and unresolved details visible.]),
 ), accent: teal)
 
-#details([A shared link becomes a place card], [System output · Link cards], ("d-chat", "a-memory"), (
-  ([Share a link], [A member pastes an Instagram, Threads or Facebook link. This is the one kind of message Waymark answers on its own.]),
-  ([Read the post], [It reads the caption, photos and tags, finds the place and writes a short summary. A failed read is listed in the app, where it can be retried.]),
-  ([Post a card], [Publisher, category, summary, photos, address, map link and the original post appear as one card. Members react with four emotes, and the app shows the same counts.]),
-), accent: tomato)
-
-#details([The user explicitly invites Waymark], [User action], ("d-scope0",), (
-  ([Invite the Bot], [Mia mentions \@Waymark and sends a request to organize the Osaka discussion. This is where AI enters the interaction.]),
-  ([Choose a scope], [The user chooses “From now on” or “Include earlier messages”. The Bot does not silently decide which history to read.]),
-  ([Stay in the channel], [One tap replaces the buttons with a summary of what will be read, and organizing starts. Members can keep sharing ideas in the same channel.]),
-), accent: cobalt)
-
-#details([What the AI receives from this conversation], [AI input], ("d-scope1", "a-memory"), (
-  ([Selected messages], [Use the available earlier group history and new messages, or only messages from the activation point onward.]),
-  ([Travel context], [The discussion provides Osaka, Nov 20–22, four travelers, Namba accommodation and a preference for relaxed travel.]),
-  ([Evidence and preferences], [Shared place names, source messages, links and individual preferences support the draft. Unclear venue details remain marked for clarification.]),
-), accent: cobalt)
-
-#details([Progress stays visible while the AI works], [System output · Progress], ("d-progress", "a-chat-busy"), (
-  ([Show each step], [Waymark edits one message as it reads the scope, matches places, builds the days and checks hours and travel times.]),
-  ([Keep the channel quiet], [Progress is one message that changes in place. It does not post a new message for each step.]),
-  ([Same job in the app], [The Chat tab shows the same steps, then the draft with “Apply” and “Keep original”.]),
-), accent: cobalt)
-
-#details([AI structures the discussion and preserves evidence], [AI behavior], ("d-summary", "a-memory-sums"), (
-  ([Extract the travel context], [Identify dates, group size, where the group is staying, candidate places and personal preferences.]),
-  ([Merge repeated shares], [Group the same place together while preserving who shared it, the original message and the source link.]),
-  ([Keep uncertainty visible], [A cafe without a clear name stays unresolved. AI asks for clarification instead of silently adding a guessed venue.]),
-), accent: tomato)
-
-#details([The result stays inside the conversation], [System output], ("d-draft", "a-trip"), (
-  ([Result card in the channel], [When organizing finishes, Waymark posts a card in the channel: the days, the places and anything still unresolved.]),
-  ([Shared itinerary draft], [A three-day draft gives members a concrete plan to inspect. Days, times and source links stay available in the web app.]),
-  ([What happens next], [Members tap “Open in app” to filter candidates, open a source, add a place or revise the draft, or simply keep talking in the channel.]),
-), accent: teal)
-
-#slide(title: [One trip, four tabs], kicker-text: [System output · Web app], accent: teal)[
-  #box(width: 27cm, height: 11.15cm, {
-    v-put(0cm, 0cm, 27cm, gallery((("a-chat", [AI chat]), ("a-map", [Map]), ("a-trip", [Itinerary]), ("a-manage", [Manage])), h: 8.9cm))
-    v-put(0cm, 10.3cm, 27cm, align(center, text(font: f-display, size: 20pt, style: "italic", fill: teal.darken(15%))[The channel starts the conversation; the app is where places and days are edited.]))
-  })
-]
-
-#details([Members can inspect what the AI used], [User response · Review], ("d-chat", "a-place"), (
-  ([User action], [Mia opens Nishiki Market and checks who shared it and the original post.]),
-  ([AI and system behavior], [Repeated shares appear as one candidate, while both sources remain visible and traceable.]),
-  ([User control], [The user can return to the original message before deciding whether the suggestion belongs in the itinerary.]),
-), accent: cobalt)
-
-#details([A correction does not require a restart], [User response · Correct], ("d-clarify-form", "a-memory-form"), (
-  ([User action], [Mia adds the missing location for the riverside cafe and chooses “Not this time”.]),
-  ([AI and system behavior], [Keep the clarification together with the original share. Do not add the cafe to this trip against the user’s choice.]),
-  ([Result], [The share becomes clarified. The added detail stays available, so the user does not have to explain it again.]),
+#details([Members inspect sources and correct the context], [User response · Review & correct], ("a-place", "a-memory-form", false), (
+  ([Review], [Open a place to see who shared it and return to the original post. Repeated shares retain their sources.]),
+  ([Correct], [Add a missing location or edit a preference without restarting. “Not this time” keeps a clarified place out of this trip.]),
+  ([Edit directly], [Adjust times, reorder stops or add a candidate in the app. Share the revised version back to the group.]),
 ), accent: plum)
 
-#details([Members can refine the context directly], [User response · Refine], ("a-memory-sums", "a-manage", false), (
-  ([Correct a preference], [Mia edits her preference to include a relaxed pace and an 11:00 start on day three.]),
-  ([Make direct edits], [The itinerary also supports time edits, reordering, removing a stop and manually adding candidate places.]),
-  ([Share the revision], [Direct itinerary edits can be shared back to the group as a new version. The other members can review the updated plan.]),
-), accent: teal)
-
-#details([Subgroups can split up and meet again], [System output · Splitting], ("a-branch-map", "a-branch-list", false), (
-  ([Split], [On day three Mia and Yuki take one route, Alex and Ben another. Each group has its own colour on the map, the timeline and the list.]),
-  ([Meet again], [Both routes end at Namba Station, where the day continues as one plan.]),
-  ([Keep gaps visible], [A slot without a place stays in the plan as a gap. Members add a place from the AI, or from the map.]),
-), accent: plum)
-
-#slide(title: [Every leg has a transport choice], kicker-text: [System output · Transit], accent: cobalt)[
-  #box(width: 27cm, height: 11.15cm, {
-    v-put(0cm, 0cm, 27cm, gallery((("a-seg", [Select a leg]), ("a-transit", [Compare routes]), ("a-transit-filter", [Filter modes])), h: 8.9cm))
-    v-put(0cm, 10.3cm, 27cm, align(center, text(font: f-display, size: 20pt, style: "italic", fill: cobalt.darken(15%))[Public transit is on by default; members choose the modes they accept.]))
-  })
-]
-
-#details([A natural-language request produces a proposal], [AI input, behavior & output], ("d-proposal", "a-prop"), (
-  ([New AI input], [“Start day 3 at 11:00 and skip Osaka Castle.” The existing trip context stays available.]),
-  ([AI behavior], [Interpret the request as a focused change. Keep the unrelated days and arrangements intact.]),
-  ([System output], [Show the proposed differences first: a later start, and Osaka Castle returned to Candidates. Nothing is applied until approval.]),
-), accent: tomato)
-
-#details([Rejecting a proposal keeps the current plan], [User response · Reject], ("d-kept", "a-branch-list"), (
-  ([User action], [Mia selects “Keep original” instead of applying the proposed changes.]),
-  ([AI and system behavior], [Record that this proposal was not applied. Keep the existing itinerary version and the conversation.]),
-  ([Continue], [The user can make another request, clarify a condition or edit the itinerary directly. Rejection does not end planning.]),
-), accent: plum)
-
-#details([Accepting a change creates a reviewable version], [User response · Accept & confirm], ("d-confirm", "a-applied"), (
-  ([User action], [Mia accepts the new proposal, then confirms version two.]),
-  ([AI and system behavior], [Apply only the accepted differences. Day three starts at 11:00, and Osaka Castle remains a candidate.]),
-  ([Individual approval], [Show 1 of 4 confirmed, with three members still pending. One person’s confirmation does not imply group agreement.]),
-), accent: teal)
-
-#details([The user decides when collection ends], [User action & system response], ("d-finish", "d-saved"), (
-  ([Continue after a reply], [Members can keep chatting after a proposal or confirmation. They do not need to rebuild the trip context.]),
-  ([End explicitly], [Mia taps “Save and finish” on Waymark’s message. A dialog explains that the current version will be kept and new messages will stop being collected.]),
-  ([Keep the distinction clear], [Saving can preserve a draft with pending confirmations. The user can cancel the dialog and keep discussing instead.]),
+#details([Subgroups and transport stay in one itinerary], [System output · Flexible planning], ("a-branch-map", "a-transit", false), (
+  ([Split and meet again], [Mia and Yuki take one route, Alex and Ben another. Both routes meet at Namba Station and continue together.]),
+  ([Choose transport], [Compare routes for each leg and filter acceptable modes. Public transit is enabled by default.]),
+  ([Keep gaps visible], [Unfilled slots stay visible. Members can add a place from the map or ask the AI for suggestions.]),
 ), accent: cobalt)
 
-#details([Saved results remain available without restarting], [System output & user response], ("d-saved", "a-manage-paused"), (
-  ([Saved output], [Keep the itinerary, sources and current approval status. Waymark’s message and the app both show that collection has paused.]),
-  ([User action], [Reopen the saved itinerary or download its calendar file. Viewing the saved version does not restart collection.]),
-  ([Optional feedback], [The user may ask for fewer stops or more options, or skip feedback. The saved itinerary remains available.]),
+#details([Members review changes before they are applied], [User request · Proposal & approval], ("d-proposal", "a-applied"), (
+  ([Request], [“Start day 3 at 11:00 and skip Osaka Castle.” AI proposes only those differences; other arrangements stay intact.]),
+  ([Accept or reject], [“Apply” creates a new version. “Keep original” preserves the current plan. Members can keep discussing either way.]),
+  ([Confirm individually], [Confirmation is recorded per member. “1 of 4 confirmed” does not mean the whole group agrees.]),
+), accent: tomato)
+
+#details([The user saves the plan and stops collection], [User action · Save & finish], ("d-finish", "a-manage-paused"), (
+  ([End explicitly], [“Save and finish” explains that new messages will stop being collected. Cancel to keep discussing.]),
+  ([Preserve the result], [The saved itinerary retains its sources and approval status, including pending confirmations. Collection is shown as paused.]),
+  ([Return later], [Reopen the itinerary or download its calendar file. Viewing the saved plan does not restart collection.]),
 ), accent: plum)
 
 #divider("4", [what the model does, and what code checks], [Role of AI \ & #em(teal)[Technical Approach]],
