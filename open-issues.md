@@ -1,6 +1,6 @@
 # Waymark M2: open issues
 
-The slides follow the prototype video for now. This list covers what still conflicts, what is unconfirmed, and what was filled in without team input. Page numbers refer to `slides.pdf` (39 pages): pages 1–9 are the team's `front.typ`, and pages 10–39 are sections 3–5. The prototype screens on pages 15–32 are Discord and web-app designs exported from the Design canvas (`assets/screens/ui/`).
+The slides follow the prototype video for now. This list covers what still conflicts, what is unconfirmed, and what was filled in without team input. The deck is 38 pages: pages 1–11 are the team's `front.typ`; pages 12–21 are section 3 (the user flow overview and three close-ups on pages 13–16, then three task-flow scenarios and the app overview on pages 17–20, and the demo shortcuts on page 21); pages 22–27 are sections 4–5 and the prototype link; pages 28–38 are backup (technical detail and the earlier step-by-step screens). Page numbers in the rest of this file refer to the earlier 39-page version and have not been updated.
 
 ## 1. Design decisions that differ from the video
 

@@ -471,3 +471,51 @@
     content((25.39, 0.34), text(size: 11.5pt, fill: muted)[user decides])
   }))
 })
+
+// ── Task flows: Discord screens for the user and the bot, an app screen for the system, ──
+// ── a robot for the AI. Arrows carry what is passed on. One canvas is 27 × 9.8 cm, y up. ──
+#let sw-tag(p, label, c) = {
+  import cetz.draw: *
+  content(p, anchor: "west", box(fill: c, radius: 2pt, inset: (x: 4.5pt, y: 2.2pt),
+    text(font: f-mono, size: 9pt, fill: paper, tracking: 0.6pt, weight: "medium", upper(label))))
+}
+// A screenshot with a paper-print shadow; `hl` outlines the part that changed, as fractions of the picture.
+#let sw-shot(p, path, w, h, c: marigold, hl: none) = {
+  import cetz.draw: *
+  let (x, y) = p
+  rect((x - w / 2 + 0.1, y - h / 2 - 0.1), (x + w / 2 + 0.1, y + h / 2 - 0.1),
+    fill: c.transparentize(35%), stroke: none, radius: 0.1)
+  content(p, box(width: w * 1cm, height: h * 1cm, radius: 0.1cm, clip: true, stroke: 1.05pt + ink,
+    image(path, width: w * 1cm, height: h * 1cm, fit: "cover")))
+  if hl != none {
+    let (x0, y0, x1, y1) = hl
+    rect((x - w / 2 + x0 * w, y + h / 2 - y0 * h), (x - w / 2 + x1 * w, y + h / 2 - y1 * h),
+      stroke: (paint: tomato, thickness: 1.6pt, dash: "dashed"), radius: 0.12)
+  }
+}
+#let sw-ai(p, note) = {
+  import cetz.draw: *
+  let (x, y) = p
+  let pts = ((x - 1.8, y), (x - 1.35, y + 1.45), (x + 1.35, y + 1.45), (x + 1.8, y), (x + 1.35, y - 1.45), (x - 1.35, y - 1.45))
+  line(..pts.map(((a, b)) => (a + 0.13, b - 0.12)), close: true, fill: tint(teal, p: 45%), stroke: none)
+  line(..pts, close: true, fill: teal.darken(18%), stroke: 1.2pt + ink)
+  content(p, v-icon("bot", size: 1.9cm, c: "#f6f0e3"))
+  sw-tag((x - 0.45, y + 1.95), [AI], teal.darken(10%))
+  content((x, y - 2.1), box(width: 5.2cm, align(center,
+    text(font: f-display, style: "italic", size: 13.5pt, fill: muted, note))))
+}
+// An arrow with the number of the step and what travels along it.
+#let sw-arrow(a, b, n, label, dx: 0, dy: 0.0, c: ink, both: false, dash: none) = {
+  import cetz.draw: *
+  line(a, b, stroke: (paint: c, thickness: 1.3pt, dash: dash),
+    mark: (start: if both { "stealth" } else { none }, end: "stealth", fill: c, scale: 1.2))
+  let (x, y) = (a.at(0) + (b.at(0) - a.at(0)) / 2 + dx, a.at(1) + (b.at(1) - a.at(1)) / 2 + dy)
+  content((x, y), box(fill: paper, inset: (x: 4pt, y: 2pt), radius: 2pt, {
+    if n != none {
+      box(fill: ink, radius: 50%, inset: (x: 3.2pt, y: 1.8pt),
+        text(font: f-mono, size: 9pt, weight: "bold", fill: paper, str(n)))
+      h(3pt)
+    }
+    text(font: f-display, style: "italic", size: 13.5pt, fill: ink.lighten(15%), label)
+  }))
+}

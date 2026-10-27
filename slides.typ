@@ -67,6 +67,8 @@
   })
 ]
 
+#let backup-details(title, label, ..rest) = details(title, [Backup · #label], ..rest)
+
 // One AI job as a paper card: label, what it does, and the model or tool behind it.
 #let ai-job(num, name, body, tool, c) = v-sheet(6cm, 4.25cm, c, {
   v-put(0.32cm, 0.28cm, 5.4cm, v-label([#num · #name], c: c.darken(18%), size: 10pt))
@@ -97,10 +99,9 @@
 })
 
 #divider("3", [the shared planning interaction], [User Flow \ & #em(cobalt)[Human–AI Interaction]],
-  [From an explicit invitation to an editable shared plan], cobalt, v-section-art(2))
+  [Save places, wake Waymark, plan together], cobalt, v-section-art(2))
 
-// This is the supplied User Flow. English labels overlay its original nodes.
-// Connector artwork, node positions and rectangle/diamond types are retained.
+// The supplied User Flow: the overview first, then three close-ups, then the scenarios that run through it.
 #slide(title: [The complete User Flow], kicker-text: [Key User Flow], accent: cobalt)[
   #box(width: 27cm, height: 11cm, {
     v-put(0cm, 1.15cm, 27cm, image("assets/user-flow-en-original-layout.svg", width: 27cm))
@@ -129,42 +130,152 @@
   })
 ]
 
-// Section 3: six interaction slides following the unchanged User Flow.
-#details([The user invites Waymark and chooses its scope], [User goal & activation], ("d-scope0", "a-map"), (
-  ([Shared goal], [Four friends are planning Osaka for Nov 20–22. They want one editable itinerary while continuing their group chat.]),
-  ([User action], [Mia mentions \@Waymark and chooses “From now on” or “Include earlier messages”. Organizing uses only that scope.]),
-  ([Shared workspace], [The draft appears in Discord. Members open the web app to inspect places and edit the itinerary.]),
-), accent: cobalt)
 
-#details([AI turns the selected discussion into a draft], [AI input, behavior & output], ("d-summary", "a-trip"), (
-  ([Input], [Selected messages provide dates, shared places and each member’s preferences. Shared links get place cards automatically.]),
-  ([AI behavior], [Merge repeated places and retain their sources. Ask about unclear venues instead of guessing. Check hours and travel times.]),
-  ([Output], [One progress message updates in place. The result is a draft itinerary with source links and unresolved details visible.]),
-), accent: teal)
+// Section 3: three task flows. Discord screens are the user and the bot, the app screen is the
+// system, the robot is the AI; arrows carry what is passed on. Then the app at a glance.
+#let goal-line(body) = {
+  kicker(c: muted)[Goal]
+  h(0.35cm)
+  text(font: f-display, size: 17pt, style: "italic", body)
+  v(0.15cm)
+}
+#let fl(name) = "assets/flow/" + name + ".png"
+#let phone-h = 8.66
+#let phone-w = phone-h * 390 / 844
 
-#details([Members inspect sources and correct the context], [User response · Review & correct], ("a-place", "a-memory-form", false), (
-  ([Review], [Open a place to see who shared it and return to the original post. Repeated shares retain their sources.]),
-  ([Correct], [Add a missing location or edit a preference without restarting. “Not this time” keeps a clarified place out of this trip.]),
-  ([Edit directly], [Adjust times, reorder stops or add a candidate in the app. Share the revised version back to the group.]),
-), accent: plum)
+#slide(title: [Scenario 1 · A shared link becomes a saved place], kicker-text: [Key User Flow · Save places], accent: marigold)[
+  #goal-line[Every link the group shares is kept as a place, with no one typing it in.]
+  #cetz.canvas(length: 1cm, {
+    import cetz.draw: *
+    rect((0, 0), (27, 9.8), stroke: none, fill: none)
+    // two app tabs show the same new place: the import log and the map
+    let (ph, pw) = (8.0, 8.0 * 390 / 844)
+    sw-arrow((6.6, 8.1), (9.0, 7.4), 1, [link])
+    sw-arrow((17.5, 6.2), (22.4, 5.8), 2, [post + photos])
+    sw-arrow((22.4, 4.2), (17.5, 4.2), 3, [place data + picks])
+    sw-arrow((9.0, 3.4), (6.5, 3.4), 4, [card])
+    sw-arrow((9.0, 1.6), (6.5, 1.6), 5, [votes], both: true)
+    sw-shot((4.4, 8.3), fl("msg-link"), 4.2, 4.2 * 178 / 700)
+    sw-tag((2.3, 9.35), [user · discord], marigold.darken(15%))
+    sw-shot((4.4, 3.1), fl("card"), 3.9, 3.9 * 646 / 780)
+    sw-tag((2.45, 5.0), [bot · discord], marigold.darken(15%))
+    sw-shot((11.15, 4.7), "assets/screens/ui/a-memory.png", pw, ph, c: cobalt, hl: (0.03, 0.15, 0.97, 0.265))
+    sw-shot((15.65, 4.7), "assets/screens/ui/a-map.png", pw, ph, c: cobalt, hl: (0.6, 0.225, 0.76, 0.305))
+    sw-tag((9.3, 9.1), [system · app], cobalt)
+    content((11.15, 0.35), text(font: f-display, style: "italic", size: 13pt, fill: muted)[Import log])
+    content((15.65, 0.35), text(font: f-display, style: "italic", size: 13pt, fill: muted)[Map])
+    sw-ai((24.3, 5.0), [post → place card \ and nearby picks])
+  })
+]
 
-#details([Subgroups and transport stay in one itinerary], [System output · Flexible planning], ("a-branch-map", "a-transit", false), (
-  ([Split and meet again], [Mia and Yuki take one route, Alex and Ben another. Both routes meet at Namba Station and continue together.]),
-  ([Choose transport], [Compare routes for each leg and filter acceptable modes. Public transit is enabled by default.]),
-  ([Keep gaps visible], [Unfilled slots stay visible. Members can add a place from the map or ask the AI for suggestions.]),
-), accent: cobalt)
+#slide(title: [Scenario 2 · Waking Waymark to organize the discussion], kicker-text: [Key User Flow · Organize], accent: teal)[
+  #goal-line[Turn a scattered chat into shared memory the whole plan can build on.]
+  #cetz.canvas(length: 1cm, {
+    import cetz.draw: *
+    rect((0, 0), (27, 9.8), stroke: none, fill: none)
+    sw-arrow((7.5, 8.2), (11.3, 7.2), 1, [mention + range])
+    sw-arrow((15.7, 6.2), (21.4, 5.8), 2, [messages + memory])
+    sw-arrow((21.4, 4.2), (15.7, 4.2), 3, [summary + new notes])
+    sw-arrow((11.3, 3.2), (7.4, 3.2), 4, [summary card])
+    sw-shot((4.8, 8.45), fl("msg-org"), 5.0, 5.0 * 225 / 760)
+    content((4.8, 6.9), box(width: 6.4cm, align(center, {
+      tag(c: marigold, size: 10pt)[from reply]
+      h(0.1cm)
+      tag(c: marigold, size: 10pt)[from here]
+      h(0.1cm)
+      tag(c: marigold, size: 10pt)[all earlier]
+    })))
+    sw-tag((2.3, 9.75), [user · discord], marigold.darken(15%))
+    sw-shot((4.8, 3.2), fl("summary"), 4.8, 4.8 * 459 / 780)
+    sw-tag((2.4, 5.0), [bot · discord], marigold.darken(15%))
+    content((4.8, 0.7), text(font: f-display, style: "italic", size: 13.5pt, fill: plum.darken(10%))[Tap “Generate plan” → next scenario])
+    sw-shot((13.5, 4.75), "assets/screens/ui/a-memory-sums.png", phone-w, phone-h, c: cobalt, hl: (0.03, 0.32, 0.97, 0.52))
+    sw-tag((11.5, 9.45), [system · app], cobalt)
+    sw-ai((23.3, 5.0), [summarize, keep \ what matters])
+  })
+]
 
-#details([Members review changes before they are applied], [User request · Proposal & approval], ("d-proposal", "a-applied"), (
-  ([Request], [“Start day 3 at 11:00 and skip Osaka Castle.” AI proposes only those differences; other arrangements stay intact.]),
-  ([Accept or reject], [“Apply” creates a new version. “Keep original” preserves the current plan. Members can keep discussing either way.]),
-  ([Confirm individually], [Confirmation is recorded per member. “1 of 4 confirmed” does not mean the whole group agrees.]),
-), accent: tomato)
+#slide(title: [Scenario 2 · Planning and revising the itinerary], kicker-text: [Key User Flow · Plan & revise], accent: tomato)[
+  #goal-line[One request, or one tap, produces a plan; unclear points are asked first.]
+  #cetz.canvas(length: 1cm, {
+    import cetz.draw: *
+    rect((0, 0), (27, 9.8), stroke: none, fill: none)
+    sw-arrow((7.4, 8.9), (11.3, 7.6), 1, [request or tap])
+    sw-arrow((15.7, 6.2), (21.4, 5.8), 2, [\+ memory + plan])
+    sw-arrow((21.4, 4.2), (15.7, 4.2), 3, [question, or plan])
+    sw-arrow((11.3, 5.6), (7.1, 5.7), 4, [unclear? ask first], c: tomato, dash: "dashed")
+    sw-arrow((11.3, 2.4), (7.1, 2.2), 5, [clear: plan])
+    sw-arrow((6.9, 7.15), (6.9, 8.2), none, [answer], c: tomato, dash: "dashed", dx: 0.95, dy: -0.2)
+    sw-shot((4.8, 8.75), fl("msg-plan"), 5.0, 5.0 * 164 / 780)
+    sw-tag((2.3, 9.65), [user · discord], marigold.darken(15%))
+    sw-shot((4.8, 5.7), fl("ask"), 4.4, 4.4 * 510 / 780)
+    sw-shot((4.8, 2.0), fl("plan"), 4.4, 4.4 * 576 / 780)
+    sw-tag((2.6, 7.35), [bot · discord], marigold.darken(15%))
+    sw-shot((13.5, 4.75), "assets/screens/ui/a-applied.png", phone-w, phone-h, c: cobalt, hl: (0.03, 0.135, 0.97, 0.3))
+    sw-tag((11.5, 9.45), [system · app], cobalt)
+    sw-ai((23.3, 5.0), [ask, or plan in a \ fixed format])
+  })
+]
 
-#details([The user saves the plan and stops collection], [User action · Save & finish], ("d-finish", "a-manage-paused"), (
-  ([End explicitly], [“Save and finish” explains that new messages will stop being collected. Cancel to keep discussing.]),
-  ([Preserve the result], [The saved itinerary retains its sources and approval status, including pending confirmations. Collection is shown as paused.]),
-  ([Return later], [Reopen the itinerary or download its calendar file. Viewing the saved plan does not restart collection.]),
-), accent: plum)
+#slide(title: [Scenario 3 · The app: plan on the map, the list, in groups and with drafts], kicker-text: [Key User Flow · App overview], accent: cobalt)[
+  #box(width: 27cm, height: 11.1cm, {
+    let ph = 8.0cm
+    let pw = ph * 390 / 844
+    let cols = (
+      ("map-pin", [Map], "a-trip", [Day route on the map]),
+      ("route", [Itinerary], "a-trip-list", [Timeline with transport]),
+      ("split", [Groups], "a-branch-list", [Split up, then meet again]),
+      ("notebook-pen", [Drafts], "a-tray", [Candidate places wait here]),
+    )
+    for (i, (ic, lab, shot, cap)) in cols.enumerate() {
+      let cx = 3.4cm + i * 6.73cm
+      v-put(cx - 2.6cm, 0cm, 5.2cm, align(center, grid(columns: 2, column-gutter: 0.22cm, align: horizon,
+        v-icon(ic, size: 0.8cm), text(font: f-display, size: 19pt, weight: 600, lab))))
+      v-put(cx - pw / 2, 1.2cm, pw, phone(shot, h: ph))
+      v-put(cx - 3.2cm, 9.45cm, 6.4cm, align(center, text(font: f-display, size: 15pt, style: "italic", fill: muted, cap)))
+    }
+    // the draft tray sits below the timeline, so it is outlined on the last phone
+    v-put(3.4cm + 3 * 6.73cm - pw / 2 + 0.12cm, 1.2cm + ph * 0.705, pw - 0.24cm,
+      rect(width: 100%, height: ph * 0.165, stroke: (paint: tomato, thickness: 1.6pt, dash: "dashed"), radius: 4pt))
+  })
+]
+
+// Demo shortcuts: each pill opens one board of the Design canvas, in the order it is shown.
+// A link ends in "#play-<id>" (the clickable prototype) or "#artboard-<id>" (a still board);
+// <id> comes from the board's file name, as the canvas itself computes it.
+#let design-url = "https://claude.ai/artifact/75jXxDxX1EwALYK2eui1Xs"
+#let board(label, id, play: true) = link(design-url + "#" + if play { "play-" } else { "artboard-" } + id,
+  box(fill: paper, stroke: 1.2pt + ink, radius: 50%, inset: (x: 0.45cm, y: 0.22cm),
+    text(font: f-display, size: 15pt, weight: 600, [#label #h(0.08cm) ↗])))
+#let demo-row(y, num, name, c, ..boards) = {
+  v-put(0cm, y, 5.2cm, {
+    v-label(num, c: c.darken(18%), size: 11pt)
+    v(0.08cm)
+    text(font: f-display, size: 19pt, weight: 600, name)
+  })
+  v-put(5.5cm, y + 0.6cm, 21.5cm, stack(dir: ltr, spacing: 0.3cm,
+    ..boards.pos().enumerate().map(((i, b)) => if i == 0 { b } else { stack(dir: ltr, spacing: 0.3cm,
+      align(horizon, text(size: 15pt, fill: c.darken(10%), sym.arrow.r)), b) })))
+}
+
+#slide(title: [Demo shortcuts], kicker-text: [Key User Flow · Demo], accent: marigold)[
+  #box(width: 27cm, height: 11.1cm, {
+    demo-row(0cm, [01], [Save places], marigold,
+      board([Discord · Place card], "1f8eda549e8b"), board([Import log], "4d7f958f428b"),
+      board([Map], "1e8e840dc0e6"))
+    demo-row(2.35cm, [02], [Organize], teal,
+      board([Discord · Scope], "c7302a69022e"), board([Discord · Summary & options], "72a9fd56d315", play: false),
+      board([Import log], "4d7f958f428b"))
+    demo-row(4.7cm, [03], [Plan & revise], tomato,
+      board([Discord · Generate], "dd14fb145bae"), board([Discord · Clarify], "65f098f6196e"),
+      board([Discord · Change proposal], "0c7f4906d8a6"))
+    demo-row(5.95cm, [], [], tomato,
+      board([Itinerary · Change proposal], "7702c2480909"), board([Discord · Confirm & finish], "5f7e1470ea35"))
+    demo-row(8.0cm, [04], [The app], cobalt,
+      board([Itinerary], "15dd8cd198dd"), board([Split group], "490194bad93f"),
+      board([Transport], "772cd8c653c4"))
+  })
+]
 
 #divider("4", [what the model does, and what code checks], [Role of AI \ & #em(teal)[Technical Approach]],
   [What the AI does, which models, and how code keeps it in check], teal, v-section-art-ai)
@@ -316,9 +427,9 @@
 #slide(title: [Waymark design prototype], kicker-text: [Prototype], accent: cobalt)[
   #box(width: 27cm, height: 11cm, {
     v-put(0cm, 2.0cm, 27cm, text(font: f-display, size: 34pt, weight: 600,
-      link("https://claude.ai/artifact/75jXxDxX1EwALYK2eui1Xs")[Open the design ↗]))
+      link(design-url)[Open the design ↗]))
     v-put(0cm, 4.5cm, 27cm, text(font: f-mono, size: 18pt, fill: cobalt,
-      link("https://claude.ai/artifact/75jXxDxX1EwALYK2eui1Xs")[claude.ai/artifact/75jXxDxX1EwALYK2eui1Xs]))
+      link(design-url)[claude.ai/artifact/75jXxDxX1EwALYK2eui1Xs]))
     v-put(0cm, 6.2cm, 27cm, text(font: f-display, size: 20pt, style: "italic", fill: muted)[Discord cards and the web app: every screen in this talk, with the states you can switch.])
   })
 ]
@@ -429,3 +540,42 @@
     ])
   })
 ]
+
+// This is the supplied User Flow. English labels overlay its original nodes.
+// Connector artwork, node positions and rectangle/diamond types are retained.
+// Backup for Q&A: the earlier step-by-step screens, one per user-flow stage.
+#backup-details([The user invites Waymark and chooses its scope], [User goal & activation], ("d-scope0", "a-map"), (
+  ([Shared goal], [Four friends are planning Osaka for Nov 20–22. They want one editable itinerary while continuing their group chat.]),
+  ([User action], [Mia mentions \@Waymark and chooses “From now on” or “Include earlier messages”. Organizing uses only that scope.]),
+  ([Shared workspace], [The draft appears in Discord. Members open the web app to inspect places and edit the itinerary.]),
+), accent: cobalt)
+
+#backup-details([AI turns the selected discussion into a draft], [AI input, behavior & output], ("d-summary", "a-trip"), (
+  ([Input], [Selected messages provide dates, shared places and each member’s preferences. Shared links get place cards automatically.]),
+  ([AI behavior], [Merge repeated places and retain their sources. Ask about unclear venues instead of guessing. Check hours and travel times.]),
+  ([Output], [One progress message updates in place. The result is a draft itinerary with source links and unresolved details visible.]),
+), accent: teal)
+
+#backup-details([Members inspect sources and correct the context], [User response · Review & correct], ("a-place", "a-memory-form", false), (
+  ([Review], [Open a place to see who shared it and return to the original post. Repeated shares retain their sources.]),
+  ([Correct], [Add a missing location or edit a preference without restarting. “Not this time” keeps a clarified place out of this trip.]),
+  ([Edit directly], [Adjust times, reorder stops or add a candidate in the app. Share the revised version back to the group.]),
+), accent: plum)
+
+#backup-details([Subgroups and transport stay in one itinerary], [System output · Flexible planning], ("a-branch-map", "a-transit", false), (
+  ([Split and meet again], [Mia and Yuki take one route, Alex and Ben another. Both routes meet at Namba Station and continue together.]),
+  ([Choose transport], [Compare routes for each leg and filter acceptable modes. Public transit is enabled by default.]),
+  ([Keep gaps visible], [Unfilled slots stay visible. Members can add a place from the map or ask the AI for suggestions.]),
+), accent: cobalt)
+
+#backup-details([Members review changes before they are applied], [User request · Proposal & approval], ("d-proposal", "a-applied"), (
+  ([Request], [“Start day 3 at 11:00 and skip Osaka Castle.” AI proposes only those differences; other arrangements stay intact.]),
+  ([Accept or reject], [“Apply” creates a new version. “Keep original” preserves the current plan. Members can keep discussing either way.]),
+  ([Confirm individually], [Confirmation is recorded per member. “1 of 4 confirmed” does not mean the whole group agrees.]),
+), accent: tomato)
+
+#backup-details([The user saves the plan and stops collection], [User action · Save & finish], ("d-finish", "a-manage-paused"), (
+  ([End explicitly], [“Save and finish” explains that new messages will stop being collected. Cancel to keep discussing.]),
+  ([Preserve the result], [The saved itinerary retains its sources and approval status, including pending confirmations. Collection is shown as paused.]),
+  ([Return later], [Reopen the itinerary or download its calendar file. Viewing the saved plan does not restart collection.]),
+), accent: plum)
