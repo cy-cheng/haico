@@ -10,6 +10,12 @@ Requires [Typst](https://typst.app) 0.14 or newer. The fonts are bundled, so no 
 typst compile --font-path fonts slides.typ slides.pdf
 ```
 
+Without these fonts Typst substitutes wider ones, and text spills out of its boxes. Make previews use them too:
+
+- **VS Code (Tinymist):** `.vscode/settings.json` already points Tinymist at `fonts/`.
+- **Neovim or any other editor:** install the fonts for your user, e.g. on Linux `cp fonts/*.ttf ~/.local/share/fonts/ && fc-cache -f`.
+- **typst.app:** upload the `fonts/` folder with the project.
+
 ## Layout
 
 | Path | What it is |

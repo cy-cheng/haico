@@ -113,7 +113,7 @@ def write(name, vx, vw):
     open(os.path.join(out, name), "w", encoding="utf-8").write(s)
 write("user-flow-en-original-layout.svg", 0, TOTAL_W)
 # Close-ups end at node boundaries so no box is cut.
-write("user-flow-en-start.svg", 0, cx(6) + W / 2 + 40)
-write("user-flow-en-middle.svg", mid(6) - 10, cx(14) + W / 2 + 40 - (mid(6) - 10))
+write("user-flow-en-start.svg", 0, mid(6) - 15)
+write("user-flow-en-middle.svg", mid(6) - 10, mid(14) - 15 - (mid(6) - 10))
 write("user-flow-en-end.svg", mid(14) - 10, TOTAL_W - (mid(14) - 10))
 print("width", TOTAL_W, "height", TOTAL_H)

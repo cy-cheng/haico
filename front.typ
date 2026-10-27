@@ -1,5 +1,5 @@
 // HAICO Milestone 2: Motivation & Problem / Refined Goal
-// Compile: typst compile slides.typ output/haico-milestone2_01_02.pdf
+// Compile: typst compile --font-path fonts slides.typ slides.pdf
 // Template: ../slide_tem/theme.typ. Drawings: visuals.typ.
 // All conversations, maps and schedules are illustrative, not a working demo.
 #import "theme.typ": *

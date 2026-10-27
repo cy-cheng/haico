@@ -276,6 +276,8 @@
   let cx = 13.5
   let cy = 1.65
   let rx = 3.1
+  // Fill the bottom curve as well as the body, so no unfilled crescent shows.
+  circle((cx, cy - 0.85), radius: (rx, 0.38), fill: paper2, stroke: none)
   rect((cx - rx, cy - 0.85), (cx + rx, cy + 0.85), fill: paper2, stroke: none)
   line((cx - rx, cy - 0.85), (cx - rx, cy + 0.85), stroke: 1.05pt + ink)
   line((cx + rx, cy - 0.85), (cx + rx, cy + 0.85), stroke: 1.05pt + ink)
