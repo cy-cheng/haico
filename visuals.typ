@@ -42,15 +42,34 @@
     text(font: f-display, size: title-size, weight: 600, title)))
 })
 
-#let v-chat-slip(w, body, c: teal, angle: 0deg, who: none) = rotate(angle, reflow: false,
-  box(width: w, height: 1.35cm, {
-    place(dx: 0.09cm, dy: 0.1cm,
-      box(width: w, height: 1.35cm, fill: c, radius: 6pt)[])
-    box(width: w, height: 1.35cm, fill: paper, stroke: 1pt + ink, radius: 6pt, {
-      v-put(0.25cm, 0.13cm, w - 0.5cm, text(font: f-mono, size: 8.5pt, fill: c.darken(15%), if who == none { [GROUP CHAT] } else { who }))
-      v-put(0.25cm, 0.63cm, w - 0.5cm, text(size: 16pt, body))
+// A group-chat message drawn as a Discord message row (dark channel, round avatar, name, body).
+// People match the prototype: Mia, Alex, Ben, Yuki and the Waymark bot.
+#let dc-bg = rgb("#313338")
+#let dc-people = (
+  Mia: (rgb("#b93a22"), "M"), Alex: (rgb("#2a4bb0"), "A"),
+  Ben: (rgb("#0b6b61"), "B"), Yuki: (rgb("#6f3a8f"), "Y"),
+  Waymark: (rgb("#efa12a"), "W"),
+)
+#let v-dc-msg(w, ht, who, body, c: teal, angle: 0deg, size: 14pt, compact: false) = {
+  let (col, ini) = dc-people.at(who)
+  let av = if compact { 0.5cm } else { 0.9cm }
+  let tx = if compact { 0.82cm } else { 1.3cm }
+  let ny = if compact { 0.07cm } else { 0.14cm }
+  let by = if compact { 0.38cm } else { 0.62cm }
+  v-sheet(w, ht, c, angle: angle, stock: dc-bg, {
+    v-put(if compact { 0.16cm } else { 0.25cm }, if compact { 0.14cm } else { 0.22cm }, av, box(width: av, height: av, radius: av / 2, fill: col,
+      align(center + horizon, text(size: if compact { 8pt } else { 12pt }, weight: "bold", fill: rgb("#f6f0e3"), ini))))
+    v-put(tx, ny, w - tx - 0.15cm, {
+      text(size: if compact { 8.5pt } else { 11pt }, weight: "bold", fill: rgb("#f2f3f5"), who)
+      if who == "Waymark" {
+        h(0.12cm)
+        box(fill: rgb("#5865f2"), radius: 2pt, inset: (x: 2.5pt, y: 1pt), text(size: if compact { 5.5pt } else { 7pt }, weight: "bold", fill: white, "APP"))
+      }
     })
-  }))
+    v-put(tx, by, w - tx - 0.15cm, par(leading: 0.3em, text(size: size, fill: rgb("#dbdee1"), body)))
+  })
+}
+#let v-chat-slip(w, body, c: teal, angle: 0deg, who: "Mia") = v-dc-msg(w, 1.35cm, who, body, c: c, angle: angle)
 
 // The line, stops, labels, fold marks and color plates are all editable.
 #let v-map(w: 6.5cm, h: 8cm, c: teal, angle: 0deg, market: true, title: [GROUP PLAN]) = v-sheet(w, h, c, angle: angle, {
@@ -93,8 +112,8 @@
     w: 4cm, h: 6.2cm, angle: 2deg, preview-h: 3.4cm, label-size: 10.5pt))
   v-put(8.05cm, 1.25cm, 4cm, v-source([VIDEO], [Walking tour], teal, "video",
     w: 4cm, h: 6.2cm, angle: 7deg, preview-h: 3.4cm, label-size: 10.5pt))
-  v-put(0.45cm, 8.1cm, 12cm, v-chat-slip(12cm, [Can we keep it under \$50?], c: marigold, angle: -1deg, who: [LEO]))
-  v-put(1.15cm, 9.95cm, 11.1cm, v-chat-slip(11.1cm, [I'd prefer a relaxed pace.], c: teal, angle: 1deg, who: [NINA]))
+  v-put(0.45cm, 8.1cm, 12cm, v-chat-slip(12cm, [Can we keep it under \$50?], c: marigold, angle: -1deg, who: "Ben"))
+  v-put(1.15cm, 9.95cm, 11.1cm, v-chat-slip(11.1cm, [I'd prefer a relaxed pace.], c: teal, angle: 1deg, who: "Alex"))
   v-put(7.9cm, 0cm, 4cm, stamp(c: tomato, angle: 7deg, size: 9pt)[in the chat])
 })
 
@@ -107,13 +126,10 @@
   v-put(0.1cm, 0.6cm, 1.95cm, source([REEL], [Ramen], tomato, "clapperboard", -7deg))
   v-put(1.95cm, 0.22cm, 1.95cm, source([IMAGE], [Art \ museum], cobalt, "image", 2deg))
   v-put(3.95cm, 0.62cm, 1.95cm, source([VIDEO], [Walking \ tour], teal, "video", 7deg))
-  let chat(x, y, w, who, body, c) = v-put(x, y, w, v-sheet(w, 0.80cm, c, {
-    v-put(0.16cm, 0.06cm, w - 0.32cm, text(font: f-mono, size: 7pt, fill: c.darken(15%), who))
-    v-put(0.16cm, 0.39cm, w - 0.32cm, text(size: 11.5pt, body))
-  }))
+  let chat(x, y, w, who, body, c) = v-put(x, y, w, v-dc-msg(w, 0.90cm, who, body, c: c, size: 10.5pt, compact: true))
   if not media-only {
-    chat(0.1cm, 4.18cm, 5.75cm, [LEO], [Can we keep it under \$50?], marigold)
-    chat(0.4cm, 5.25cm, 5.4cm, [NINA], [I'd prefer a relaxed pace.], teal)
+    chat(0.1cm, 4.1cm, 5.75cm, "Ben", [Can we keep it under \$50?], marigold)
+    chat(0.4cm, 5.2cm, 5.4cm, "Alex", [I'd prefer a relaxed pace.], teal)
   }
   v-put(3.3cm, -0.05cm, 2.8cm, stamp(c: tomato, angle: 7deg, size: 6pt)[in chat])
 })
@@ -142,24 +158,16 @@
     }
   }))
   // Only an initial destination idea is known.
-  v-put(0.25cm, 2.45cm, 5.5cm, v-sheet(5.5cm, 2.65cm, marigold, angle: -2deg, {
-    v-put(0.3cm, 0.25cm, 4.9cm, v-label([FRIENDS], c: marigold.darken(25%), size: 9pt))
-    v-put(0.3cm, 0.95cm, 4.9cm, par(leading: 6pt,
-      text(font: f-display, size: 21pt, style: "italic")[Tokyo this \ summer?]))
-  }))
+  v-put(0.25cm, 2.45cm, 5.5cm, v-dc-msg(5.5cm, 1.4cm, "Mia", [Osaka this fall?], c: marigold, angle: -2deg, size: 13pt))
   // Existing shared-media drawings supply the inspiration stage.
   v-put(6.85cm, 2.12cm, 6.15cm, v-media-input(media-only: true))
   // Constraints become explicit in ordinary conversation.
-  v-put(13.95cm, 2.5cm, 5.7cm, v-chat-slip(5.7cm, [Under \$50 a day?],
-    c: marigold, angle: -1deg, who: [LEO]))
-  v-put(14.10cm, 4.25cm, 5.55cm, v-chat-slip(5.55cm, [Let's keep it relaxed.],
-    c: teal, angle: 1deg, who: [NINA]))
+  v-put(13.95cm, 2.5cm, 5.7cm, v-dc-msg(5.7cm, 1.4cm, "Ben", [Under \$50 a day?],
+    c: marigold, angle: -1deg, size: 13pt))
+  v-put(14.10cm, 4.25cm, 5.55cm, v-dc-msg(5.55cm, 1.4cm, "Alex", [Let's keep it relaxed.],
+    c: teal, angle: 1deg, size: 13pt))
   // Later input adds another priority.
-  v-put(20.95cm, 2.45cm, 5.5cm, v-sheet(5.5cm, 3.2cm, cobalt, angle: 2deg, {
-    v-put(0.3cm, 0.25cm, 4.9cm, v-label([OWEN], c: cobalt, size: 9pt))
-    v-put(0.3cm, 0.95cm, 4.9cm, par(leading: 6pt,
-      text(font: f-display, size: 20pt, style: "italic")[Can we add \ a food market?]))
-  }))
+  v-put(20.95cm, 2.45cm, 5.5cm, v-dc-msg(5.5cm, 1.4cm, "Yuki", [Add a food market?], c: cobalt, angle: 2deg, size: 13pt))
   v-put(21.1cm, 6.2cm, 5.2cm, align(center,
     stamp(c: cobalt, angle: -3deg, size: 8pt)[still evolving]))
 })
@@ -168,7 +176,7 @@
   v-put(0.3cm, 0.2cm, 3.1cm, v-source([REEL], [Ramen], tomato, "clapperboard", w: 3.1cm, h: 5cm, angle: -10deg))
   v-put(3cm, 0.45cm, 3.1cm, v-source([IMAGE], [Museum], cobalt, "image", w: 3.1cm, h: 5cm, angle: 5deg))
   v-put(6.2cm, 3.05cm, 6cm, v-map(w: 6cm, h: 7.6cm, angle: 6deg, title: [SHARED ITINERARY]))
-  v-put(0.25cm, 6.0cm, 6.3cm, v-chat-slip(6.3cm, [Let's plan Saturday.], c: teal, angle: -3deg, who: [FRIENDS + AI]))
+  v-put(0.25cm, 6.0cm, 6.3cm, v-chat-slip(6.3cm, [Let's plan Saturday.], c: teal, angle: -3deg, who: "Waymark"))
   v-put(2.25cm, 9.2cm, 7cm, cetz.canvas(length: 1cm, {
     import cetz.draw: *
     bezier((0, 0.7), (3.2, 1.55), (0.6, -0.25), (2.2, -0.15),
@@ -242,7 +250,7 @@
   import cetz.draw: *
   rect((0, 0), (27, 9.1), stroke: none, fill: none)
   // One horizontal baseline, with a distinct solid-color AI processing node.
-  v-node((3.4, 6.25), text(font: f-display, size: 21pt, weight: 600)[Group chat], paper2, w: 5.8, h: 1.8)
+  v-node((3.4, 6.25), text(font: f-display, size: 18pt, weight: 600)[Discord channel], paper2, w: 5.8, h: 1.8)
   let ai-shape = ((10.6, 6.25), (11.1, 7.3), (15.9, 7.3), (16.4, 6.25), (15.9, 5.2), (11.1, 5.2))
   line(..ai-shape.map(((x, y)) => (x + 0.13, y - 0.12)), close: true,
     fill: tint(teal, p: 45%), stroke: none)
@@ -294,10 +302,10 @@
     content((x, y + 0.4), text(font: f-mono, size: 9pt, initial))
     content((x, y - 1.15), text(size: 14pt, fill: col.darken(15%), caption))
   }
-  person((1.0, 5.3), [M], cobalt, [Maya])
-  person((3.3, 5.3), [N], cobalt, [Nina])
-  person((1.0, 1.7), [L], tomato, [Leo])
-  person((3.3, 1.7), [O], tomato, [Owen])
+  person((1.0, 5.3), [M], cobalt, [Mia])
+  person((3.3, 5.3), [A], cobalt, [Alex])
+  person((1.0, 1.7), [B], tomato, [Ben])
+  person((3.3, 1.7), [Y], tomato, [Yuki])
   content((2.1, 6.9), text(font: f-display, style: "italic", size: 18pt, fill: cobalt)[“We love museums.”])
   content((2.1, -0.55), text(font: f-display, style: "italic", size: 17pt, fill: tomato)[“Let's try local food.”])
   v-arrow((4.25, 4.9), (7.5, 3.65), c: cobalt)
@@ -316,7 +324,7 @@
 
 #let v-replanning() = box(width: 27cm, height: 8.7cm, {
   v-put(0.45cm, 1.4cm, 5.7cm, v-map(w: 5.7cm, h: 6.1cm, c: faint, market: false, title: [CURRENT PLAN]))
-  v-put(7.6cm, 0cm, 11.8cm, v-chat-slip(11.8cm, [Can we add a food market?], c: plum, who: [NEW MESSAGE IN THE GROUP]))
+  v-put(7.6cm, 0cm, 11.8cm, v-chat-slip(11.8cm, [Can we add a food market?], c: plum, who: "Ben"))
   v-put(0cm, 0cm, 27cm, cetz.canvas(length: 1cm, {
     import cetz.draw: *
     rect((0, 0), (27, 8.6), stroke: none, fill: none)

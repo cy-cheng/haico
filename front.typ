@@ -40,7 +40,7 @@
 // or interview quotations. Members need not know every requirement up front.
 #slide(title: [Travel needs emerge through conversation], kicker-text: [Motivation & Problem], accent: teal)[
   #diagram[
-    #put(0cm, 0.05cm, 26.5cm, words([Example: friends planning a Tokyo trip in LINE or Discord], size: 21pt))
+    #put(0cm, 0.05cm, 26.5cm, words([Example: friends planning an Osaka trip in Discord or LINE], size: 21pt))
     #put(0.1cm, 1.5cm, 27cm, v-needs-timeline())
     #put(0.3cm, 9.55cm, 26.4cm, align(center,
       text(font: f-display, size: takeaway-size, style: "italic", fill: teal.darken(15%))[Preferences become clearer over time.]))
@@ -84,7 +84,7 @@
   #diagram[
     #put(0cm, 0.05cm, 26.7cm, text(font: f-display, size: key-statement-size, weight: 600)[AI turns shared ideas into #hl(c: teal)[a draft itinerary].])
     #put(0cm, 1.35cm, 27cm, v-manual-work(ai: true))
-    #put(6.1cm, 7.15cm, 14.8cm, align(center, stamp(c: teal, angle: 0deg, size: 11pt)[inside the existing group chat]))
+    #put(6.1cm, 7.15cm, 14.8cm, align(center, stamp(c: teal, angle: 0deg, size: 11pt)[inside the existing Discord channel]))
     #put(0cm, 8.3cm, 27cm, line(length: 27cm, stroke: 0.7pt + faint))
     #put(0.1cm, 8.85cm, 26cm, words([The plan develops as the group's preferences become clearer.], size: takeaway-size))
     #put(0.1cm, 9.95cm, 26cm, words([Members confirm preferences and approve itinerary changes.], size: 20pt, fill: muted))
