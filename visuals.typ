@@ -215,7 +215,7 @@
   v-put(0cm, 0cm, 27cm, cetz.canvas(length: 1cm, {
     import cetz.draw: *
     rect((0, 0), (27, 6.4), stroke: none, fill: none)
-    // Identical input/output drawings, spacing and flow axis make slides 4 and 6 a pair.
+    // Identical input/output drawings, spacing and flow axis pair the human/AI slides.
     v-arrow((6.3, 3.2), (11.3, 3.2))
     if ai {
       // A riso robot occupies the same center as the human organizer.
@@ -241,6 +241,62 @@
       if ai { [generate / adjust] } else { [brief the planner] }))
   }))
   v-put(21.15cm, 0.2cm, 5.4cm, v-map(w: 5.4cm, h: 5.8cm, market: false, title: [CURRENT ITINERARY]))
+})
+
+// A failure variant of the manual chain, using the same input and organizer.
+// The broken connector and wrong itinerary show lost context propagating.
+#let v-forgotten-context() = box(width: 27cm, height: 7.4cm, {
+  v-put(0.05cm, 0.7cm, 6.15cm, v-media-input())
+  v-put(0cm, 0.7cm, 27cm, cetz.canvas(length: 1cm, {
+    import cetz.draw: *
+    rect((0, 0), (27, 6.4), stroke: none, fill: none)
+    v-arrow((6.3, 3.2), (11.3, 3.2))
+    content((8.8, 4.05), text(font: f-display, style: "italic", size: 14pt, fill: muted)[reopen])
+
+    // Same organizer, now visibly losing track of the group's requests.
+    rnode((13.5, 4.35), marigold, r: 0.47, off: 0.11)
+    content((13.5, 4.35), text(font: f-mono, size: 17pt, weight: "bold")[?])
+    bezier((12.3, 2.5), (14.7, 2.5), (12.35, 3.8), (14.65, 3.8), stroke: 1.5pt + ink)
+    content((13.5, 1.35), text(font: f-display, size: 19pt, style: "italic")[the organizer])
+    v-node((13.5, 5.78), text(font: f-display, size: 22pt, style: "italic")[I forgot...], tomato, w: 5.4, h: 1.05)
+    circle((13.75, 5.05), radius: 0.10, fill: paper, stroke: 0.9pt + ink)
+    circle((13.58, 4.88), radius: 0.055, fill: paper, stroke: 0.8pt + ink)
+
+    // A missing piece in the connector carries through to the itinerary.
+    line((15.7, 3.2), (17.45, 3.2), stroke: 1.4pt + tomato)
+    v-arrow((18.95, 3.2), (20.7, 3.2), c: tomato, dash: "dashed")
+    line((17.83, 2.83), (18.57, 3.57), stroke: (paint: tomato, thickness: 2.6pt, cap: "round"))
+    line((17.83, 3.57), (18.57, 2.83), stroke: (paint: tomato, thickness: 2.6pt, cap: "round"))
+    content((18.2, 4.05), text(font: f-display, style: "italic", size: 14pt, fill: tomato.darken(15%))[context lost])
+  }))
+  v-put(21.15cm, 0.9cm, 5.4cm, v-sheet(5.4cm, 6.4cm, tomato, {
+    v-put(0.35cm, 0.25cm, 4.7cm, v-label([Out of sync], c: tomato.darken(12%), size: 9pt))
+    v-put(0.35cm, 0.86cm, 4.7cm, text(font: f-display, weight: 600, size: 23pt)[Saturday])
+    v-put(0.30cm, 2.1cm, 4.8cm, cetz.canvas(length: 1cm, {
+      import cetz.draw: *
+      rect((0, 0), (4.8, 2.8), fill: paper2, stroke: none, radius: 0.06)
+      for x in (1.6, 3.2) {
+        line((x, 0), (x, 2.8), stroke: (paint: faint.transparentize(35%), thickness: 0.6pt, dash: "dotted"))
+      }
+      for y in (0.7, 1.8) { line((0.15, y), (4.65, y), stroke: 5pt + paper) }
+      for x in (1.2, 3.5) { line((x, 0.15), (x, 2.65), stroke: 5pt + paper) }
+      // Incomplete, crossing route fragments replace the clean route.
+      bezier((0.85, 2.05), (2.15, 2.32), (1.0, 2.55), (1.8, 2.50),
+        stroke: (paint: tomato, thickness: 2.5pt, cap: "round"))
+      line((2.65, 2.18), (3.75, 1.50), stroke: (paint: tomato, thickness: 2.5pt, dash: "dashed"))
+      bezier((3.75, 1.50), (1.75, 0.65), (4.25, 0.25), (0.8, 2.4),
+        stroke: (paint: tomato, thickness: 2.5pt, cap: "round"))
+      for (p, n) in (((0.85, 2.05), [1]), ((3.75, 1.50), [2]), ((1.75, 0.65), [3])) {
+        rnode(p, tomato, r: 0.23, off: 0.07, w: 1pt)
+        content(p, text(font: f-mono, size: 8pt, weight: "bold", n))
+      }
+      content((2.45, 1.35), v-icon("x", size: 0.85cm, c: "#e4573d"))
+    }))
+    v-put(0.35cm, 5.18cm, 0.45cm, v-icon("wallet", size: 0.45cm))
+    v-put(1.0cm, 5.14cm, 4.0cm, text(size: 14pt, fill: tomato.darken(15%))[Over budget])
+    v-put(0.35cm, 5.83cm, 0.45cm, v-icon("footprints", size: 0.45cm))
+    v-put(1.0cm, 5.79cm, 4.0cm, text(size: 14pt, fill: tomato.darken(15%))[Too many stops])
+  }))
 })
 
 // Connected architecture, with a fixed viewport and a shared row baseline.

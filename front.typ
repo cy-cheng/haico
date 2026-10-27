@@ -73,6 +73,19 @@
   ]
 ]
 
+// CONTENT 2b — Illustrative failure in the manual planning chain.
+// A missed budget/pace constraint propagates into a mismatched itinerary.
+// This is a hypothetical scenario, not an observed participant outcome.
+#slide(title: [One forgotten detail can derail the plan], kicker-text: [Motivation & Problem], accent: tomato)[
+  #diagram[
+    #put(0cm, 0.75cm, 27cm, v-forgotten-context())
+    #put(0.2cm, 9.35cm, 26.4cm, align(center,
+      text(font: f-display, size: takeaway-size, style: "italic", fill: tomato.darken(15%))[
+        Lost context carries into the shared plan.
+      ]))
+  ]
+]
+
 // SECTION 2
 #divider("2", [the proposed system], [Refined \ #em(teal)[Goal]],
   [Planning that stays connected to the conversation], teal, v-section-art(2))
