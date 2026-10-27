@@ -1,5 +1,5 @@
 // Waymark · English presentation with a live prototype link.
-// Supplied front.typ, theme.typ and visuals.typ are preserved unchanged.
+// Cover and sections 1–2, including PoC validation goals, are in front.typ.
 #import "theme.typ": *
 #import "visuals.typ": *
 #show: setup

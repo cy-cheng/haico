@@ -121,11 +121,25 @@
 // CONTENT 6 — Continuous planning and human control, about 20 seconds.
 // Notes: AI proposes an update after new messages or media. People accept, edit
 // or reject it. Only accepted changes enter the plan. Since M1, the focus is one
-// continuous planning loop that reduces repeated manual input. PoC is omitted.
+// continuous planning loop that reduces repeated manual input.
 #slide(title: [The itinerary evolves with the discussion], kicker-text: [Refined Goal], accent: plum)[
   #diagram[
     #put(0cm, 0.35cm, 27cm, v-replanning())
     #put(0.1cm, 9.1cm, 26.5cm, v-label([Our focus since Milestone 1], c: plum.darken(10%)))
     #put(0.1cm, 9.85cm, 26.5cm, text(font: f-display, size: takeaway-size, weight: 600)[One continuous conversation and planning loop])
+  ]
+]
+
+// SECTION 2 CLOSE — PoC interaction questions, not evaluation results.
+// The user initiates the Bot and chooses its readable scope. AI organizes and
+// proposes; members inspect sources, correct content and accept/reject edits.
+// Context persists through discussion until the user explicitly stops organizing.
+#slide(title: [PoC: planning in the group chat], kicker-text: [Refined Goal · Proof of Concept], accent: teal)[
+  #diagram[
+    #put(0cm, 1.0cm, 27cm, v-poc-workflow())
+    #put(0cm, 9.1cm, 27cm, align(center,
+      text(font: f-display, size: 22pt, style: "italic", fill: teal.darken(15%))[
+        Goal: less copying and re-explaining
+      ]))
   ]
 ]

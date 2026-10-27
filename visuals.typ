@@ -343,3 +343,75 @@
     text(font: f-display, style: "italic", size: 15pt, fill: muted)[Only accepted changes enter the shared plan.]))
   v-put(21.0cm, 7.95cm, 5.4cm, align(center, stamp(c: plum, angle: 0deg, size: 8pt)[for review]))
 })
+
+// PoC validation flow: invitation and scope, joint review, continued discussion.
+// Native editable connectors, selected-message range and memory match the deck.
+// Lucide icons are the existing licensed originals in assets/icons/.
+#let v-poc-workflow() = box(width: 27cm, height: 7.5cm, {
+  let stages = (
+    (0cm, [01], [Invite & choose scope], teal),
+    (9.35cm, [02], [Review & revise], cobalt),
+    (18.7cm, [03], [Continue or stop], tomato),
+  )
+  for (x, label, title, col) in stages {
+    v-put(x, 0cm, 8.3cm, v-label(label, c: col.darken(18%), size: 11pt))
+    v-put(x, 0.75cm, 8.3cm, text(font: f-display, size: 22pt, weight: 600, title))
+  }
+  v-put(0cm, 2.2cm, 27cm, cetz.canvas(length: 1cm, {
+    import cetz.draw: *
+    rect((0, 0), (27, 4.7), stroke: none, fill: none)
+
+    // The chosen range remains visible inside the original conversation.
+    rect((0.66, 0.24), (6.76, 4.34), fill: teal.transparentize(35%), stroke: none, radius: 0.1)
+    rect((0.55, 0.36), (6.65, 4.46), fill: paper, stroke: 1.05pt + ink, radius: 0.1)
+    content((0.94, 3.96), anchor: "west", v-label([Group chat], c: teal.darken(18%), size: 9pt))
+    content((5.94, 3.94), v-icon("messages-square", size: 0.57cm))
+    line((1.0, 3.36), (5.85, 3.36), stroke: 2.4pt + faint.transparentize(40%))
+    rect((0.96, 1.5), (5.98, 2.96), fill: tint(teal, p: 77%), stroke: none, radius: 0.04)
+    line((1.22, 2.62), (5.48, 2.62), stroke: 2.4pt + teal.transparentize(45%))
+    line((1.22, 2.18), (4.71, 2.18), stroke: 2.4pt + teal.transparentize(45%))
+    content((1.20, 1.77), anchor: "west", text(font: f-mono, size: 9pt, fill: teal.darken(20%))[chosen messages])
+    line((6.08, 2.96), (6.30, 2.96), (6.30, 1.5), (6.08, 1.5), stroke: 1.2pt + teal)
+    content((2.6, 0.88), text(font: f-mono, size: 13pt, weight: "medium", fill: teal.darken(15%))[\@Waymark])
+    content((5.82, 0.88), v-icon("bot", size: 0.7cm))
+    v-arrow((7.00, 2.55), (9.02, 2.55), c: faint)
+
+    // AI creates a draft; sources and human decisions stay visible beside it.
+    let bot-shape = ((9.5, 2.55), (9.88, 3.35), (11.44, 3.35), (11.82, 2.55), (11.44, 1.75), (9.88, 1.75))
+    line(..bot-shape.map(((x, y)) => (x + 0.10, y - 0.10)), close: true,
+      fill: tint(teal, p: 45%), stroke: none)
+    line(..bot-shape, close: true, fill: teal.darken(18%), stroke: 1.1pt + ink)
+    content((10.66, 2.55), v-icon("bot", size: 1.03cm, c: "#f6f0e3"))
+    v-arrow((12.0, 2.55), (12.48, 2.55))
+    rect((12.91, 1.02), (17.06, 4.34), fill: cobalt.transparentize(35%), stroke: none, radius: 0.1)
+    rect((12.80, 1.14), (16.95, 4.46), fill: paper, stroke: 1.05pt + ink, radius: 0.1)
+    content((13.18, 3.96), anchor: "west", v-label([AI draft], c: cobalt.darken(18%), size: 9pt))
+    content((13.35, 3.15), v-icon("link", size: 0.55cm))
+    content((14.81, 3.15), text(size: 13pt)[sources])
+    line((13.15, 2.43), (16.43, 2.43), stroke: 2.6pt + cobalt.transparentize(45%))
+    line((13.15, 1.88), (15.76, 1.88), stroke: 2.6pt + teal.transparentize(45%))
+    for (x, icon-name, col) in ((13.35, "check", teal), (14.87, "pencil", cobalt), (16.38, "x", tomato)) {
+      rnode((x, 0.48), col, r: 0.38, off: 0.065, w: 0.8pt)
+      content((x, 0.48), v-icon(icon-name, size: 0.47cm))
+    }
+    v-arrow((17.35, 2.55), (19.35, 2.55), c: faint)
+
+    // The conversation loops through retained context. A separate terminal
+    // makes the user's choice to stop explicit rather than an automatic end.
+    v-node((21.8, 3.68), v-icon("messages-square", size: 0.92cm), teal, w: 3.0, h: 1.4)
+    v-arrow((21.0, 2.91), (21.0, 2.18), c: teal)
+    v-arrow((22.6, 2.18), (22.6, 2.91), c: teal)
+    let (cx, rx) = (21.8, 1.77)
+    circle((cx, 0.77), radius: (rx, 0.28), fill: paper2, stroke: none)
+    rect((cx - rx, 0.77), (cx + rx, 1.83), fill: paper2, stroke: none)
+    line((cx - rx, 0.77), (cx - rx, 1.83), stroke: 1.05pt + ink)
+    line((cx + rx, 0.77), (cx + rx, 1.83), stroke: 1.05pt + ink)
+    circle((cx, 1.83), radius: (rx, 0.28), fill: paper2, stroke: 1.05pt + ink)
+    arc((cx + rx, 0.77), start: 0deg, stop: -180deg, radius: (rx, 0.28), stroke: 1.05pt + ink)
+    content((cx, 1.27), text(font: f-display, size: 17pt)[Context])
+    v-arrow((23.78, 1.3), (24.75, 1.3), c: faint)
+    rect((25.03, 0.94), (25.75, 1.66), fill: tomato, stroke: 1.05pt + ink, radius: 0.06)
+    content((25.39, 2.18), v-label([Stop], c: tomato.darken(18%), size: 9pt))
+    content((25.39, 0.34), text(size: 11.5pt, fill: muted)[user decides])
+  }))
+})
