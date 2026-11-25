@@ -1,0 +1,12 @@
+{
+  "build": {
+    "preview": {
+      "distribution": "internal",
+      "developmentClient": false,
+      "node": "24.22.3",
+      "env": { "EXPO_PUBLIC_ALLOW_TEST_SESSION": "1" },
+      "android": { "buildType": "apk" },
+      "ios": { "simulator": false, "enterpriseProvisioning": "adhoc" }
+    }
+  }
+}

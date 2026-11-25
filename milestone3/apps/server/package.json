@@ -1,0 +1,12 @@
+{
+  "name": "@waymark/server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": { "check": "tsc --noEmit" },
+  "dependencies": {
+    "@waymark/contracts": "*",
+    "fastify": "^5.12.8",
+    "tsx": "^4.20.0"
+  }
+}

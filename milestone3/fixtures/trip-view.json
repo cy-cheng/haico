@@ -1,0 +1,44 @@
+{
+  "trip":{"id":"osaka","name":"Kansai Fall Trip","channelId":"ch1","channelName":"kansai-trip","timezone":"Asia/Tokyo","firstDate":"2026-11-20","lastDate":"2026-11-22","creatorId":"mia","details":{"cities":["Osaka","Kyoto"],"stay":"Namba hotel","flights":null,"pace":["Relaxed","Less walking"]}},
+  "members":[{"id":"mia","name":"Mia"},{"id":"alex","name":"Alex"},{"id":"ben","name":"Ben"},{"id":"yuki","name":"Yuki"}],
+  "collection":"active","epoch":1,"scope":{"mode":"from_now"},
+  "memory":{"revision":4,"preferences":[],
+    "summaries":[{"id":"sum2","range":{"mode":"from_here","messageId":"ky1"},"firstAt":"2026-11-19T18:05:00+09:00","lastAt":"2026-11-19T18:06:00+09:00","messageCount":2,
+      "notes":[{"id":"n1","state":"decided","text":"Lunch at Nishiki Market.","sourceIds":["ky1"]},{"id":"n2","state":"undecided","text":"Day 2 afternoon is open until 17:30.","sourceIds":["ky1","ky2"]}],
+      "poll":{"id":"poll2","question":"How should we spend the afternoon?","options":[{"id":"arashiyama","label":"Arashiyama","voterIds":["ben"]},{"id":"gion","label":"Gion · Old-town stroll","voterIds":["mia","alex"]},{"id":"rest","label":"Keep time free","voterIds":[]}]}}],
+    "sources":[
+      {"id":"m1","origin":"discord","authorId":"mia","text":"Nishiki Market on Day 2, Osaka Castle on Day 3.","url":null,"at":"2026-11-19T18:00:00+09:00"},
+      {"id":"m2","origin":"discord","authorId":"ben","text":"Start at Namba Station on Day 1. After lunch in Shinsekai on Day 3, Mia and Yuki visit Umeda Sky Building, Alex and Ben visit Tsutenkaku. Meet at Namba Station at 16:00.","url":null,"at":"2026-11-19T18:01:00+09:00"},
+      {"id":"ky1","origin":"discord","authorId":"alex","text":"After lunch at Nishiki Market, we have 13:15–17:30 free. We could visit Yasaka Shrine and walk along Hanamikoji in Gion.","url":null,"at":"2026-11-19T18:05:00+09:00"},
+      {"id":"ky2","origin":"discord","authorId":"ben","text":"Or visit Arashiyama Bamboo Grove, or simply leave the afternoon free.","url":null,"at":"2026-11-19T18:06:00+09:00"}
+    ],
+    "candidates":[
+      {"id":"castle","label":"Osaka Castle","state":"resolved","place":{"id":"place-castle","name":"Osaka Castle","coordinates":null},"choices":[],"sourceIds":["m1"],"votes":[]},
+      {"id":"lunch","label":"Shinsekai · Lunch","state":"resolved","place":{"id":"place-lunch","name":"Shinsekai · Lunch","coordinates":null},"choices":[],"sourceIds":["m2"],"votes":[]},
+      {"id":"namba","label":"Namba Station","state":"resolved","place":{"id":"place-namba","name":"Namba Station","coordinates":null},"choices":[],"sourceIds":["m2"],"votes":[]},
+      {"id":"umeda","label":"Umeda Sky Building","state":"resolved","place":{"id":"place-umeda","name":"Umeda Sky Building","coordinates":null},"choices":[],"sourceIds":["m2"],"votes":[]},
+      {"id":"tsuten","label":"Tsutenkaku","state":"resolved","place":{"id":"place-tsuten","name":"Tsutenkaku","coordinates":null},"choices":[],"sourceIds":["m2"],"votes":[]},
+      {"id":"nishiki","label":"Nishiki Market","state":"resolved","place":{"id":"place-nishiki","name":"Nishiki Market","city":"Kyoto","coordinates":{"lat":35.005,"lng":135.765}},"choices":[],"sourceIds":["m1","ky1"],"votes":[]},
+      {"id":"yasaka","label":"Yasaka Shrine","state":"resolved","place":{"id":"place-yasaka","name":"Yasaka Shrine","city":"Kyoto","coordinates":{"lat":35.004,"lng":135.778}},"choices":[],"sourceIds":["ky1"],"votes":[]},
+      {"id":"hanamikoji","label":"Hanamikoji","state":"resolved","place":{"id":"place-hanamikoji","name":"Hanamikoji","city":"Kyoto","coordinates":{"lat":35.002,"lng":135.775}},"choices":[],"sourceIds":["ky1"],"votes":[]},
+      {"id":"bamboo","label":"Arashiyama Bamboo Grove","state":"resolved","place":{"id":"place-bamboo","name":"Arashiyama Bamboo Grove","city":"Kyoto","coordinates":null},"choices":[],"sourceIds":["ky2"],"votes":[]}
+    ]
+  },
+  "accepted":{"version":1,"confirmedBy":[],"itinerary":{"days":[
+    {"date":"2026-11-20","departAt":"2026-11-20T10:00:00+09:00","stops":[{"id":"s1","candidateId":"namba","start":"2026-11-20T10:00:00+09:00","end":"2026-11-20T10:15:00+09:00","sourceIds":["m2"]}],"legs":[],"split":null},
+    {"date":"2026-11-21","departAt":"2026-11-21T12:00:00+09:00","stops":[{"id":"s2","candidateId":"nishiki","start":"2026-11-21T12:00:00+09:00","end":"2026-11-21T13:15:00+09:00","sourceIds":["m1"]}],"legs":[],"split":null},
+    {"date":"2026-11-22","departAt":"2026-11-22T08:30:00+09:00",
+     "stops":[
+       {"id":"sCastle","candidateId":"castle","start":"2026-11-22T09:30:00+09:00","end":"2026-11-22T11:30:00+09:00","sourceIds":["m1"]},
+       {"id":"sLunch","candidateId":"lunch","start":"2026-11-22T12:15:00+09:00","end":"2026-11-22T12:45:00+09:00","sourceIds":["m2"]},
+       {"id":"sMeet","candidateId":"namba","start":"2026-11-22T16:00:00+09:00","end":"2026-11-22T16:15:00+09:00","sourceIds":["m2"]}
+     ],
+     "legs":[{"fromStopId":"sCastle","toStopId":"sLunch","mode":"transit","minutes":null}],
+     "split":{"afterStopId":"sLunch","meetingStopId":"sMeet","branches":[
+       {"memberIds":["mia","yuki"],"stops":[{"id":"sUmeda","candidateId":"umeda","start":"2026-11-22T13:25:00+09:00","end":"2026-11-22T14:30:00+09:00","sourceIds":["m2"]}],"legs":[{"fromStopId":"sLunch","toStopId":"sUmeda","mode":"transit","minutes":null},{"fromStopId":"sUmeda","toStopId":"sMeet","mode":"transit","minutes":null}]},
+       {"memberIds":["alex","ben"],"stops":[{"id":"sTsuten","candidateId":"tsuten","start":"2026-11-22T13:00:00+09:00","end":"2026-11-22T14:00:00+09:00","sourceIds":["m2"]}],"legs":[{"fromStopId":"sLunch","toStopId":"sTsuten","mode":"transit","minutes":null},{"fromStopId":"sTsuten","toStopId":"sMeet","mode":"transit","minutes":null}]}
+     ]}
+    }
+  ]}},
+  "pending":[]
+}

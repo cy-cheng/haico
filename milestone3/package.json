@@ -1,0 +1,19 @@
+{
+  "name": "waymark",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=24.2.0" },
+  "workspaces": ["apps/*", "packages/*"],
+  "scripts": {
+    "check": "npm run check --workspaces --if-present",
+    "test": "node --import tsx --test \"apps/**/*.test.ts\" \"tests/**/*.test.ts\"",
+    "seed:demo": "node --env-file-if-exists=.env --import tsx apps/server/src/db/seed-demo.ts",
+    "dev:server": "node --env-file-if-exists=.env --import tsx apps/server/src/index.ts",
+    "dev:mobile": "npm start --workspace @waymark/mobile"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "typescript": "~5.9.2"
+  }
+}

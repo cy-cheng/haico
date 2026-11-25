@@ -1,0 +1,7 @@
+{
+  "kind":"patch","changes":[
+    {"kind":"retime_day","date":"2026-11-22","departAt":"2026-11-22T11:00:00+09:00"},
+    {"kind":"remove_stop","stopId":"sCastle"}
+  ],
+  "sourceIds":["m3"],"warnings":[]
+}

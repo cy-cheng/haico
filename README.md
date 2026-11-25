@@ -5,7 +5,7 @@ Waymark helps friends turn travel ideas shared in an existing group chat into an
 | Directory | Contents |
 |---|---|
 | [`milestone2/`](milestone2/) | Milestone 2 reports, presentation, editable Typst sources, prototype visuals and supporting material |
-| [`milestone3/`](milestone3/) | [iOS and Android test build plan, team assignments and API contract](milestone3/IMPLEMENTATION_PLAN.md) for the Waymark app and Discord bot |
+| [`milestone3/`](milestone3/) | [Run the Waymark app and local trip server](milestone3/README.md) · [Implementation plan, team assignments and API contract](milestone3/IMPLEMENTATION_PLAN.md) |
 
 ## Milestone 2
 

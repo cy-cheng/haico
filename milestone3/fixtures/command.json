@@ -1,0 +1,6 @@
+{
+  "kind":"plan","base":{"planVersion":1,"memoryRevision":4},
+  "request":{"kind":"revise","instruction":"請把祇園散步排進第二天下午",
+    "context":{"date":"2026-11-21","window":{"start":"2026-11-21T13:15:00+09:00","end":"2026-11-21T17:30:00+09:00"},
+      "selectedOption":{"summaryId":"sum2","pollId":"poll2","optionId":"gion"}}}
+}

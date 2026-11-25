@@ -1,0 +1,30 @@
+{
+  "name": "@waymark/mobile",
+  "version": "0.1.0",
+  "private": true,
+  "main": "index.ts",
+  "scripts": {
+    "start": "expo start",
+    "web": "expo start --web",
+    "check": "tsc --noEmit",
+    "bundle": "expo export --platform all"
+  },
+  "dependencies": {
+    "@expo/metro-runtime": "~6.1.2",
+    "@waymark/contracts": "*",
+    "expo": "~54.0.0",
+    "expo-file-system": "~19.0.24",
+    "expo-sharing": "~14.0.8",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "react-native": "0.81.5",
+    "react-native-safe-area-context": "~5.6.0",
+    "react-native-svg": "15.12.1",
+    "react-native-web": "~0.21.0"
+  },
+  "devDependencies": {
+    "@types/react": "~19.1.0",
+    "typescript": "~5.9.2"
+  },
+  "type": "module"
+}

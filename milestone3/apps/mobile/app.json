@@ -1,0 +1,13 @@
+{
+  "expo": {
+    "name": "Waymark",
+    "slug": "waymark",
+    "version": "0.1.0",
+    "scheme": "waymark",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "ios": { "bundleIdentifier": "org.waymark.trip", "supportsTablet": true },
+    "android": { "package": "org.waymark.trip" },
+    "web": { "bundler": "metro" }
+  }
+}
