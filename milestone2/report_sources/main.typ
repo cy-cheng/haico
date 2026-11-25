@@ -1,13 +1,14 @@
+// Report main section: presentation pages 1–27, preserved in order.
 // Waymark · English presentation with a live prototype link.
 // Cover and sections 1–2, including PoC validation goals, are in front.typ.
-#import "theme.typ": *
-#import "visuals.typ": *
+#import "../slides_presentation/theme.typ": *
+#import "../slides_presentation/visuals.typ": *
 #show: setup
 #set document(title: "Waymark — Human–AI Interaction and Prototype", author: "HAICO project team")
-#include "front.typ"
+#include "../slides_presentation/front.typ"
 
 #let photo(name, w: 14.7cm, h: 10.7cm) = box(width: w, height: h,
-  align(center + horizon, image("assets/screens/" + name + ".jpg", width: w, height: h, fit: "contain")))
+  align(center + horizon, image("../slides_presentation/assets/screens/" + name + ".jpg", width: w, height: h, fit: "contain")))
 
 // Prototype screens: a thin phone frame around a PNG exported from the Design canvas.
 // Names start with d- (Discord) or a- (web app). Discord messages fill only the top of the screen,
@@ -18,7 +19,7 @@
 #let phone-w(name, h, wmax) = calc.min(wmax, h * 390 / vis-px.at(name, default: 844))
 #let phone(name, h: 10.0cm, wmax: 5.9cm, crop: none) = {
   let w = phone-w(name, h, wmax)
-  let src = "assets/screens/ui/" + name + ".png"
+  let src = "../slides_presentation/assets/screens/ui/" + name + ".png"
   box(width: w, height: w * vis-px.at(name, default: 844) / 390, radius: 0.4cm, clip: true, stroke: 1.3pt + ink,
     image(src, width: w))
 }
@@ -104,28 +105,28 @@
 // The supplied User Flow: the overview first, then three close-ups, then the scenarios that run through it.
 #slide(title: [The complete User Flow], kicker-text: [Key User Flow], accent: cobalt)[
   #box(width: 27cm, height: 11cm, {
-    v-put(0cm, 1.15cm, 27cm, image("assets/user-flow-en-original-layout.svg", width: 27cm))
+    v-put(0cm, 1.15cm, 27cm, image("../slides_presentation/assets/user-flow-en-original-layout.svg", width: 27cm))
     v-put(0cm, 7.5cm, 27cm, text(font: f-display, size: 24pt, weight: 600)[One conversation supports invitation, revision and an explicit end.])
   })
 ]
 
 #slide(title: [Activation and conversation scope], kicker-text: [User Flow · Close-up 1], accent: teal)[
   #box(width: 27cm, height: 11cm, {
-    v-put(0cm, 0.6cm, 27cm, image("assets/user-flow-en-start.svg", width: 27cm, height: 8.2cm, fit: "contain"))
+    v-put(0cm, 0.6cm, 27cm, image("../slides_presentation/assets/user-flow-en-start.svg", width: 27cm, height: 8.2cm, fit: "contain"))
     v-put(0cm, 9.45cm, 27cm, text(font: f-display, size: 22pt, fill: teal.darken(15%))[An explicit invitation starts the Bot. The user chooses what it may read.])
   })
 ]
 
 #slide(title: [Organizing, reviewing and revising], kicker-text: [User Flow · Close-up 2], accent: tomato)[
   #box(width: 27cm, height: 11cm, {
-    v-put(0cm, 0.45cm, 27cm, image("assets/user-flow-en-middle.svg", width: 27cm, height: 8.7cm, fit: "contain"))
+    v-put(0cm, 0.45cm, 27cm, image("../slides_presentation/assets/user-flow-en-middle.svg", width: 27cm, height: 8.7cm, fit: "contain"))
     v-put(0cm, 9.6cm, 27cm, text(font: f-display, size: 22pt, fill: tomato.darken(15%))[Members review the result and decide which revisions to accept.])
   })
 ]
 
 #slide(title: [Confirmation, saving and stopping], kicker-text: [User Flow · Close-up 3], accent: plum)[
   #box(width: 27cm, height: 11cm, {
-    v-put(0cm, 0.4cm, 27cm, image("assets/user-flow-en-end.svg", width: 27cm, height: 8.7cm, fit: "contain"))
+    v-put(0cm, 0.4cm, 27cm, image("../slides_presentation/assets/user-flow-en-end.svg", width: 27cm, height: 8.7cm, fit: "contain"))
     v-put(0cm, 9.6cm, 27cm, text(font: f-display, size: 22pt, fill: plum.darken(15%))[The saved plan stays editable. Ending collection is explicit.])
   })
 ]
@@ -139,7 +140,7 @@
   text(font: f-display, size: 17pt, style: "italic", body)
   v(0.15cm)
 }
-#let fl(name) = "assets/flow/" + name + ".png"
+#let fl(name) = "../slides_presentation/assets/flow/" + name + ".png"
 #let phone-h = 8.66
 #let phone-w = phone-h * 390 / 844
 
@@ -159,8 +160,8 @@
     sw-tag((2.3, 9.35), [user · discord], marigold.darken(15%))
     sw-shot((4.4, 3.1), fl("card"), 3.9, 3.9 * 646 / 780)
     sw-tag((2.45, 5.0), [bot · discord], marigold.darken(15%))
-    sw-shot((11.15, 4.7), "assets/screens/ui/a-memory.png", pw, ph, c: cobalt, hl: (0.03, 0.15, 0.97, 0.265))
-    sw-shot((15.65, 4.7), "assets/screens/ui/a-map.png", pw, ph, c: cobalt, hl: (0.6, 0.225, 0.76, 0.305))
+    sw-shot((11.15, 4.7), "../slides_presentation/assets/screens/ui/a-memory.png", pw, ph, c: cobalt, hl: (0.03, 0.15, 0.97, 0.265))
+    sw-shot((15.65, 4.7), "../slides_presentation/assets/screens/ui/a-map.png", pw, ph, c: cobalt, hl: (0.6, 0.225, 0.76, 0.305))
     sw-tag((9.3, 9.1), [system · app], cobalt)
     content((11.15, 0.35), text(font: f-display, style: "italic", size: 13pt, fill: muted)[Import log])
     content((15.65, 0.35), text(font: f-display, style: "italic", size: 13pt, fill: muted)[Map])
@@ -189,7 +190,7 @@
     sw-shot((4.8, 3.2), fl("summary"), 4.8, 4.8 * 459 / 780)
     sw-tag((2.4, 5.0), [bot · discord], marigold.darken(15%))
     content((4.8, 0.7), text(font: f-display, style: "italic", size: 13.5pt, fill: plum.darken(10%))[Tap “Generate plan” → next scenario])
-    sw-shot((13.5, 4.75), "assets/screens/ui/a-memory-sums.png", phone-w, phone-h, c: cobalt, hl: (0.03, 0.32, 0.97, 0.52))
+    sw-shot((13.5, 4.75), "../slides_presentation/assets/screens/ui/a-memory-sums.png", phone-w, phone-h, c: cobalt, hl: (0.03, 0.32, 0.97, 0.52))
     sw-tag((11.5, 9.45), [system · app], cobalt)
     sw-ai((23.3, 5.0), [summarize, keep \ what matters])
   })
@@ -211,7 +212,7 @@
     sw-shot((4.8, 5.7), fl("ask"), 4.4, 4.4 * 510 / 780)
     sw-shot((4.8, 2.0), fl("plan"), 4.4, 4.4 * 576 / 780)
     sw-tag((2.6, 7.35), [bot · discord], marigold.darken(15%))
-    sw-shot((13.5, 4.75), "assets/screens/ui/a-applied.png", phone-w, phone-h, c: cobalt, hl: (0.03, 0.135, 0.97, 0.3))
+    sw-shot((13.5, 4.75), "../slides_presentation/assets/screens/ui/a-applied.png", phone-w, phone-h, c: cobalt, hl: (0.03, 0.135, 0.97, 0.3))
     sw-tag((11.5, 9.45), [system · app], cobalt)
     sw-ai((23.3, 5.0), [ask, or plan in a \ fixed format])
   })
@@ -397,7 +398,7 @@
     let steps = (
       ([Today], muted, [Discord and app screens designed; no bot or model code yet.]),
       ([Connect], teal, [Discord bot, Haiku, Places and Whisper, then Opus.]),
-      ([Measure], marigold, [20 consented chats: place accuracy, zero invented venues.]),
+      ([Measure], marigold, [3 consented chats: place accuracy, zero invented venues.]),
       ([Test], cobalt, [3–5 friend groups: scope, approvals, trust.]),
     )
     for (i, (head, c, body)) in steps.enumerate() {
@@ -417,9 +418,6 @@
       }
     }))
     v-put(19.8cm, 6.75cm, 7.2cm, align(center, stamp(c: plum, angle: -3deg, size: 8.5pt)[later: new places · LINE]))
-    v-put(0cm, 8.3cm, 27cm, s4-rule)
-    v-put(0.3cm, 9.1cm, 26.4cm, align(center,
-      text(font: f-display, size: takeaway-size, style: "italic", fill: plum.darken(15%))[Also open: will others accept that one member picks the scope?]))
   })
 ]
 
@@ -434,148 +432,3 @@
   })
 ]
 
-// Backup for Q&A: the detailed section 4 and 5 slides.
-#slide(title: [Inside the assistant: four model jobs, checked by code], kicker-text: [Backup · Role of AI · What it does], accent: teal)[
-  #box(width: 27cm, height: 11.15cm, {
-    // The interaction mode decides how often each job runs, and so which model it needs.
-    v-put(0.2cm, 0cm, 12.8cm, align(center, v-label([On its own · each shared link], c: teal.darken(15%))))
-    v-put(13.8cm, 0cm, 12.8cm, align(center, v-label([When \@mentioned], c: tomato.darken(10%))))
-    v-put(0cm, 0cm, 27cm, cetz.canvas(length: 1cm, {
-      import cetz.draw: *
-      rect((0, 0), (27, 11.15), stroke: none, fill: none)
-      for (a, b, col) in ((0.2, 13.0, teal), (13.8, 26.6, tomato)) {
-        line((a, 10.35), (a, 10.6), (b, 10.6), (b, 10.35), stroke: 1pt + col)
-      }
-      for x in (6.2, 13.0, 19.8) { v-arrow((x + 0.14, 8.03), (x + 0.7, 8.03)) }
-    }))
-    v-put(0.2cm, 1.0cm, 6cm, ai-job([01], [Understand],
-      [Read each shared link: caption, photos and tags. Post it as a place card.],
-      [Haiku 5.5 · Whisper], teal))
-    v-put(7.0cm, 1.0cm, 6cm, ai-job([02], [Ground],
-      [Match each mention to a real place. Repeated shares of one place get one ID.],
-      [Haiku 5.5 → Google Places], teal))
-    v-put(13.8cm, 1.0cm, 6cm, ai-job([03], [Draft],
-      [Turn candidates, preferences and travel times into a day-by-day plan.],
-      [Opus 5.5 · Google Routes], tomato))
-    v-put(20.6cm, 1.0cm, 6cm, ai-job([04], [Revise],
-      [Turn “Start day 3 at 11:00” into a short list of typed changes.],
-      [Opus 5.5], tomato))
-    v-put(0.2cm, 5.7cm, 26.4cm, v-sheet(26.4cm, 1.55cm, faint, stock: paper2, {
-      v-put(0.35cm, 0.2cm, 25.7cm, v-label([Code, not the model], c: ink, size: 9.5pt))
-      v-put(0.35cm, 0.66cm, 25.7cm, text(size: 14.5pt)[Filters the chosen scope · checks every cited source · validates each plan · keeps versions · records each member’s approval])
-    }))
-    v-put(0.2cm, 7.95cm, 26.4cm, kicker(c: teal.darken(10%))[Why AI is needed])
-    v-put(0.2cm, 8.6cm, 26.4cm, par(leading: 0.45em, text(size: 17pt)[Our prototype matches a fixed list of place names. Real chats use nicknames, say “the market Ben sent”, mix Chinese, Japanese and English, or share only a reel. No fixed list keeps up with that; a model that reads language and images can.]))
-  })
-]
-
-#details([How the Discord bot works], [Backup · Technical approach · Discord bot], ("d-draft", "d-proposal", false), (
-  ([Events in], [Link posts, \@mentions and button taps arrive as events. The bot reads only the channels it was added to, and only the scope the user chose.]),
-  ([Cards out], [Replies are Components v2 messages: cards, buttons and forms. A tap updates the same message instead of posting a new one.]),
-  ([Same memory as the app], [Cards, reactions and confirmations are saved to the shared trip memory, so the app and the channel always show the same state.]),
-), accent: cobalt)
-
-#slide(title: [Models and tools, and why], kicker-text: [Backup · Technical approach · Models and tools], accent: cobalt)[
-  #box(width: 27cm, height: 11.15cm, {
-    v-put(0cm, 0cm, 27cm, spec-table((5.3cm, 5.9cm, 1fr), ([Job], [Choice], [Why]), (
-      ([Link cards], [Claude Haiku 5.5],
-        [Runs on every shared link, so cost decides (\$0.10 per million input tokens). Reads images; returns schema-checked JSON.]),
-      ([Reel audio], [Whisper, open source],
-        [Many reels are narrated: transcript, caption and a few frames cover most. Runs on our server; uses no credits.]),
-      ([Places and travel], [Google Places + Routes],
-        [Place IDs, opening hours and travel times come from a map database, not the model’s memory.]),
-      ([Draft and revise], [Claude Opus 5.5],
-        [Runs only on a request, but members wait for it and judge it. Must balance many constraints and keep other days intact.]),
-      ([Chat platform], [Discord bot + web app],
-        [Reads joined channels, flags \@mentions, posts cards and buttons; a web app shows the plan. LINE could follow, without old messages.]),
-    ), cobalt))
-    let note(x, head, body) = v-put(x, 9.15cm, 12.9cm, par(leading: 0.4em,
-      text(size: 15pt)[#text(font: f-display, weight: 600)[#head] #body]))
-    note(0cm, [Budget.], [About \$2 per planned trip (300 messages, 3 drafts, 10 revisions); link cards cost cents. \$100 covers development and user tests.])
-    note(14.1cm, [Not needed now.], text(fill: muted)[Fine-tuning: no training data, and prompts with schemas suffice. Vector search: one trip’s chat fits in context.])
-  })
-]
-
-#slide(title: [Prompts guide the model; code enforces the promises], kicker-text: [Backup · Technical approach · Steering], accent: tomato)[
-  #box(width: 27cm, height: 11.15cm, {
-    v-put(0cm, 0cm, 27cm, spec-table((8.2cm, 1fr), ([Promise in the demo], [How it is enforced]), (
-      ([Reads only the chosen scope], [Chosen when Waymark is invited. Other messages never reach a model.]),
-      ([Keeps every source], [The model must cite message IDs. Code drops any item without a valid one.]),
-      ([Asks instead of guessing], [If Places finds no match, or several, the share stays unresolved and Waymark asks.]),
-      ([Edits stay local], [The model returns typed changes (retime, move, remove). Code applies only accepted ones, as a new version.]),
-      ([Plans stay realistic], [A validator checks opening hours, travel times and the group’s pace limit.]),
-      ([Stays out of the way], [Only link cards appear on their own. Summaries, plans and changes wait for an \@mention.]),
-    ), tomato))
-    v-put(0cm, 10.05cm, 27cm, text(font: f-display, size: 15.5pt, style: "italic", fill: muted)[Every model output is JSON checked against a schema. The system prompt and example chats set format and tone.])
-  })
-]
-
-#slide(title: [What is missing, what is uncertain, what comes next], kicker-text: [Backup · Current limitations & next steps], accent: plum)[
-  #box(width: 27cm, height: 11.15cm, {
-    let col(x, c, label, body) = v-put(x, 0.1cm, 8.4cm, v-sheet(8.4cm, 9.6cm, c, {
-      v-put(0.4cm, 0.4cm, 7.6cm, v-label(label, c: c.darken(18%), size: 10pt))
-      v-put(0.4cm, 1.1cm, 7.6cm, {
-        set par(leading: 0.42em)
-        set list(spacing: 0.75em)
-        set enum(spacing: 0.75em)
-        text(size: 16pt, body)
-      })
-    }))
-    col(0.1cm, faint, [Still missing], [
-      - No bot or model code yet: the design shows the screens.
-      - No Discord connection, Places lookup or reel processing.
-      - State lives in one browser, so there is no multi-user sync.
-      - *Platform limits:* Discord needs history and message-content permissions. LINE bots see only messages sent after they join.
-    ])
-    col(9.2cm, tomato, [Biggest uncertainty], [
-      - *Technical:* accuracy on real, messy chats: nicknames, mixed languages, reels that never name the place.
-      - *Interaction:* one member picks the scope, but everyone’s messages are read. Will the others accept that?
-      - Will members read “1 of 4 confirmed” as individual, not group, approval?
-    ])
-    col(18.3cm, plum, [Next], [
-      + Build a test set from about 20 consented group chats. Measure extraction and merge accuracy, and invented venues (target: 0).
-      + Connect Discord, Haiku, Places and Whisper, then Opus.
-      + Test with 3–5 friend groups.
-      + Later: suggest new places, labelled as suggestions, and add LINE.
-    ])
-  })
-]
-
-// This is the supplied User Flow. English labels overlay its original nodes.
-// Connector artwork, node positions and rectangle/diamond types are retained.
-// Backup for Q&A: the earlier step-by-step screens, one per user-flow stage.
-#backup-details([The user invites Waymark and chooses its scope], [User goal & activation], ("d-scope0", "a-map"), (
-  ([Shared goal], [Four friends are planning Osaka for Nov 20–22. They want one editable itinerary while continuing their group chat.]),
-  ([User action], [Mia mentions \@Waymark and chooses “From now on” or “Include earlier messages”. Organizing uses only that scope.]),
-  ([Shared workspace], [The draft appears in Discord. Members open the web app to inspect places and edit the itinerary.]),
-), accent: cobalt)
-
-#backup-details([AI turns the selected discussion into a draft], [AI input, behavior & output], ("d-summary", "a-trip"), (
-  ([Input], [Selected messages provide dates, shared places and each member’s preferences. Shared links get place cards automatically.]),
-  ([AI behavior], [Merge repeated places and retain their sources. Ask about unclear venues instead of guessing. Check hours and travel times.]),
-  ([Output], [One progress message updates in place. The result is a draft itinerary with source links and unresolved details visible.]),
-), accent: teal)
-
-#backup-details([Members inspect sources and correct the context], [User response · Review & correct], ("a-place", "a-memory-form", false), (
-  ([Review], [Open a place to see who shared it and return to the original post. Repeated shares retain their sources.]),
-  ([Correct], [Add a missing location or edit a preference without restarting. “Not this time” keeps a clarified place out of this trip.]),
-  ([Edit directly], [Adjust times, reorder stops or add a candidate in the app. Share the revised version back to the group.]),
-), accent: plum)
-
-#backup-details([Subgroups and transport stay in one itinerary], [System output · Flexible planning], ("a-branch-map", "a-transit", false), (
-  ([Split and meet again], [Mia and Yuki take one route, Alex and Ben another. Both routes meet at Namba Station and continue together.]),
-  ([Choose transport], [Compare routes for each leg and filter acceptable modes. Public transit is enabled by default.]),
-  ([Keep gaps visible], [Unfilled slots stay visible. Members can add a place from the map or ask the AI for suggestions.]),
-), accent: cobalt)
-
-#backup-details([Members review changes before they are applied], [User request · Proposal & approval], ("d-proposal", "a-applied"), (
-  ([Request], [“Start day 3 at 11:00 and skip Osaka Castle.” AI proposes only those differences; other arrangements stay intact.]),
-  ([Accept or reject], [“Apply” creates a new version. “Keep original” preserves the current plan. Members can keep discussing either way.]),
-  ([Confirm individually], [Confirmation is recorded per member. “1 of 4 confirmed” does not mean the whole group agrees.]),
-), accent: tomato)
-
-#backup-details([The user saves the plan and stops collection], [User action · Save & finish], ("d-finish", "a-manage-paused"), (
-  ([End explicitly], [“Save and finish” explains that new messages will stop being collected. Cancel to keep discussing.]),
-  ([Preserve the result], [The saved itinerary retains its sources and approval status, including pending confirmations. Collection is shown as paused.]),
-  ([Return later], [Reopen the itinerary or download its calendar file. Viewing the saved plan does not restart collection.]),
-), accent: plum)

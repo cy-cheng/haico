@@ -1,10 +1,28 @@
-# Built slides and course material
+# Keep the two saved deliverables; ignore other generated PDFs.
 *.pdf
+!/milestone2/GROUP_4_MILESTONE_2.pdf
+!/milestone2/slides_presentation.pdf
+
+# Local builds, compiler cache and logs.
+/milestone2/build/
+/milestone2/.tools/
+/milestone2/render.log
+*.log
+
 # Source media kept out of the repo (large, or already extracted)
 *.pptx
 *.zip
 __MACOSX/
 .DS_Store
-# Local renderer and its diagnostic log
-.tools/
-render.log
+
+# Local Python and editor files.
+__pycache__/
+*.py[cod]
+.venv/
+*.swp
+*~
+
+# Local credentials, if added during future implementation.
+.env
+.env.*
+!.env.example
