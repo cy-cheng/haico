@@ -16,6 +16,7 @@ __MACOSX/
 .DS_Store
 
 # Local Python and editor files.
+.vscode/
 __pycache__/
 *.py[cod]
 .venv/
