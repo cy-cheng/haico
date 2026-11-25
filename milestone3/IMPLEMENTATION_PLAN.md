@@ -2,7 +2,7 @@
 
 **Group 4，2026/12/02 提交。** Mia 在 Discord 貼一則錦市場 Reel。朋友能在手機地圖找到同一個地方，看到誰分享、誰想去，請 AI 把它排進京都行程。Alex 可以先看第三天修改前後的差異，再決定要不要套用。這是四位組員要一起做通的旅程。目前 repo 提供規劃、型別和開發測資，手機 App、線上後端與測試包都待實作。
 
-**先認領工作包，再拿第 5 節對應的任務開工。** A 做手機前端與發佈，B 做 Discord、API 與部署，C 做旅程記憶和地點，D 做規劃、交通和版本。第 2 節定義兩個入口共用的操作，第 4 節用同一趟關西行程驗收，文末附可直接複製的 TypeScript 契約。
+**先認領工作包，再把對應任務卡交給 agent。** A 做手機前端與發佈，B 做 Discord、API 與部署，C 做旅程記憶和地點，D 做規劃、交通和版本。第 2 節定義兩個入口共用的操作，第 4 節用同一趟關西行程驗收，文末附可直接複製的 TypeScript 契約。[跳到第 5 節的 11 張任務卡](#agent-dispatch)
 
 ## 產品範圍與畫板對照
 
@@ -262,18 +262,117 @@ A 只處理對應本次登入的 callback 和 state。成功後把 verifier 換�
 
 **重送與競爭。** 從同一份 v1 建兩個待審提案，用兩支手機分別套用。一次成功，另一支應收到 409 並顯示新版本。成功端因斷線以相同 key 重送，應讀回第一次的 v2。再從 v1 獨立測 Keep original，確認版本與分組都未變。暫停收集後才抵達的擷取結果應被捨棄。
 
-## 5. 四個人怎麼和各自的 AI 開工
+<a name="agent-dispatch"></a>
 
-每個人把這份 Markdown、認領的畫板編號和下列任務交給自己的 coding AI。路徑以 `milestone3/` 為根。第一輪用同一份測資確認介面，第二輪在測試頻道與真機重做同一個動作。交接時附啟動指令、輸入、回應或錄影，其他人便能獨立驗收。
+## 5. Agent 派工單
 
-| 認領 | 可直接交給 AI 的第一個任務 | 交給誰、怎麼驗收 |
+四位組員保留第 1 節的模組責任。下表的 **11 張卡是可分開執行的任務**，每位組員可以依序把自己的卡交給同一個 agent。Q1 由 B 統整，四人各自提供實測證據。開發路徑均相對於 `milestone3/`；目前已存在的是本文件、附錄契約和 `packages/contracts/src/index.ts`，下列其餘目錄與指令由對應任務建立。
+
+### 先派哪四張
+
+| 組員 | 可立刻貼給 agent | 拿到第一次交接後 |
 |---|---|---|
-| A · 手機 | 「在 `apps/mobile/` 建 Expo App，以 AI Chat、Map、Trip、Manage 為底部導覽。用 §4 的 v1，在 Trip 以畫板 3 的左側時間軸顯示第三天兩組與會合點，再做畫板 6 的差異預覽。讓同一個 API client 能切換測資和 B 的網址。」 | 給 B 兩個實機安裝連結。未登入者點 Discord 的 p7，登入後回到 p7。Apply 成功顯示 v2，409 能重新讀取 |
-| B · Discord 與部署 | 「在 `apps/server/src/{trip,discord,http,jobs}/` 把已部署的 Fastify、Bot、SQLite 接到同一個大阪旅程。先做 #18 啟用與 #20–21 跨端核准。用測試頻道的真實訊息、手機登入及邀請連結驗證同一個人與同一版，再接分享、摘要與澄清卡。」 | 給 A 手機可連的 HTTPS 網址、旅程及提案連結。給 C 已獲授權的訊息，給 D 帶來源的請求。重啟後仍能讀回 v2 |
-| C · 記憶與地點 | 「在 `apps/server/src/{memory,places,model}/` 用錦市場兩筆分享、解析失敗的貼文和 Ben 的 Riverside café 測擷取。用同一份記憶供應 #11 地點卡、#8 Import log、#10 詳情及 #12 摘要，示範一次經授權的重試和一次人工補地點。」 | B 和 A 能用相同候選 ID 取得去重後的兩筆來源與投票。D 拿到可引用的候選、偏好與祇園方向選項 |
-| D · 行程與核准 | 「在 `apps/server/src/{planner,routes,review}/` 用 §4 的大阪 v1 實作第三天修改，保留兩組成員與會合點。用同一個預覽流程處理 AI Chat 選 Gion、手動從候選加站與改選交通。用 SQLite 驗證拒絕、套用、重送以及個別確認。」 | 給 A、B 一筆 pending 提案，能列出受影響站點、交通及來源。兩入口讀到相同 v2，第一次 Apply 後仍是 0/4 |
+| A 手機 | **A1 手機入口**，用第 4 節的快照接四分頁與提案連結 | A2 地圖／旅程記憶、A3 AI Chat／Trip 可各自對測資開發。A1 統一註冊路由 |
+| B 系統 | **B0 工程與部署**，先交可啟動的工作區、DB 交易入口與大阪測資 | B1 做 API／工作佇列，B2 做 Discord 卡片。兩者可先各用測試替身，再接同一個 TripPort |
+| C 記憶 | **C1 模型與地點供應商**，先交可重播的模型、Places 與轉錄回應 | C2 用同一批回應做擷取、記憶、投票及補正，再跑真實分享 |
+| D 行程 | **D2 版本審閱**，用第 4 節的 patch 驗證接受、拒絕與競爭 | D1 用相同的輸入接 Planner 與 Routes，交一份真正生成的預覽給 D2 |
 
-B 維護 workspace、部署設定及 migration 執行順序。B、C、D 各自負責所屬的資料表。要動 `packages/contracts/src/index.ts` 時，提出者與呼叫方先用 §4 範例核對欄位，再一起更新本文附錄。
+**可以直接複製的開場指令。** 把這段、下方對應卡及整份 Markdown 放在同一個 agent 對話。
+
+> 我負責 Waymark M3，請執行任務卡〔填 ID〕。先讀第 2 節 API、第 3 節模組介面、第 4 節測資，以及附錄型別。以卡上擁有的路徑實作，將測試放在模組旁。上游尚未交付時，用第 4 節資料或相同介面的測試替身跑通。交回變更檔案、可重跑的指令、輸入與預期／實際結果，標明哪些用測資、哪些用真機或真服務驗過。若介面缺欄位，先交一個無法表示的具體案例給契約擁有者與呼叫方確認。
+
+### A 負責手機前端
+
+#### A1　手機入口、登入、測試版
+
+- **範圍。** 擁有 `apps/mobile/app/`、`src/platform/`、`src/ui/` 與手機專案設定（均在 `apps/mobile/` 下）。建置 Expo 四分頁、共用 UI、API client、fixture／連線模式與 EAS preview。A2、A3 各自匯出畫面，A1 在此註冊。將 App ID、Android 套件名稱與簽章指紋交給 B0。
+- **串接。** 系統瀏覽器開啟 `GET /auth/discord`，以 `POST /auth/mobile/exchange` 換取本人 session 並存 SecureStore。記住原本的旅程／提案，授權後先驗證成員再開 p7。401 提示重登，403 顯示權限問題，回前景重讀旅程。
+- **交付 A2、A3、B0。** 一套可切換的 API client、一個 APK、一個登記 iPhone 可裝的 ad hoc 版本。兩支手機從行動網路測冷啟、背景返回、取消登入再重試與開啟指定提案。尚未取得簽署或網域時，分列已通過的本機步驟與待驗的真機步驟。
+
+#### A2　Map、Manage、地點詳情與匯入紀錄
+
+- **範圍。** 擁有 `apps/mobile/src/features/{map,memory,manage}/`。完成 #2、7、8、10 與共用地點卡 #15 的內容。以同一個 `candidateId` 串圖釘、來源、反應和備註。Manage 顯示成員與頻道，提供邀請與日曆分享。
+- **串接。** 先對 `TripView` 與 A1 client 替身開發，再接 B1、C2。四種反應、筆記及補地點用 `edit_memory`，另行重試解析用 `retry_import`。選 Day 2 時送 `plan/manual` 的 `add_stop`，導到 A3 的提案預覽。從 Manage 帶登入憑證匯出指定版 `.ics`。
+- **交付 A1、C2。** 兩筆錦市場分享只畫一個圖釘，可開到兩筆來源。Ben 補 Riverside café 後仍看得到原分享；重試失敗的貼文有進度或失敗原因。用第二位成員核對反應同步。
+
+#### A3　AI Chat、Trip、路線與提案
+
+- **範圍。** 擁有 `apps/mobile/src/features/{chat,trip}/`，含 #1、3、5、6、9、17 與 #14、16 內容。實作左側時間軸、分組／會合、候選區、交通比較、來源與差異。地圖或 Discord 的指定提案連結都進同一份預覽。
+- **串接。** `plan` 或 `answer` 取得 `jobId`，輪詢後用 `proposalId` 讀提案。分開處理 Discord 方向票、直接選擇 AI 的澄清選項，以及引用已存摘要選項；Edit 傳 `replacesProposalId`。按 Use、Apply、Keep original、Confirm 各走第 2 節對應操作。
+- **交付 A1、D1、D2。** 用有投票／無投票兩種起點測祇園預覽。按 Keep original 保留 v1，按 Apply 才出現 v2 與 0/4；Mia 確認後為 1/4。過期提案收到 409 時重新載入，Day 3 仍顯示兩組在 16:00 會合。
+
+### B 負責共用工程、API 與 Discord
+
+#### B0　工作區、資料庫與可部署入口
+
+- **範圍。** 擁有 M3 根目錄的 workspace 設定、共用 lockfile、英文 README、`.env.example`、`fixtures/`、`deploy/`、`apps/server/` 的專案設定與啟動入口、`apps/server/src/db/`。以 npm workspaces 建立手機、後端及 contracts 的匯入關係；各 agent 回報依賴需求給專案設定擁有者。
+- **先交什麼。** 從第 4 節取出可匯入的 `TripView`、`Command`、`DraftResult` 測資，建立單一 SQLite 連線、交易與 migration runner。C2、D2 各交模組內 migration。提供測試專用 DB、重置示範資料與型別檢查入口，工作可重播且不覆寫使用者的旅程。
+- **交付全組。** 英文 README 在乾淨 checkout 可重現 `npm ci`、`npm run check`、`npm test`、`npm run seed:demo`、`npm run dev:server`（由本卡建立）。相同 migration 跑兩次、服務重啟後，版本和來源仍一致。線上用同一啟動入口、固定 HTTPS 和持久磁碟；以 A1 的識別資料交付兩平台關聯檔及安裝引導頁。
+
+#### B1　身分、HTTP、TripPort 與背景工作
+
+- **範圍。** 擁有 `apps/server/src/{http,trip,jobs}/` 及本模組資料表。註冊第 2 節的登入、查詢和 commands。先以 C、D 的替身測 Fastify 的 HTTP 入口，之後由 B0 注入真實 ports。每筆請求從登入或 Discord 事件取 actor，檢查旅程及該頻道權限。
+- **交易與交接。** 同步回 `TripView`，長任務回 202 `JobRef`。B1 保存來源原文、媒體參照、scope／epoch、job 狀態及操作結果，在 snapshot 組裝時向 C2 提供獲准來源。B1 與 D2 共用同一筆交易完成版本套用及去重。將已提交的卡片更新交給 B2，讓 App 與 Discord 共用狀態。
+- **驗收給 A1、B2、Q1。** 測試登入取消、一次性 code 重用、無權旅程 403、重送同 key 讀回同一個 job／操作結果、同 key 改內容回 409。重啟後可查 job 與版本，暫停中晚到的擷取不能寫入；一次 App 請求能追到 App 的來源，Discord 請求能追到原訊息。
+
+#### B2　Discord 七種卡片
+
+- **範圍。** 擁有 `apps/server/src/discord/`。用假的 `TripPort` 先重播一則分享和一次點擊，再接 B1。完成 #18、11、22、12、19、20、21，並保存原卡識別資料供更新。Bot 元件上的旅程／提案 ID 用於查詢，操作者取自當次 Discord interaction。
+- **交付 A1、Q1。** 在測試頻道讓兩位成員完成 From now on、分享、四種反應、摘要方向票、草案、澄清與修改。Open in app 打開同一提案；成員在手機套用後原卡也顯示 v2。Save & finish 先預覽保存內容，可取消；確認後新訊息不再匯入。以同一 interaction ID 重播時不重複計票。
+
+### C 負責 AI 擷取與旅程記憶
+
+#### C1　模型、轉錄、地點查詢
+
+- **範圍。** 擁有 `apps/server/src/{model,places}/`，含轉錄 adapter。實作 `ModelPort.generate`、`TranscriptionPort.transcribe`、地點搜尋與營業時段查詢。C2 透過 MemoryPort 對外提供後兩項地點能力，D1 用 ModelPort 呼叫規劃模型。
+- **交付 C2、D1。** 交一份可重播的供應商回應及實際服務呼叫結果，列實際模型 ID、輸入來源、延遲與可得的成本資料。測營業時段已知、未知、確定未開；驗證同名地點、無法取用的媒體及供應商失敗都保留可判讀結果。金鑰由 B0 記其設定名稱，值只在後端使用。
+
+#### C2　Memory、匯入、投票與補正
+
+- **範圍。** 擁有 `apps/server/src/memory/`，含候選、來源關聯、摘要、成員反應及 revision 的 migration。用 C1 替身與 B1 提供的原文／epoch，實作 `ingest`、`snapshot`、`edit`、`summarize`。只處理獲准資料，寫入前以同一交易再次確認 epoch 與人工修正。
+- **交付 A2、B2、D1。** 錦市場只留一個候選、兩個可追溯來源。Riverside café 可從 Needs details 補地點；重試失敗來源只執行一個工作且不覆蓋人工答案。產生帶來源的 Decided／Undecided 摘要和方向票，驗證投票與版本一致。B1 提供的匯入狀態必須出現在 App 快照；回報測試中的去重、誤辨與虛構地點數。
+
+### D 負責規劃、交通與版本
+
+#### D1　Planner、路線與局部修改
+
+- **範圍。** 擁有 `apps/server/src/{planner,routes}/`。讀 `GenerationInput`，使用 C1 的模型介面及 C2 的同版記憶。首案回 `drafted`，修改回 `patch`，缺資訊回 `clarify`。驗證模型輸出的欄位和來源 ID，檢查時窗、已知營業時間、分組與會合。
+- **交付 A3、D2。** 分別以有摘要及無摘要的測資安排 Day 2 13:15–17:30。使用者選祇園後才產生可審預覽，保留窗外行程與票數。Day 3 的 patch 將出發改成 11:00、移除大阪城、保留 16:00 會合。比較同路段的交通，未知票價回 null、無方案回空陣列；Use 的 optionId 綁版本、路段與出發時間。至少留一筆真實模型與路線服務的驗收紀錄。
+
+#### D2　Review、版本與日曆
+
+- **範圍。** 擁有 `apps/server/src/review/`、本模組 migration 與日曆匯出。先直接餵第 4 節的 `DraftResult`，使用 B0 的交易入口做 `propose`、`decide`、`setConfirmation`、`calendar`。A、B 均讀同一份伺服器預覽。
+- **交付 B1、A3、Q1。** 兩人從 v1 開不同提案，一人 Apply 後只有一份 v2，另一人收到 409；成功者相同 key 重送仍讀回原結果。Reject 保留 v1；Apply 後 0/4，Mia Confirm 後 1/4。舊版本可匯出，移除的候選可追溯，前兩天與分組集合保持原值。另測「編輯舊提案」只在新提案成功保存時淘汰舊提案。
+
+### Q1　跨模組驗收與交件
+
+B 統籌，A、C、D 提供真機與各自模組的證據。Q1 擁有 `tests/integration/` 與 `evaluation/`；先依 §4 編寫預期結果，整合後走公開 HTTP、Discord 卡片與實機 UI。模組內缺陷附上可重現輸入交還原負責人。
+
+| 要證明的事 | 獨立還原後的操作與交件證據 |
+|---|---|
+| 來源可追、錯誤可修 | 兩則分享同地點，兩支手機與卡片顯示同一候選；補正 Riverside、重試失敗匯入，再測暫停後回來的舊工作。記錄候選、來源、job 與 epoch |
+| 人能決定 AI 建議 | 從已投票或尚無投票的狀態選祇園，先拒絕，再重跑並接受。記錄窗外行程、票數、接受版與提案的前後差異 |
+| 跨端修改能保存 | 兩人競爭 Apply、重送、Confirm／Unconfirm、Save & finish，再關 App、重啟後端、匯出日曆。核對 v2、分組集合、確認名單與停止收集 |
+| 別人能重現 | 每次記下 commit、build、裝置、輸入、預期、實際及限制。A 交英文實拍 MP4，B 交可乾淨安裝的 ZIP／英文 README，C、D 交英文 PDF。三者引用同一版 |
+
+### 交接順序與共同檔案
+
+1. **11/25 平行開工。** A1、B0、C1、D2 先拿 §4 開工。B0 優先交出可安裝的 workspace、共用 fixture 與交易入口。D2 在取得 DB 前可先驗預覽與差異。Q1 的三個預期結果此時就能寫。
+2. **11/26 接入口。** B1、B2 先各用替身驗 HTTP 與卡片；A1 接 B1 做真機登入。A2、A3、C2、D1 在各自目錄以 fixture 或已交付的 port 並行。只有四個 agent 時，各組員沿 A、B、C、D 任務線依序開工，優先完成當日情境涉及的操作。
+3. **11/27–29 逐條換真服務。** 11/27 串分享（B2 → B1 → C2/C1 → A2）；11/28 串選祇園（A3/B2 → B1 → D1 → D2）；11/29 串跨端套用、確認與保存（A3/B2 → B1 → D2）。每次都讓下游組員拿上一張卡的輸出重做一次。11/30 起由 Q1 跑全程，交件安排見 §6。
+4. **合併與驗收。** 每張卡獨立分支或 worktree，交含模組與同範圍測試的改動。A1 單獨維護手機路由與 manifest，B0 維護 workspace、lockfile、server 啟動和 migrations 的載入順序。C2、D2 各寫自己的 migration。要改公開介面時，提出者附一個失敗案例，B0 與呼叫方同步更新契約、本文附錄和測資。
+
+**需要組員準備的外部條件。** A 取得兩支測試手機、iOS 簽署帳號與 UDID；B 取得測試 Discord 頻道、Bot／登入設定、HTTPS 網域和持久磁碟；C、D 確認可用的模型、語音及 Places／Routes 服務。外部條件未到位時，各卡仍可驗本機路徑，交接時將「已用測資驗證」與「已用真服務或真機驗證」分別記錄。
+
+### 給手機 agent 的選用工具
+
+這些工具用在 A 的任務內。11/25 查閱時，三者都由 Expo 團隊發佈，來源 repo 約 4.2K stars。表中是技能目錄的累計安裝量。B、C、D 與 Q1 可直接使用專案契約、SQLite 與第 4 節的可重播情境。[Expo 官方 repo](https://github.com/expo/skills)
+
+| 適用卡 | 用途與安裝量 | 選用時執行 |
+|---|---|---|
+| A1 | 四個分頁、巢狀提案路徑與深層連結，約 35.3K。[expo-router](https://skills.sh/expo/skills/expo-router) | `npx skills add expo/skills --skill expo-router` |
+| A2、A3 | iOS／Android 的原生介面元件，約 41.2K。[expo-native-ui](https://skills.sh/expo/skills/expo-native-ui) | `npx skills add expo/skills --skill expo-native-ui` |
+| A1 發佈 | EAS 簽署與 build 設定，約 29.9K。這次走 APK 與 iOS ad hoc 的 internal distribution。[eas-app-stores](https://skills.sh/expo/skills/eas-app-stores) · [測試版發佈設定](https://docs.expo.dev/build/internal-distribution/) | `npx skills add expo/skills --skill eas-app-stores` |
 
 ## 6. 一週內接起來與交件
 
