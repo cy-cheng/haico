@@ -1,69 +1,84 @@
-# Waymark M3｜團隊分工與 API 契約 v1
+# Waymark M3 實作計畫｜從 Discord 分享到手機上的共同行程
 
-**2026-11-25 · Group 4 · 12/02 提交。** M3 要交付能裝在 iPhone 和 Android 手機上的 Waymark 測試版。朋友繼續在 Discord 分享景點，點卡片上的 **Open in app** 就能在手機檢查來源、修改行程、核准提案。目前 repo 裡有分工、API 契約與測資，App 和後端待實作。四個工作包 A–D 開放認領。
+**Group 4，2026/12/02 提交。** Mia 在 Discord 貼一則錦市場 Reel。朋友能在手機地圖找到同一個地方，看到誰分享、誰想去，請 AI 把它排進京都行程。Alex 可以先看第三天修改前後的差異，再決定要不要套用。這是四位組員要一起做通的旅程。目前 repo 提供規劃、型別和開發測資，手機 App、線上後端與測試包都待實作。
 
-## 以 M2 上台版驗收
+**先認領工作包，再拿第 5 節對應的任務開工。** A 做手機前端與發佈，B 做 Discord、API 與部署，C 做旅程記憶和地點，D 做規劃、交通和版本。第 2 節定義兩個入口共用的操作，第 4 節用同一趟關西行程驗收，文末附可直接複製的 TypeScript 契約。
 
-M2 第 24、30 頁原提案是 Discord Bot 搭配 Web App。M3 把行程介面做成可安裝的手機 App，沿用第 17–20 頁的三個使用情境，以及 Discord 和行程介面各自負責的操作。[M2 正式簡報，共 38 頁](../milestone2/slides_presentation.pdf)
+## 產品範圍與畫板對照
 
-| 簡報 | 使用者要能做什麼 | 誰負責接起來 |
+畫面名稱、按鈕與操作層級依 M2 的 22 張畫板。簡報第 17–20 頁定義分享、整理／規劃、共同編輯三個情境，第 37–38 頁驗收修改、確認與儲存。簡報第 24、30 頁原提 Web App，本次交付改成可裝在 iPhone 與 Android 上的測試版。[M2 互動原型](https://claude.ai/artifact/75jXxDxX1EwALYK2eui1Xs) · [38 頁上台版](../milestone2/slides_presentation.pdf)
+
+### 手機上的四個分頁
+
+| 分頁與畫板 | 成員打開後能做什麼 | 完成的判準 |
 |---|---|---|
-| p.13–14、33 · 邀請 | 在 Discord 提及 `@Waymark`，選 From now on 或 Include earlier messages。前者只處理新訊息，後者可匯入同頻道的獲准歷史。拒絕則維持未啟動 | B 控制權限與收集範圍，C 只收到獲准來源 |
-| p.17、21、23、29 · 情境 1：分享 | Mia 分享錦市場的 Reel。啟用範圍內自動出現有來源的地點卡，成員可按 ♥／✓／−／×。App 的 Import log 顯示來源、分享者和時間，Map 出現同一地點，投票同步 | C 擷取與辨識，B 更新 Discord 卡片，A 顯示紀錄、地圖與反應 |
-| p.18–19、21、34–35 · 情境 2：整理、規劃、修改 | `@Waymark` 後選 From reply／From here／All earlier。摘要分 Decided 和 Undecided，可按 Memory only、Open in app 或 Generate plan。未定的下午行程可投方向票。缺地名先出 Needs details，可補地點或選 Not this time。草案與修改差異回到 Discord 供成員審閱 | B 管觸發、範圍與按鈕，C 保存摘要與來源，D 產生提案，A 支援預覽和修正 |
-| p.9、20–21、35–36 · 情境 3：共編 | App 提供每日地圖、附交通的時間表、Groups 與 Drafts 候選區。Day 3 示範 Mia／Yuki 和 Alex／Ben 分開，到 Namba Station 會合。成員可保留空檔、從地圖或候選區加站，亦可比較每段交通再選用 | A 做四種視圖，C 提供候選與座標，D 管分支、集合與交通 |
-| p.10、15–16、25、37–38 · 核准與保存 | 成員可編輯提案、Apply 或 Keep original。Confirm／Unconfirm 只更改本人對這一版的意見。Save & finish 先說明保存內容，可取消。儲存後保留來源與待確認者，收集顯示 paused，重開仍能編輯、匯出日曆 | B 維護卡片與暫停收集，D 維護版本與個別確認，A 讀回相同狀態 |
+| **AI Chat**　#1、#17 | 要求產生三日草案，或只規劃 Day 2 的 13:15–17:30。在嵐山、祇園、休息等有依據的方向中選一個，看建議站點及時段，可按 Apply 或 Keep original。從 Map 或 Trip 點 Ask AI 時帶入當天情境 | 兩個入口都能發起規劃。選祇園先得到待審預覽，只有按 Apply 才會改已接受行程 |
+| **Map**　#2、#10 | 依城市或類別篩選、搜尋、點圖釘或候選卡看地點。詳情顯示地址、來源、備註、成員的四種反應；成員可打開原貼文或 Google Maps、選擇要加入的日期 | Mia 分享的錦市場在 Import log 與地圖都指向同一候選。加入 Day 2 經過提案，已排日期能從接受版讀回 |
+| **Trip**　#3–6、#9 | 切日期、在地圖與時間表之間切換。展開交通比較時間、票價、轉乘和步驟，選 Use 預覽。Day 3 的兩隊可走不同路線，在 Namba Station 集合；未排候選留在 Drafts。修改預覽可 Edit、Apply 或 Keep original | M3 採 #3 左側時間軸，#4 上方時間帶保留為設計備選。#5 分組、#6 版本差異、#9 交通使用同一份行程，套用後兩端顯示同版 |
+| **Manage**　#7 | 查看日期、城市、住宿、航班、步調、建立者與成員、連結的 Discord 頻道。分享邀請、開 Trip memory、匯出已接受版日曆 | 第二位有頻道權限的成員可從邀請加入；兩人看到相同旅程。匯出的日曆對應選定的已接受版本 |
 
-**AI 與工具（p.23–25、28–31）。** M2 把 AI 的四項工作命名為 Understand、Ground、Draft、Revise。C 負責 Understand、Ground 與按要求產生的摘要，用輕量模型處理分享內容，串 Whisper 處理可取得的 Reels 音訊、用 Google Places 辨認地點。D 負責 Draft 與 Revise，在成員要求時使用規劃模型與 Google Routes。簡報提案列 Claude Haiku 5.5／Opus 5.5。以兩個設定鍵記錄實際接通的模型 ID、呼叫分工與成本。程式逐項查驗訊息來源、地點、已知營業時間、交通與成員已確認的步調。M2 估算的每趟約 US$2 留作實測比較。
+**跨頁入口。** #8 Import log 從 AI Chat 或 Manage 的 Trip memory 開啟。列出已匯入、待補件和辨識失敗的來源，保留原分享者和時間。成員在來源仍獲授權時可按 Re-analyze 重試，或替 Riverside café 補地點。#13 TabBar、#14 AI button、#15 Place card、#16 Itinerary page 由 A 各實作一次，供前述畫面共用。
 
-第 17 頁的流程圖有 nearby picks 示意，第 26 頁將主動探索新地點列入 Later，正式報告的 A2 也註明為未來功能。M3 讓成員用已分享的候選規劃，並保留手動從地圖加入地點的功能。[M2 正式報告](../milestone2/GROUP_4_MILESTONE_2.pdf)
+### Discord 的七種卡片
 
-**版本整合案例（p.37）**　Mia 在 Discord 提及 `@Waymark` 並說「第三天十一點再出發，跳過大阪城」。Alex 點卡片上的 **Open in app**，手機直接開啟第三天的變更預覽。Alex 按 **Apply**，兩邊都顯示 v2。Mia 再按 **Confirm**，畫面顯示「1 of 4 confirmed」。這兩個按鈕各有一個後端操作。
+| 畫板 | 觸發與驗收 |
+|---|---|
+| **#18 Scope** | 首次提及 Waymark 時，成員選 From now on 或 Include earlier messages。B 記下頻道與授權起點。單次摘要再選 From reply／From here／All earlier，最多只能讀到已授權範圍 |
+| **#11 Place card、#22 Clarify** | C 辨識到錦市場後，B 發地點卡，顯示原貼文、分享者、地圖連結和 Must go／Want to／No opinion／Skip。遇到缺店名的 Riverside café，成員可 Add place 或 Not this time，保留判斷的來源 |
+| **#12 Summary & options、#19 Generate** | 摘要分 Decided／Undecided，標出涵蓋的訊息與時間。Memory only 保存摘要，Generate plan 產生待審草案，Open in app 回到該旅程或提案。成員投下午方向票，手機可讀回票數 |
+| **#20 Change proposal、#21 Confirm & finish** | Mia 要求第三天從 08:30 改成 11:00 並跳過大阪城。接受後大阪城回候選區，第 1、2 天照舊。Confirm／Unconfirm 記錄本人對該版本的意見。Save & finish 先顯示保存內容，確認後暫停收集，重開仍可編輯 |
 
-## 1. 認領哪一塊
+**這一週的取捨。** 先完成上表的操作。#7 的增減天數、改綁／解除頻道與刪除旅程排在三個情境通過之後，第一版顯示實際可用的控制項。#4 的替代版面也排在之後。M2 第 26 頁把主動推薦未分享的新地點及 LINE 列入後續；成員可以手動加地點。原型上的票數、票價與 AI 建議僅作測資，演示版本要顯示成員的實際選擇與執行結果。[M2 正式報告](../milestone2/GROUP_4_MILESTONE_2.pdf)
 
-| 工作包 | 誰來做 | 交給其他人的成果 | 可以獨立驗收的第一件事 |
+## 1. 誰負責哪個模組
+
+每人認領一列。四個工作包共用一份 v1 契約，可先用第 4 節的測資獨立開發。所有目錄都相對於 `milestone3/`。
+
+| 工作包 | 認領人 | 擁有的程式與決定 | 第一次交接 |
 |---|---|---|---|
-| **A · 手機 App 與測試版發佈** | ＿＿ | 在 `apps/mobile/` 用 Expo / React Native 共用一份 iOS、Android 前端。負責登入回跳、旅程連結、地圖與分組、來源修正、提案核准、分享日曆檔，以及兩平台安裝包 | 在實機安裝測試版，從 Discord 開啟大阪範例的指定提案。顯示 v1 與差異，按 Apply 送出請求，遇到 409 時讀回最新版本 |
-| **B · Discord、Trip 與後端部署** | ＿＿ | Discord Bot、讀取範圍、Fastify API、手機登入與旅程權限、工作佇列。部署常駐後端，讓手機與 Bot 讀寫同一趟旅程 | 手機透過行動網路登入、讀到自己的測試旅程。測試頻道只匯入成員同意的訊息，停止收集後不再送給 C |
-| **C · 旅程記憶與地點辨識** | ＿＿ | Memory 模組、模型呼叫工具、擷取 prompt、Places 查詢。將獲准的圖文整理成有來源的候選與偏好，接受澄清、投票與修正 | 兩則分享同一景點只產生一筆候選，能回到兩個來源。無法辨識的店名會出現在待澄清清單 |
-| **D · 行程生成、交通與版本核准** | ＿＿ | Planner、PlanReview、規劃 prompt、Routes 查詢。產生草案、計算差異、保存接受版本與個別確認，提供日曆內容 | 給定 v1 和同一份記憶，能生成待審提案。拒絕保留 v1，接受只建立一份 v2，舊提案無法覆蓋 v2 |
+| **A　手機 App** | ＿＿ | `apps/mobile/`。Expo／React Native 的四個分頁、共用元件、登入回跳與深層連結、前景刷新、日曆分享、iOS／Android 安裝包 | 用測資從 Discord 連結打開指定提案，展示待審、接受後與過期三種狀態。將連結格式、真機測試結果交給 B |
+| **B　Discord 與後端整合** | ＿＿ | `apps/server/src/{discord,http,trip,jobs}/`。七種卡片、登入、旅程權限、來源範圍、命令去重、背景工作與部署。把同一個操作轉給 C 或 D | 給 A 一個可用手機網路登入的 HTTPS 網址；給 C 一筆含授權範圍的來源；給 D 一筆有身分、版本及來源的規劃請求 |
+| **C　記憶與地點** | ＿＿ | `apps/server/src/{memory,places,model}/`。Understand、Ground、摘要、匯入狀態、候選／偏好、成員修正、投票、Places 查詢及共用模型連線 | 交一份包含錦市場與兩個來源、待澄清咖啡店、已決／未決摘要及方向票的記憶快照。A 用來畫地圖，D 用來規劃 |
+| **D　行程、交通與版本** | ＿＿ | `apps/server/src/{planner,routes,review}/`。Draft、Revise、路段比較、分組與集合、提案差異、接受版本、個別確認和日曆 | 交一筆會保留前兩天與分組的 Day 3 提案。A、B 都能用同一個 ID 檢視、接受或拒絕，再讀回同一版本 |
 
-**AI 的分工**　C 維護共用模型連線與擷取 prompt，D 使用同一個模型介面維護規劃 prompt。**地圖的分工**　C 提供地點、座標與營業資訊，D 估算兩站間的交通，A 把結果畫出來。**整合的分工**　B 提供 HTTP、工作查詢與共用資料庫連線，C、D 各自負責其資料表、交易與測試。每位成員交自己的實測紀錄，A 不必獨力承擔評估與報告。
+B 管共用 SQLite 連線、migration runner 和工作佇列，C、D 各管自己資料表的寫入與 migration。C 維護擷取及模型呼叫，D 維護規劃 prompt 和行程驗證。C 交地點與座標，D 交交通時間與選項，A 呈現與收集成員選擇。M2 提案的 Whisper／Places／Routes 與兩級模型由各自負責人用真實資料接通，記錄實際模型 ID、失敗情況與每趟成本，對照簡報的 US$2 估算。[M2 簡報第 23–25、28–31 頁](../milestone2/slides_presentation.pdf)
 
 ```mermaid
-flowchart TD
-    Card["Discord 卡片"] -->|Open in app| Mobile["A · iOS / Android App"]
-    Mobile <-->|HTTPS / JSON| Trip["B · Fastify / Trip"]
-    Bot["B · Discord Bot"] -->|發佈或更新| Card
-    Bot <-->|同程序呼叫| Trip
-    Trip -->|已授權的訊息| Memory["C · Memory"]
-    Memory -->|記憶快照| Planner["D · Planner"]
-    Trip -->|成員要求規劃| Planner
-    Planner -->|候選行程| Review["D · PlanReview"]
-    Trip -->|成員按 Apply / Confirm| Review
-    Trip --> DB[("持久化磁碟上的 SQLite")]
-    Memory --> DB
-    Review --> DB
+flowchart LR
+    Mobile["A · iOS / Android<br/>AI Chat · Map · Trip · Manage"]
+    Chat["Discord 群組與卡片"]
+    Chat -->|"Open in app"| Mobile
+    subgraph Server["一台常駐後端"]
+      Bot["B · Discord Bot"]
+      Entry["B · Trip 與工作佇列"]
+      Memory["C · 旅程記憶與地點"]
+      Planner["D · Planner / Review"]
+      DB[("持久化 SQLite")]
+      Bot <--> Entry
+      Entry -->|"收集或修正"| Memory
+      Entry -->|"規劃或核准"| Planner
+      Memory -->|"同版記憶快照"| Planner
+      Entry --> DB
+      Memory --> DB
+      Planner --> DB
+    end
+    Chat <--> Bot
+    Mobile <-->|"HTTPS /api/v1"| Entry
+    Memory -->|"擷取、地點辨識"| ToolsC["模型 / Whisper / Places"]
+    Planner -->|"經 C 的 ModelPort 呼叫規劃模型"| Models["規劃模型"]
+    Planner --> Routes["Google Routes"]
 ```
 
-### 從 Discord 開啟手機上的那一筆提案
+### 真機測試與後端部署
 
-B 在卡片放同一網域的 HTTPS 連結。旅程用 `/trips/{t}`，指定提案用 `/trips/{t}/proposals/{p}`。例如 Alex 點 `/trips/osaka/proposals/p7`，A 在 App 開啟或已在背景時都導到 p7。需登入時先記下目的地，完成 Discord 授權後再讀 p7。B 仍要檢查頻道與旅程權限。
+課程要求能依 README 在本機重現。為了讓組員和受測者離開開發電腦也能使用，團隊另外提供雙平台安裝包及一個固定的 HTTPS 網址。一台常駐主機即可執行 Fastify、Discord Bot 與工作處理，SQLite 放在重新部署仍保留的磁碟上。[M3 作業規格](https://docs.google.com/document/d/1f_e977FQVdIpVFO7rHM773MVLVu1sZUJekJLDzXhDFg/edit)
 
-A 提供 iOS App ID、Android 套件名稱與測試版簽章指紋，設定 Universal Links / App Links。B 在部署網域的 `/.well-known/` 提供對應的 `apple-app-site-association` 和 `assetlinks.json`。手機還沒安裝或 Discord 先開內建瀏覽器時，同一網址會顯示安裝方式及用系統瀏覽器開啟的指引。安裝後再點原卡片即可回到原提案。[Expo 連結與平台設定](https://docs.expo.dev/linking/overview/)
-
-### 測試版部署
-
-| 誰交付 | 要交給測試者的東西 |
-|---|---|
-| A · Android | 用 EAS Build 的 `preview` 設定產生已簽署的 APK，交付安裝連結及版本號，確認關掉開發電腦後仍可使用。 |
-| A · iOS | 用同一份程式建立 ad hoc 測試版。先由團隊的 Apple Developer Program 帳號登記測試機 UDID、簽署後再提供安裝連結。新增測試機時更新簽署檔並重新簽署或建置。[Expo 測試版發佈](https://docs.expo.dev/build/internal-distribution/) |
-| B · 線上後端 | 提供手機外網可連的固定 HTTPS 網域，以單一常駐 Node 程序執行 Fastify、Discord Bot 與工作處理。SQLite 放在重新部署後仍保留的磁碟。把公開 API 網址交給 A 打進測試版，Discord 憑證與模型金鑰留在主機。 |
+- **B 管網址。** Discord 旅程卡用 `/trips/{t}`，提案卡用 `/trips/{t}/proposals/{p}`。已安裝時開到指定內容，未安裝時同一網址顯示測試版安裝說明。A 處理冷啟動、背景返回、未登入後恢復原目的地；B 逐次驗證旅程權限。
+- **A 管兩個安裝包。** Android 交付簽署的 APK。iOS 用團隊的 Apple Developer Program 帳號登記測試機 UDID，產生 ad hoc 安裝連結。A 提供 App ID、Android 套件名及簽章指紋，B 在網域的 `/.well-known/` 提供兩平台驗證檔。兩支手機均應能關掉開發電腦後從 Discord 進入同一筆提案。[Expo 安裝與簽署](https://docs.expo.dev/build/internal-distribution/) · [App 連結](https://docs.expo.dev/linking/overview/)
 
 ## 2. 大家共用的 API
 
-HTTP 前綴為 `/api/v1`。A 的手機 App 透過 HTTPS 呼叫 API，B 的 Bot 在同一個 Node.js 程序呼叫 `TripPort`。兩者取得相同的資料格式、走相同的權限與版本檢查。下面大寫名稱的完整 TypeScript 欄位在本文末，也可直接從 repo 的 [contracts](packages/contracts/src/index.ts) 匯入。**只收到這一份 Markdown 也有完整型別。**
+A 的 App 經由 HTTPS 呼叫下表的路徑，全部以 `/api/v1` 開頭。B 的 Discord Bot 在同一個後端程序呼叫 `TripPort`。兩端共用旅程權限、操作與版本。可從附錄複製完整 TypeScript 型別，或從 repo 匯入。[共用契約](packages/contracts/src/index.ts)
 
 ### 手機從 Discord 登入
 
@@ -78,22 +93,22 @@ HTTP 前綴為 `/api/v1`。A 的手機 App 透過 HTTPS 呼叫 API，B 的 Bot �
 
 A 只處理對應本次登入的 callback 和 state。成功後把 verifier 換成 Waymark session，將 token 存在 SecureStore，呼叫受保護的 API 時放入 Authorization header。App 回到先前保存的畫面，需要加入時先呼叫 `join` 再讀提案。B 只在後端保存 Discord 憑證，App 回呼網址只攜帶一次性結果。若取消或關掉瀏覽器，A 清除本次 verifier 和 state，保留目的畫面供重試。code 過期、已使用或 verifier 不符都回 401 `UNAUTHENTICATED`，A 重新啟動登入。B 遇到未通過驗證的 Discord state，在瀏覽器結束流程。
 
-### 加入與讀取旅程
+### 讀取資料與加入旅程
 
 | 方法與路徑 | 送什麼 | 成功回應與用途 |
 |---|---|---|
-| GET `/me` | Waymark bearer token | 200 `Member`。未登入回 401 |
-| GET `/trips` | Waymark bearer token | 200 `TripInfo[]`，列出已加入的旅程 |
-| POST `/trips` | `NewTrip` | 201 `TripInfo`。建立者成為成員，每個測試頻道綁定一趟旅程。重複建立回 409 |
-| POST `/trips/{t}/join` | 空 body | 200 `TripView`。B 驗證該成員可讀取對應頻道。Bot 的邀請網址包含 trip ID |
-| GET `/trips/{t}` | 無 body | 200 `TripView`。單趟完整快照包括成員、收集狀態、記憶、目前已接受行程與待審提案。第一版用於小型旅程，整份讀取 |
+| GET `/me` | bearer token | 200 `Member`。A 用此 ID 顯示自己的地點票與版本確認 |
+| GET `/trips` | bearer token | 200 `TripInfo[]`，列出已加入的旅程 |
+| POST `/trips` | `NewTrip` | 201 `TripInfo`。B 驗證操作者可讀取指定頻道，以本人 ID 寫入 creatorId 並加入成員。每個測試頻道綁一趟旅程，重複綁定回 409 |
+| POST `/trips/{t}/join` | 空 body | 200 `TripView`。邀請連結帶 trip ID，B 驗證登入者可讀取該旅程綁定的 Discord 頻道再加入 |
+| GET `/trips/{t}` | 無 body | 200 `TripView`，包括基本資料、成員、收集狀態、記憶、已接受版本及待審提案。A 的四個分頁共用這份快照 |
 | GET `/trips/{t}/proposals/{p}` | 無 body | 200 `Proposal`，可查看已套用、拒絕或過期的提案。Bot 卡片可用 ID 重新讀取狀態 |
 | GET `/trips/{t}/jobs/{j}` | 無 body | 200 `Job`。輪詢至終態，取回提案、澄清問題、摘要、記憶版本或失敗原因 |
 | GET `/trips/{t}/places/search?q=...` | 成員輸入的地名或地址 | 200 `Place[]`。B 驗證成員，C 搜尋 Places。選中的 placeId 可綁回原候選，或從地圖加新地點 |
 | GET `/trips/{t}/routes?version=2&from=s1&to=s2&modes=rail,bus` | 已接受版本、同一段交通的站點 ID、允許的方式 | 200 `RouteOption[]`。預設 Rail + Bus。顯示可取得的時間、票價、轉乘、步驟。Use 將 optionId 送入手動提案。無可用選項回空陣列 |
 | GET `/trips/{t}/calendar.ics?version=2` | 已接受版本號 | 200 `text/calendar`。D 匯出指定版本，A 以登入憑證讀取檔案，透過手機的分享選單匯出。版本不存在回 404 |
 
-新旅程的 `collection` 是 `inactive`，`accepted` 是 `null`，基準行程版本是 0。B 先由 Waymark bearer token 或 Discord event 取得操作者，逐次驗證旅程與頻道存取權。Discord 按鈕記住 trip / proposal / version，操作時仍以**實際按鈕者**身分執行。
+新旅程的 `collection=inactive`、`accepted=null`、基準行程版本為 0。B 由 bearer token 或 Discord 事件取得操作者，逐次檢查旅程與頻道權限，並檢查所用的 job、source、candidate、proposal 歸屬該旅程。Discord 按鈕可攜帶旅程與版本，但身分取自當下的點擊者。
 
 ### 操作與回應
 
@@ -104,13 +119,25 @@ A 只處理對應本次登入的 callback 和 state。成功後把 verifier 換�
 | `collect` | `scope: ReadScope` | B，確認範圍後啟動或恢復 | 200 `TripView` |
 | `pause` | 無 | B，保存目前接受版、停止收集 | 200 `TripView` |
 | `edit_memory` | `memoryRevision, edit: MemoryEdit` | C，人工補景點、澄清、改偏好、排除或投票 | 200 `TripView` |
+| `retry_import` | `sourceId` | B 載入原先獲准的分享與媒體，C 重試該筆失敗的匯入 | 202 `JobRef`，成功結果為 `{kind:"memory",revision}` |
 | `summarize` | `range: SummaryRange` | B 篩選獲准訊息，C 保存摘要、筆記及可選的方向投票，回傳 summaryId | 202 `JobRef` |
 | `plan` | `base: Base, request: PlanRequest, replacesProposalId?` | B 固定輸入快照，D 生成首案、自然語言修改或手動修改的預覽 | 202 `JobRef` |
-| `answer` | `jobId, text` | B 取回已回覆 clarify 的規劃工作與原始請求，將回答交給 D | 202 新的 `JobRef` |
+| `answer` | `jobId` 及 `text` 或 `optionId`，二選一 | B 讀出原規劃工作保存的 `clarify`。選項 ID 須屬於該題，再將回答與來源交給 D | 202 新的 `JobRef` |
 | `decide` | `proposalId, action: "apply" 或 "reject"` | D，套用或拒絕指定提案 | 200 `TripView` |
 | `confirm`／`unconfirm` | `planVersion` | D，記錄或撤回呼叫者對該版本的同意 | 200 `TripView` |
 
-以上成功回應中，`sources[].id` 可用來查該則來源，`candidates[].id` 是旅程內候選 ID，`candidates[].place.id` 是地點供應商的 ID。行程站點只引用候選 ID，一個景點的多次造訪各有自己的 stop ID。
+來源 `sourceId`、候選 `candidateId`、地點供應商的 `placeId` 和行程站點 `stopId` 分開使用。同一地點的多則分享可以合併成一個候選，同一候選可以出現在不同站點。A 用這些 ID 連起原文、地點卡與行程，保留被移出行程的候選。
+
+### 原型按鈕如何接到契約
+
+| 入口 | 讀取與操作 |
+|---|---|
+| **AI Chat** | 生成首案送 `plan/draft`，修改接受版送 `plan/revise`。規劃 Day 2 下午時指定 `request.context.date` 和帶 UTC offset 的 `window.start/end`。A 保存 jobId。若結果是 `clarify`，點 B · Gion 送 `answer {jobId,optionId}`，也可回覆文字。若沿用已保存的摘要選項，在規劃請求的 context 傳 `selectedOption:{summaryId,pollId,optionId}`。這兩條路都可取得待審提案。Discord 投方向票另送 `edit_memory/vote_option`。 |
+| **Map／Place details** | Map 依座標畫點，用 place.city 與候選標籤篩選。Place details 讀地址、來源及成員反應。四種票依序對應 `heart/check/minus/cross`。筆記用 `edit_memory/set_candidate_note`（`candidateId,text`，傳 null 清除本人筆記）。點 Day 1／2／3 後選時段，以 `plan/manual` 加入 `add_stop`，預覽通過才寫入該日。移除一站用 `remove_stop`，略過整個候選用 `edit_memory/exclude`。 |
+| **Trip／Transport** | 用 `accepted.itinerary.days` 畫時間表、分組與會合點，從未排入且未排除的候選顯示 Drafts。點交通段帶入該版本與首尾 stop ID，按 Use 送 `plan/manual` 的 `choose_route`。提案畫面用 `proposal.preview/differences/warnings`。Apply 與 Keep original 分別對應 `decide/apply`、`decide/reject`。 |
+| **Manage／Trip memory** | Manage 從 `trip` 讀名稱、日期、時區、`creatorId`、`details`（城市、住宿、航班、步調）和 B 從 Discord 取得的 `channelName`（缺值時顯示 `channelId`），從 `members` 顯示成員。缺少選填資料時顯示未提供。M3 核心提供唯讀資料、分享加入連結與匯出 .ics。Trip memory 以 `memory.sources[].importState` 顯示匯入進度、結果與失敗原因，再依 `candidate.sourceIds` 找到地點。Re-analyze 用 `retry_import`，Needs details 用搜尋 → `edit_memory/resolve`。 |
+| **Discord · Scope、Place card、Clarify** | Scope 的選擇送 `collect`。獲准分享完成後，Place card 以 `edit_memory/vote` 記錄實際按鈕者。Clarify 的 Add place 用搜尋與 `resolve` 綁回原候選，Not this time 用 `exclude`。 |
+| **Discord · Summary & options、Generate、Change proposal、Confirm & finish** | `summarize` 產生摘要卡，Memory only 停在已存的摘要。Generate plan 和 Edit 經 `plan` 產生提案。Open in app 打開旅程或該提案。變更卡呼叫 `decide`，版本卡呼叫 `confirm/unconfirm`。Save & finish 先顯示保存內容，成員確認後送 `pause`。 |
 
 旅程的三種 POST（建立、加入、commands）各帶 `Idempotency-Key`，例如一次點擊產生的 UUID。Bot 使用 Discord interaction ID。索引以操作者、路徑、key 為範圍。完全相同的重試回原先結果或同一個 job ID，用相同 key 送不同內容回 409。登入交換與登出各用上方的憑證規則。A 在旅程畫面開啟時短輪詢，App 回到前景時重讀快照，以伺服器回傳的版本為準。
 
@@ -122,123 +149,147 @@ A 只處理對應本次登入的 callback 和 state。成功後把 verifier 換�
 | 旅程中的物件不存在 | 404 `NOT_FOUND` | 重新載入旅程 |
 | 格式或參照錯誤／已知不可行的行程 | 422 `INVALID_INPUT`／`INFEASIBLE` | 顯示原因，讓使用者修改 |
 | 基準過期／提案已結案／key 重用 | 409 `STALE_BASE`／`ALREADY_DECIDED`／`KEY_REUSED` | 取回最新快照，重新預覽後再操作 |
+| 匯入已完成或已超出本次收集範圍 | 409 `IMPORT_NOT_RETRYABLE` | 重新讀取該筆 Import log。失去旅程或頻道讀取權仍回 403 |
 | 外部模型或地圖服務失敗 | 已受理的 job 進入 `failed`，附 `UPSTREAM_UNAVAILABLE` 與原因 | 顯示重試。單站缺少營業時間、交通估計則以 warning 或 null 呈現 |
 
 錯誤 body 格式為 `{"error":{"code":"STALE_BASE","message":"Refresh this trip and review the new version.","current":{"planVersion":2,"memoryRevision":4}}}`。若 job 開始後才發現資料已變動，查詢 job 仍回 HTTP 200，body 的 `status` 為 `failed`，`error.code` 同樣為 `STALE_BASE`。掛起的 job 可回 `queued` 或 `running`，停止收集而取消的擷取工作回 `cancelled`。
 
 ## 3. 後端模組怎麼接
 
-| 介面 · 擁有者 | 呼叫者 | 實作約定 |
+| 介面與負責人 | 呼叫者 | 輸入、輸出與責任 |
 |---|---|---|
-| `TripPort` · B | A 透過 HTTP，B 的 Bot 直接呼叫 | 將登入者或 Discord 操作者轉成 actor。用 `forChannel` 找旅程，`onMessage` 處理已同意的頻道事件。普通訊息靜默收集，範圍內分享連結自動發地點卡或澄清卡。提及 Bot、按按鈕或回答 Bot 問題才觸發摘要、規劃與修改。B 用 Components v2 更新原 Discord 訊息的進度與結果 |
-| `MemoryPort` · C | B 收集、修正、查詢。D 取地點資料 | `ingest` 只接 B 篩過的來源，保留原訊息 ID。相同景點合併來源，無法辨認回候選選項，確定地點後再排入行程。`snapshot` 同次回傳 revision 與資料。`facts` 的 null 是未知，空陣列是當日已知沒有開放區間 |
-| `ModelPort` · C | C 的擷取、D 的 Planner | 輸入 prompt、圖文與預期 JSON schema，輸出原始模型結果。C、D 各自驗證 schema。每個模型推論項目的來源 ID 必須指向該次授權輸入或已授權的記憶，無有效來源的項目不採用，模型 ID 和金鑰由後端設定 |
-| `PlannerPort`、`RoutesPort` · D | B 的規劃工作呼叫 Planner，Planner 查詢 Routes | B 傳入同版記憶、已接受行程、來源與成員。Planner 回傳候選行程或一個澄清問題。RoutesPort 回傳可用路線供比較，缺少票價或時間則該欄回 null。首次規劃回候選行程，修改既有行程只回具型別的 changes。手動編輯走相同預覽與檢查流程 |
-| `ReviewPort` · D | B 的規劃工作與成員操作 | `propose` 對候選與原版計算差異，保存 pending 提案。`decide` 核准才建立接受版，`setConfirmation` 只寫該成員對指定版本的同意 |
+| `TripPort` · B | A 的 HTTP client、B 的 Discord adapter | 驗證 actor、旅程與權限。以 `forChannel` 找旅程、`onMessage` 收獲准分享、`run` 接成員操作，回傳 `TripView` 或 `JobRef`。保存 Discord 卡片的 channel/message ID 與對應的候選、提案或版本。App 或 Bot 寫入成功後，B 用已提交的狀態更新原卡片，Discord 暫時失敗時重試。 |
+| `MemoryPort`、`TranscriptionPort`、`ModelPort` · C | B 提供來源、C 擷取與整理、D 讀地點事實與呼叫模型 | `ingest` 接已核可的來源和媒體，必要時轉錄可取得的音訊。`snapshot` 回傳同一個 revision 的候選、偏好、來源與摘要。`searchPlaces`、`facts` 回地點及營業區間。C 和 D 各自驗證模型 JSON 與來源 ID。 |
+| `PlannerPort`、`RoutesPort` · D | B 的規劃工作、D 的 Planner | 固定 `GenerationInput` 的旅程、記憶、接受版本、請求及補答。首案回 `drafted`，修改回有型別的 `patch`，缺資訊可回 `clarify` 與附來源的選項。比較路線時傳地點、出發時間、可接受的交通方式。 |
+| `ReviewPort` · D | B 的工作佇列與同步操作 | `propose` 計算預覽及與接受版的差異。`decide` 接受或拒絕指定提案，`setConfirmation` 寫入實際操作者對該版本的意見，`calendar` 匯出指定接受版本。 |
 
-**儲存與競爭條件。** B 負責單一 SQLite 連線、migration runner 與旅程／工作表。C、D 管自己的 migration 與資料，三者共用短交易。網路請求在交易外執行。首次草案從版本 0 開始，第一次 Apply 產生 v1。D 建立提案和 Apply 時都比對目前 planVersion 與 memoryRevision。Apply 在同一筆交易中重新確認提案為 pending、寫入新版、結束提案與記錄該次操作。Reject 只結束提案。新版本的確認人數從零開始。D 在伺服器套用 `changes` 產生預覽。移除大阪城只移除該行程站點，候選與來源留在 Drafts。若成員在預覽上按 Edit，送 `replacesProposalId`，以該提案預覽作修改起點。新提案保存成功時將舊提案標為 stale，並以接受版為基準顯示完整差異。新提案仍要經過 Apply。
+**收集與 Import log。** B 在呼叫 C 之前保存來源和工作狀態，故模型失敗仍查得到原分享。未啟用、已暫停、超出範圍的頻道訊息不排入工作。C 合併同一地點的來源，保留人工修正。私人影片或模糊名稱可留下待補資料的候選。B 在 `Source.importState` 提供這筆分享最近一次匯入的 job ID 與狀態。成功可為 imported 或 needs_details，失敗附 reason，因暫停而取消則為 cancelled。重試須是該旅程有權讀取、仍在本次收集範圍內的失敗分享。B 載入原本的媒體，並讓同一來源只執行一個重試工作。暫停後取消舊工作，每次恢復增加 epoch，C 在寫入時再比對 epoch 與狀態。只有影響規劃的記憶變更才增加 revision。
 
-**收集與修正。** B 先檢查範圍才把訊息交給 C。C 提交擷取結果時在同一個交易再次檢查 epoch 與狀態，並保留使用者已修正的欄位。每次恢復使用新 epoch，排除暫停期間的訊息。B 把規劃請求與補答各記成 Source 以供追溯。只有候選、偏好等規劃資料真正變動時才增加 memory revision。輸入被截斷或私人影片無法讀取時，顯示待澄清並接受文字、截圖或上傳媒體補充。
+**兩端的使用者輸入。** B 將手機的要求或補答記為 `origin=app`、`url=null`，作者取自 session。Bot 呼叫非同步 `run` 時可傳內部參數 `discordSource`，標為 `origin=discord` 並保留真實的 Discord 原文連結。外部 Reel 或貼文的網址另存 `sharedPost`。只有要匯入的分享才帶 `importState`。B 把來源 ID 放進規劃輸入，C、D 只使用該旅程獲准的來源。B 用同一操作 key 重試時，須取回原來源與原 job。
 
-**澄清。** 產生行程時若 D 回 `clarify`，B 把問題與原始輸入留在 job 上。A 或 Bot 顯示問題，用 `answer` 送回補充並取得新 job。若解答改變了已確認的記憶，先以 `edit_memory` 保存修正，再用新基準重送 `plan`。地點卡片的 Add place 先搜尋輸入的地址，再以 `edit_memory/resolve` 把選中的 placeId 綁回原 candidateId，保留原來源。Not this time 排除該候選。從地圖另加地點時，`add_place` 可帶已選定的 placeId。
+**Day 2 的方向選擇。** D 以指定日期、時間窗和既有候選產生選項，C 提供已知營業時間，未知為 null。使用者按選項後，B 依原 job 取回選項與來源，將選項放入 GenerationInput.answers 的 selectedOption。選項不存在回 422 INVALID_INPUT。若引用先前的方向票，則驗證 summary/poll/option 彼此隸屬。D 保留其他日期與時段，將結果送入同一個提案審閱流程。需要補地名時，用搜尋與 `resolve` 修正原候選，再從最新 revision 規劃。無法排入時段或分組後無法準時會合，回傳具體衝突供成員修正。
 
-**摘要範圍與保存。** `collect.scope` 控制收集授權。`summarize.range` 選擇單次整理範圍，From reply 從被回覆的訊息開始，From here 從指定訊息開始，All earlier 涵蓋獲准歷史。B 以提出要求的訊息為截止，只將授權範圍內的原文交給 C。C 保存涵蓋時間、訊息數、Decided／Undecided 筆記及各自來源，透過 `memory.summaries` 供兩端重讀或修正。Memory only 完成在摘要卡，Generate plan 才送出 draft。方向票用 `vote_option`，四種地點反應用 `vote`。真實 Discord 原文連結放在 `Source.url`，外部貼文連結與平台放在 `sharedPost`。
+**摘要與路線。** `collect.scope` 決定可讀的訊息。`summarize.range` 選其中一段來整理。From reply 從被回覆訊息、From here 從指定訊息算起，All earlier 涵蓋已授權的歷史，截止於成員提出摘要要求時。C 保存時間範圍、訊息數、Decided／Undecided 及其來源，供兩端再次開啟。交通比較按指定版本、路段與出發時間查詢，保留每種方式可取得的步驟、時間、票價和轉乘。無方案回空陣列，缺資料的數值回 null。成員選用路線後仍可先預覽。
 
-**交通與空檔。** A 依站點時間顯示未排時段，以未排入行程且未被排除的候選形成 Drafts。D 比較同一路段的可用路線，成員按 Use 時將 `choose_route` 綁定該版本、路段、出發時間與 optionId。接受後才更新兩端。篩選 Rail／Bus 可包含必要的接駁步行。供應商沒有資料的方式顯示無可用路線。
+**接受、拒絕與確認。** B 維護 SQLite 連線與 migration runner，各人維護自己模組的資料表。網路請求在交易外執行。D 建提案和套用時都比對 `base.planVersion` 與 `base.memoryRevision`。Apply 在同一筆交易內檢查 pending、寫入新版、結束提案並記錄操作結果。Reject 只結束提案。每個新版本從零位成員確認開始。Edit 以 `replacesProposalId` 指向的預覽作起點，新提案存妥後將舊提案標為 stale，並相對於已接受版本列出完整差異。Save & finish 暫停收集後仍可重開同一版行程、查看來源與待確認者。
 
-## 4. 四個人共用的第一筆整合範例
+## 4. 三個可重跑的整合情境
 
-以下是**開發用合成資料與預期結果**。Trip `osaka` 在 `Asia/Tokyo`，成員為 Mia、Alex、Ben、Yuki。先用有來源的兩個景點「大阪城」和「難波」建立 v1，第三天原定 08:30 出發、09:00 大阪城、12:00 難波。記憶版本為 4。各組都從這個狀態測同一件事。
+用同一趟 Kansai Fall Trip（`osaka`，`Asia/Tokyo`，11/20–22），分別還原每個情境的起始狀態。Mia、Alex、Ben、Yuki 各有自己的身分。以下是開發用合成資料與預期結果。測試版驗收時，把同一套步驟放到經同意的 Discord 測試頻道與實機上執行，記下實際結果。
 
-| 順序 | 呼叫與內容 | 應看到的結果 |
+| 情境與畫板 | 從哪裡開始 | 兩端怎麼驗收 |
 |---|---|---|
-| 1 | B 收到 Mia 對 `@Waymark` 的要求「第三天十一點再出發，跳過大阪城」。以該訊息作為操作來源，送 `{"kind":"plan","base":{"planVersion":1,"memoryRevision":4},"request":{"kind":"revise","instruction":"第三天十一點再出發，跳過大阪城"}}` | 202 `{"jobId":"j7"}`，當前行程仍是 v1 |
-| 2 | A 或 B 查 `GET /jobs/j7`（相對於該旅程） | 完成時得到 `{"id":"j7","status":"succeeded","result":{"kind":"proposal","proposalId":"p7"}}` |
-| 3 | A 查 `GET /proposals/p7` | `status=pending`，可看到原本與建議的時間、大阪城的移除、變動後的交通，以及受影響的站點。其他天不變 |
-| 4 | Alex 在手機送 `{"kind":"decide","proposalId":"p7","action":"apply"}` | 200 `TripView`，`accepted.version=2`、`confirmedBy=[]`。Discord 卡片與手機重新開啟的旅程都顯示 v2 |
-| 5 | Mia 送 `{"kind":"confirm","planVersion":2}` | `accepted.confirmedBy=["mia"]`，畫面顯示 1/4。重試同一個操作維持 1/4 |
+| **① Mia 分享，Ben 補地點**。11、8、10、22 | 在已啟用的頻道分享錦市場 Reel，同一地點再由另一人分享一次。Ben 的 Riverside café 只有名稱線索 | Discord 出現含來源的地點卡。App 的 Map 和 Import log 找得到同一個候選、兩筆來源及每位成員的反應。Ben 從 Add place 選定地址後保留原來源。另以解析失敗的貼文測一次 Re-analyze，重送只產生同一份工作結果 |
+| **② Alex 選祇園，讓 AI 預覽下午的安排**。12、1、17、9 | 先給 Day 2 留 13:15–17:30 空檔，備妥已分享、可辨識的候選。Discord 摘要列 Decided／Undecided 及方向投票。以 `sum2/poll2/gion` 識別祇園選項 | 在 App 的 AI Chat 選 Gion，讀回只改 Day 2 下午的待審預覽，原版與投票數維持原值。Keep original 後空檔仍在。從同一基準重跑並 Apply，再看 Trip 時段及兩站的 Transport。另從空行程測一次 Generate，Apply 後才有 v1 |
+| **③ 第三天晚出發，兩組仍能會合**。5、6、20、21 | 還原下方 v1，Mia 在 Discord 說「第三天十一點出發，跳過大阪城」。兩組已約好 16:00 在 Namba Station 會合 | 手機顯示 v1→待審差異，兩個入口都能 Keep original。Alex 按 Apply 後顯示 v2、0/4，Mia 再 Confirm 才是 1/4。大阪城回到候選，兩組的成員及會合站保留，第 1、2 天逐欄相同。Save & finish 可取消，完成後暫停收集。重開 App 仍可從 Manage 匯出 v2 的日曆 |
 
-<details>
-<summary>展開開發用測資，可直接給前端與 Planner 當作 GET /trips/osaka 的回應</summary>
+**情境 ② 的請求。** `vote_option` 記錄成員在 Discord 對方向的意見。按 AI Chat 的 Gion 按鈕會提出以下 `POST /api/v1/trips/osaka/commands`。三個方向先存在 `SavedSummary.poll`，整理時使用的訊息可從摘要筆記追溯。若成員直接從 App 詢問空檔，伺服器也可回傳附選項的 `clarify`。A 送 `answer`、該次 `jobId` 與 `optionId` 取得預覽。每個 POST 範例另帶一次操作的 `Idempotency-Key`。
 
 ```json
 {
-  "trip": {"id":"osaka","name":"Osaka weekend","channelId":"ch1","timezone":"Asia/Tokyo","firstDate":"2026-11-20","lastDate":"2026-11-22"},
-  "members": [{"id":"mia","name":"Mia"},{"id":"alex","name":"Alex"},{"id":"ben","name":"Ben"},{"id":"yuki","name":"Yuki"}],
-  "collection": "active", "epoch": 1, "scope": {"mode":"from_now"},
-  "memory": {
-    "revision": 4, "summaries": [],
-    "sources": [
-      {"id":"m1","authorId":"mia","text":"Osaka Castle on day 3?","url":null,"at":"2026-11-19T18:00:00+09:00"},
-      {"id":"m2","authorId":"ben","text":"Lunch in Namba that day.","url":null,"at":"2026-11-19T18:01:00+09:00"}
+  "kind":"plan","base":{"planVersion":1,"memoryRevision":4},
+  "request":{"kind":"revise","instruction":"請把祇園散步排進第二天下午",
+    "context":{"date":"2026-11-21","window":{"start":"2026-11-21T13:15:00+09:00","end":"2026-11-21T17:30:00+09:00"},
+      "selectedOption":{"summaryId":"sum2","pollId":"poll2","optionId":"gion"}}}
+}
+```
+
+**情境 ②、③ 的共同起點。** A 用下方 JSON 模擬 `GET /api/v1/trips/osaka`，B–D 用同一份 `TripView` 建測資。每次測試都還原 v1。測試「先從 App 詢問」時清空 `summaries`，保留同一批來源與候選，確認 AI 仍能給出有依據的方向。範例座標僅供畫面測試，真實分享需可回查原文，交通時間用實際查詢結果。
+
+<details>
+<summary>展開可直接載入的 TripView 測資</summary>
+
+```json
+{
+  "trip":{"id":"osaka","name":"Kansai Fall Trip","channelId":"ch1","channelName":"kansai-trip","timezone":"Asia/Tokyo","firstDate":"2026-11-20","lastDate":"2026-11-22","creatorId":"mia","details":{"cities":["Osaka","Kyoto"],"stay":"Namba hotel","flights":null,"pace":["Relaxed","Less walking"]}},
+  "members":[{"id":"mia","name":"Mia"},{"id":"alex","name":"Alex"},{"id":"ben","name":"Ben"},{"id":"yuki","name":"Yuki"}],
+  "collection":"active","epoch":1,"scope":{"mode":"from_now"},
+  "memory":{"revision":4,"preferences":[],
+    "summaries":[{"id":"sum2","range":{"mode":"from_here","messageId":"ky1"},"firstAt":"2026-11-19T18:05:00+09:00","lastAt":"2026-11-19T18:06:00+09:00","messageCount":2,
+      "notes":[{"id":"n1","state":"decided","text":"Lunch at Nishiki Market.","sourceIds":["ky1"]},{"id":"n2","state":"undecided","text":"Day 2 afternoon is open until 17:30.","sourceIds":["ky1","ky2"]}],
+      "poll":{"id":"poll2","question":"How should we spend the afternoon?","options":[{"id":"arashiyama","label":"Arashiyama","voterIds":["ben"]},{"id":"gion","label":"Gion · Old-town stroll","voterIds":["mia","alex"]},{"id":"rest","label":"Keep time free","voterIds":[]}]}}],
+    "sources":[
+      {"id":"m1","origin":"discord","authorId":"mia","text":"Nishiki Market on Day 2, Osaka Castle on Day 3.","url":null,"at":"2026-11-19T18:00:00+09:00"},
+      {"id":"m2","origin":"discord","authorId":"ben","text":"Start at Namba Station on Day 1. After lunch in Shinsekai on Day 3, Mia and Yuki visit Umeda Sky Building, Alex and Ben visit Tsutenkaku. Meet at Namba Station at 16:00.","url":null,"at":"2026-11-19T18:01:00+09:00"},
+      {"id":"ky1","origin":"discord","authorId":"alex","text":"After lunch at Nishiki Market, we have 13:15–17:30 free. We could visit Yasaka Shrine and walk along Hanamikoji in Gion.","url":null,"at":"2026-11-19T18:05:00+09:00"},
+      {"id":"ky2","origin":"discord","authorId":"ben","text":"Or visit Arashiyama Bamboo Grove, or simply leave the afternoon free.","url":null,"at":"2026-11-19T18:06:00+09:00"}
     ],
-    "candidates": [
-      {"id":"c1","label":"Osaka Castle","state":"resolved","place":{"id":"place1","name":"Osaka Castle","coordinates":null},"choices":[],"sourceIds":["m1"],"votes":[]},
-      {"id":"c2","label":"Namba","state":"resolved","place":{"id":"place2","name":"Namba","coordinates":null},"choices":[],"sourceIds":["m2"],"votes":[]}
-    ],
-    "preferences": []
+    "candidates":[
+      {"id":"castle","label":"Osaka Castle","state":"resolved","place":{"id":"place-castle","name":"Osaka Castle","coordinates":null},"choices":[],"sourceIds":["m1"],"votes":[]},
+      {"id":"lunch","label":"Shinsekai · Lunch","state":"resolved","place":{"id":"place-lunch","name":"Shinsekai · Lunch","coordinates":null},"choices":[],"sourceIds":["m2"],"votes":[]},
+      {"id":"namba","label":"Namba Station","state":"resolved","place":{"id":"place-namba","name":"Namba Station","coordinates":null},"choices":[],"sourceIds":["m2"],"votes":[]},
+      {"id":"umeda","label":"Umeda Sky Building","state":"resolved","place":{"id":"place-umeda","name":"Umeda Sky Building","coordinates":null},"choices":[],"sourceIds":["m2"],"votes":[]},
+      {"id":"tsuten","label":"Tsutenkaku","state":"resolved","place":{"id":"place-tsuten","name":"Tsutenkaku","coordinates":null},"choices":[],"sourceIds":["m2"],"votes":[]},
+      {"id":"nishiki","label":"Nishiki Market","state":"resolved","place":{"id":"place-nishiki","name":"Nishiki Market","city":"Kyoto","coordinates":{"lat":35.005,"lng":135.765}},"choices":[],"sourceIds":["m1","ky1"],"votes":[]},
+      {"id":"yasaka","label":"Yasaka Shrine","state":"resolved","place":{"id":"place-yasaka","name":"Yasaka Shrine","city":"Kyoto","coordinates":{"lat":35.004,"lng":135.778}},"choices":[],"sourceIds":["ky1"],"votes":[]},
+      {"id":"hanamikoji","label":"Hanamikoji","state":"resolved","place":{"id":"place-hanamikoji","name":"Hanamikoji","city":"Kyoto","coordinates":{"lat":35.002,"lng":135.775}},"choices":[],"sourceIds":["ky1"],"votes":[]},
+      {"id":"bamboo","label":"Arashiyama Bamboo Grove","state":"resolved","place":{"id":"place-bamboo","name":"Arashiyama Bamboo Grove","city":"Kyoto","coordinates":null},"choices":[],"sourceIds":["ky2"],"votes":[]}
+    ]
   },
-  "accepted": {
-    "version": 1, "confirmedBy": [],
-    "itinerary": {"days":[
-      {"date":"2026-11-20","departAt":"2026-11-20T10:00:00+09:00","stops":[],"legs":[],"split":null},
-      {"date":"2026-11-21","departAt":"2026-11-21T10:00:00+09:00","stops":[],"legs":[],"split":null},
-      {"date":"2026-11-22","departAt":"2026-11-22T08:30:00+09:00","stops":[
-        {"id":"s1","candidateId":"c1","start":"2026-11-22T09:00:00+09:00","end":"2026-11-22T10:30:00+09:00","sourceIds":["m1"]},
-        {"id":"s2","candidateId":"c2","start":"2026-11-22T12:00:00+09:00","end":"2026-11-22T13:00:00+09:00","sourceIds":["m2"]}
-      ],"legs":[{"fromStopId":"s1","toStopId":"s2","mode":"transit","minutes":null}],"split":null}
-    ]}
-  },
-  "pending": []
+  "accepted":{"version":1,"confirmedBy":[],"itinerary":{"days":[
+    {"date":"2026-11-20","departAt":"2026-11-20T10:00:00+09:00","stops":[{"id":"s1","candidateId":"namba","start":"2026-11-20T10:00:00+09:00","end":"2026-11-20T10:15:00+09:00","sourceIds":["m2"]}],"legs":[],"split":null},
+    {"date":"2026-11-21","departAt":"2026-11-21T12:00:00+09:00","stops":[{"id":"s2","candidateId":"nishiki","start":"2026-11-21T12:00:00+09:00","end":"2026-11-21T13:15:00+09:00","sourceIds":["m1"]}],"legs":[],"split":null},
+    {"date":"2026-11-22","departAt":"2026-11-22T08:30:00+09:00",
+     "stops":[
+       {"id":"sCastle","candidateId":"castle","start":"2026-11-22T09:30:00+09:00","end":"2026-11-22T11:30:00+09:00","sourceIds":["m1"]},
+       {"id":"sLunch","candidateId":"lunch","start":"2026-11-22T12:15:00+09:00","end":"2026-11-22T12:45:00+09:00","sourceIds":["m2"]},
+       {"id":"sMeet","candidateId":"namba","start":"2026-11-22T16:00:00+09:00","end":"2026-11-22T16:15:00+09:00","sourceIds":["m2"]}
+     ],
+     "legs":[{"fromStopId":"sCastle","toStopId":"sLunch","mode":"transit","minutes":null}],
+     "split":{"afterStopId":"sLunch","meetingStopId":"sMeet","branches":[
+       {"memberIds":["mia","yuki"],"stops":[{"id":"sUmeda","candidateId":"umeda","start":"2026-11-22T13:25:00+09:00","end":"2026-11-22T14:30:00+09:00","sourceIds":["m2"]}],"legs":[{"fromStopId":"sLunch","toStopId":"sUmeda","mode":"transit","minutes":null},{"fromStopId":"sUmeda","toStopId":"sMeet","mode":"transit","minutes":null}]},
+       {"memberIds":["alex","ben"],"stops":[{"id":"sTsuten","candidateId":"tsuten","start":"2026-11-22T13:00:00+09:00","end":"2026-11-22T14:00:00+09:00","sourceIds":["m2"]}],"legs":[{"fromStopId":"sLunch","toStopId":"sTsuten","mode":"transit","minutes":null},{"fromStopId":"sTsuten","toStopId":"sMeet","mode":"transit","minutes":null}]}
+     ]}
+    }
+  ]}},
+  "pending":[]
 }
 ```
 
 </details>
 
-**第 37 頁的驗收輸出。** D 的 Revise 對上面的 v1 回傳以下兩個操作。PlanReview 套用後重新檢查交通與時間可行性，回傳含完整差異的預覽。Apply 後大阪城回到 Drafts，第 1、2 天與原版一致。範例中的 `m3` 是 B 在步驟 1 記錄的修改請求。
+**用同一筆提案測版本。** B 把 Mia 的修改請求記為新來源 `m3`，先回傳 `202 {"jobId":"j7"}`。背景工作由 D 產生下面的 `DraftResult`，驗算預覽的站點、交通與分組。App 輪詢 `GET /api/v1/trips/osaka/jobs/j7` 得到 `proposalId=p7`，再讀 `GET /api/v1/trips/osaka/proposals/p7`。按 Apply 送 `{"kind":"decide","proposalId":"p7","action":"apply"}`，另一次 Confirm 送 `{"kind":"confirm","planVersion":2}`。
 
 ```json
 {
-  "kind": "patch",
-  "changes": [
+  "kind":"patch","changes":[
     {"kind":"retime_day","date":"2026-11-22","departAt":"2026-11-22T11:00:00+09:00"},
-    {"kind":"remove_stop","stopId":"s1"}
+    {"kind":"remove_stop","stopId":"sCastle"}
   ],
-  "sourceIds": ["m3"],
-  "warnings": []
+  "sourceIds":["m3"],"warnings":[]
 }
 ```
 
-**交叉測試**　從步驟 3 重跑，按 Reject 應保留 v1。再從 v1 同時建立兩份提案，接受第一份後，用另一個成員帳號套用第二份應收到 409。另測試同一成員因網路中斷重送同一個 Apply key，應拿到第一次成功的回應。用這三個結果區分拒絕、過期與重試。
+**重送與競爭。** 從同一份 v1 建兩個待審提案，用兩支手機分別套用。一次成功，另一支應收到 409 並顯示新版本。成功端因斷線以相同 key 重送，應讀回第一次的 v2。再從 v1 獨立測 Keep original，確認版本與分組都未變。暫停收集後才抵達的擷取結果應被捨棄。
 
-## 5. 如何各自跟 AI 開工
+## 5. 四個人怎麼和各自的 AI 開工
 
-將這份檔案提供給各自的 coding AI，附上認領的任務。先要求一個可以執行的小成果，每次交接附上實際執行指令、輸入、觀察結果與已知限制。介面要改時，把受影響的呼叫者一起找來確認，更新共用型別與本文，再合併相依改動。
+每個人把這份 Markdown、認領的畫板編號和下列任務交給自己的 coding AI。路徑以 `milestone3/` 為根。第一輪用同一份測資確認介面，第二輪在測試頻道與真機重做同一個動作。交接時附啟動指令、輸入、回應或錄影，其他人便能獨立驗收。
 
-| 人員 | 可直接交給 AI 的第一個任務 |
+| 認領 | 可直接交給 AI 的第一個任務 | 交給誰、怎麼驗收 |
+|---|---|---|
+| A · 手機 | 「在 `apps/mobile/` 建 Expo App，以 AI Chat、Map、Trip、Manage 為底部導覽。用 §4 的 v1，在 Trip 以畫板 3 的左側時間軸顯示第三天兩組與會合點，再做畫板 6 的差異預覽。讓同一個 API client 能切換測資和 B 的網址。」 | 給 B 兩個實機安裝連結。未登入者點 Discord 的 p7，登入後回到 p7。Apply 成功顯示 v2，409 能重新讀取 |
+| B · Discord 與部署 | 「在 `apps/server/src/{trip,discord,http,jobs}/` 把已部署的 Fastify、Bot、SQLite 接到同一個大阪旅程。先做 #18 啟用與 #20–21 跨端核准。用測試頻道的真實訊息、手機登入及邀請連結驗證同一個人與同一版，再接分享、摘要與澄清卡。」 | 給 A 手機可連的 HTTPS 網址、旅程及提案連結。給 C 已獲授權的訊息，給 D 帶來源的請求。重啟後仍能讀回 v2 |
+| C · 記憶與地點 | 「在 `apps/server/src/{memory,places,model}/` 用錦市場兩筆分享、解析失敗的貼文和 Ben 的 Riverside café 測擷取。用同一份記憶供應 #11 地點卡、#8 Import log、#10 詳情及 #12 摘要，示範一次經授權的重試和一次人工補地點。」 | B 和 A 能用相同候選 ID 取得去重後的兩筆來源與投票。D 拿到可引用的候選、偏好與祇園方向選項 |
+| D · 行程與核准 | 「在 `apps/server/src/{planner,routes,review}/` 用 §4 的大阪 v1 實作第三天修改，保留兩組成員與會合點。用同一個預覽流程處理 AI Chat 選 Gion、手動從候選加站與改選交通。用 SQLite 驗證拒絕、套用、重送以及個別確認。」 | 給 A、B 一筆 pending 提案，能列出受影響站點、交通及來源。兩入口讀到相同 v2，第一次 Apply 後仍是 0/4 |
+
+B 維護 workspace、部署設定及 migration 執行順序。B、C、D 各自負責所屬的資料表。要動 `packages/contracts/src/index.ts` 時，提出者與呼叫方先用 §4 範例核對欄位，再一起更新本文附錄。
+
+## 6. 一週內接起來與交件
+
+| 日期 | 當天要能在別人的裝置上重現什麼 |
 |---|---|
-| A | 「我負責 Waymark 手機 App。請在 `apps/mobile/` 用 Expo／React Native 做大阪行程和提案差異畫面，可切換 v1、v2 與 409 測資。先讓 iPhone 和 Android 從 Discord 的提案連結開到這個畫面，登入後仍停在原提案。第二步再串接 Import log、地點反應、摘要、Map／Timeline／Groups／Drafts、交通比較與核准。」 |
-| B | 「我負責 Discord 與共用後端。請將 Node/Fastify、Bot 和 TripPort 部署到真機可連的 HTTPS 網域，讓 SQLite 使用持久磁碟。依第 2 節串 Discord 登入，給 A 旅程和提案各一個可測的連結。從測試頻道選收集範圍，確認分享連結後可投票、叫出摘要、按 Generate plan，再從卡片打開指定提案。」 |
-| C | 「我負責 Memory、Places 和共用 ModelPort。請從兩筆不同 ID 的同地點分享開始，接一次真實模型擷取，保存一筆候選及兩個來源，示範 Decided／Undecided 摘要可回到原始訊息。另測模糊名稱的澄清、人工修正及晚到的擷取結果。輸出可供 D 規劃的 MemorySnapshot。」 |
-| D | 「我負責 Planner、Routes 和 PlanReview。請用大阪 v1 與 revision 4 的記憶，透過 ModelPort 取得調整出發時間和移除景點的 typed changes，套用到基準版算出前後差異並保存 pending。用 SQLite 實測接受、拒絕、重送、兩人同時接受及個別確認，交給 A、B 一筆可操作的提案。」 |
+| **11/25** | 四人認領並跑通同一份 v1 測資。A 確認 iOS 簽署帳號與測試機 UDID，B 取得 Discord 測試頻道、網域和持久磁碟，C、D 各跑通一次實際模型或地圖服務 |
+| **11/26** | A 提供 Android APK、已登記 iPhone 的 ad hoc 安裝連結。兩支真機使用行動網路從 Discord 開啟指定旅程。尚未安裝時顯示安裝引導，安裝後再點原連結。B 在部署主機重啟服務後仍讀得到資料 |
+| **11/27** | 跑情境①。B 開啟收集範圍，C 接真實分享並補正地點。A 在兩部手機的 Map／Trip memory 驗收來源、投票與重複分享 |
+| **11/28** | 跑情境②。從已授權摘要或 App 的 AI Chat 取得祇園方向提案。D 驗證指定時段與交通，A 示範 Keep original 和 Apply 的不同結果 |
+| **11/29** | 跑情境③。兩位成員完成跨端修改、確認、Save & finish、重開及匯出日曆。核對 §4 的重試與 409 案例 |
+| **11/30** | 請沒看過設計的朋友先只讀英文 User Flows，再自行走上述 2–3 個情境。記下哪一步需要提示、完成時間、手機型號、測試版號與實際結果 |
+| **12/01–02** | 12/01 由一位組員在乾淨環境按英文 README 本機啟動，另一人用釋出的測試版走一遍。凍結同一版本完成錄影、報告及 ZIP，12/02 由一人提交 |
 
-以下路徑皆相對於 `milestone3/`。A 維護 `apps/mobile/`、App 連結設定與雙平台簽署測試版。B 維護 `apps/server/src/` 下的 `trip/`、`discord/`、`http/`、`jobs/`，也負責後端部署及安裝引導頁。C 維護同層的 `memory/`、`places/`、`model/`，D 維護 `planner/`、`review/`、`routes/`。B、C、D 各交所屬資料表的 SQLite migration，B 統整 workspace 與 lockfile。共用契約由提出修改者與使用方一起檢查。
+**若整合落後。** 先保住「分享能追來源、AI 可預覽與拒絕、兩端同版且逐人確認」三段操作。畫板 4 的上方時間帶可留作 A/B 比較，Manage 的進階管理操作依前述範圍排在核心驗收後。排程變動由負責人記下受影響的 M2 情境、目前可操作部分及替代展示。展示真實服務的步驟與合成測資要在報告標明。
 
-## 6. 接起來的時間與提交內容
-
-| 日期 | 團隊一起驗收的成果 |
-|---|---|
-| **11/25** | 認領 A–D，確認可沿用的分支。A 確認 Android 測試機及 Apple Developer Program 付費團隊可用，登記測試 iPhone 的 UDID。B 確認 HTTPS 網域、持久磁碟、Discord 權限與登入。C、D 確認模型與地圖服務。四人對齊第 4 節案例 |
-| **11/26–27** | A 交第一個簽署的 Android APK 與 iOS ad hoc 安裝連結。B 用測試頻道、已部署的 API 和真實 AI 串起大阪案例。兩支手機離開開發電腦的網路，從 Discord 的 `/trips/{t}` 或 `/trips/{t}/proposals/{p}` 連結開到對應畫面。未安裝時可開安裝說明，安裝後再點原連結 |
-| **11/28–29** | 對照 M2 完成來源卡與補正、圖文與媒體、地圖／交通、手動編輯、分組與集合點、日曆、個別確認和停止收集。在一支手機按 Apply，另一支手機與 Discord 應顯示同版。關閉並重開 App，再重啟後端，核對已接受版本、確認人與來源 |
-| **11/30** | 用三個情境實測，記下手機型號、系統版本、安裝包版本與結果。各人交操作畫面、失敗案例與重現方式 |
-| **12/01–02** | 12/01 請一位組員從乾淨環境依 README 安裝，登入並走一次完整流程。以同一版程式錄製英文影片、完成英文報告與 ZIP。12/02 由一人提交 |
-
-**評估計畫（p.26、32）**　目標為約三份經同意的聊天，標註地點、偏好與重複分享，量測擷取／合併正確率與虛構地點數（目標 0）。另規劃邀 3–5 組朋友測試對收集範圍、核准與信任的理解，報告列實際參與組數與結果。
-
-**三個測試情境**　① 大阪三日遊，記錄重複地點合併、來源正確率、已確認偏好是否保留與任務完成時間。② 模糊店名或私人 Reels，確認補件與人工修正能進入下一次規劃。③ 分組後要求局部修改，測試同時套用、拒絕、確認與暫停時仍在執行的擷取。每個情境各寫 Task / Expected / Actual，註明哪些輸入是合成範例、哪些取得參與者同意。影片使用實際模型呼叫與成員操作。
-
-**交付責任**　A 提供有版本號的 Android APK、已登記 iPhone 的安裝連結與安裝步驟，並統整 2–4 分鐘英文 MP4。B 統整可重現的程式 ZIP、部署網址、README、外部帳號設定與 `.env.example`。C 整理擷取與修正評估，D 整理規劃與版本評估，兩人彙編 6–8 頁英文 PDF。四人確認報告、影片與測試版一致，並記錄尚未達成的 M2 項目。LINE、主動推薦未分享景點、向量檢索維持後續方向。[M3 作業規格](https://docs.google.com/document/d/1f_e977FQVdIpVFO7rHM773MVLVu1sZUJekJLDzXhDFg/edit) · [M2 原型](https://claude.ai/artifact/75jXxDxX1EwALYK2eui1Xs) · [Expo 測試版簽署與安裝說明](https://docs.expo.dev/build/internal-distribution/)
+**評估與交件。** 全部繳交材料均以英文撰寫或錄製。C 依 M2 評估計畫，以約三份經同意的聊天標記地點、偏好與重複分享，記錄正確率及虛構地點數（目標 0）。D 整理使用者是否能辨認待審／已套用、可否拒絕，以及是否理解停止收集。目標邀 3–5 組朋友，報告寫實際組數、任務、預期／實際結果與限制。A 負責 2–4 分鐘英文 MP4，給評閱者看到真實模型呼叫與人在兩端的決定。B 負責可本機重跑的程式 ZIP、英文 README、`.env.example`、帳號及安裝步驟。C、D 彙整 6–8 頁英文 PDF。團隊另交測試版安裝連結與線上後端，逐項核對影片、報告、程式與版號。[M3 作業規格](https://docs.google.com/document/d/1f_e977FQVdIpVFO7rHM773MVLVu1sZUJekJLDzXhDFg/edit) · [M2 互動原型](https://claude.ai/artifact/75jXxDxX1EwALYK2eui1Xs)
 
 ## 附錄 · 可直接交給 AI 的 TypeScript 契約
 
@@ -272,8 +323,13 @@ export type SavedSummary = {
   notes: { id: Id; state: 'decided' | 'undecided'; text: string; sourceIds: Id[] }[]
   poll: { id: Id; question: string; options: { id: Id; label: string; voterIds: Id[] }[] } | null
 }
+export type ImportState =
+  | { status: 'queued' | 'running' | 'cancelled' | 'imported' | 'needs_details'; jobId: Id }
+  | { status: 'failed'; jobId: Id; reason: string }
 export type Source = {
   id: Id; authorId: Id; text: string; url: string | null; at: string
+  origin?: 'app' | 'discord'
+  importState?: ImportState
   sharedPost?: { url: string; platform: string; author: string | null; thumbnailUrl: string | null }
 }
 export type ScopedSource = {
@@ -282,11 +338,13 @@ export type ScopedSource = {
 }
 export type Place = {
   id: Id; name: string; coordinates: { lat: number; lng: number } | null
+  address?: string; city?: string
 }
 export type Candidate = {
   id: Id; label: string; state: 'unresolved' | 'resolved' | 'excluded'
   place: Place | null; choices: Place[]; sourceIds: Id[]
   votes: { memberId: Id; value: Reaction }[]
+  notes?: { memberId: Id; text: string }[]
   tags?: string[]; description?: string
 }
 export type Preference = {
@@ -302,6 +360,7 @@ export type MemoryEdit =
   | { kind: 'exclude'; candidateId: Id }
   | { kind: 'preference'; preferenceId: Id; text: string; confirmed: boolean }
   | { kind: 'vote'; candidateId: Id; value: Reaction | null }
+  | { kind: 'set_candidate_note'; candidateId: Id; text: string | null }
   | { kind: 'edit_note'; summaryId: Id; noteId: Id; text: string }
   | { kind: 'vote_option'; summaryId: Id; pollId: Id; optionId: Id | null }
 
@@ -331,9 +390,14 @@ export type ManualChange =
   | { kind: 'reorder'; date: string; stopIds: Id[] }
   | { kind: 'split'; date: string; split: Day['split'] }
   | { kind: 'choose_route'; fromStopId: Id; toStopId: Id; optionId: Id }
+export type PlanContext = {
+  date: string
+  window?: { start: string; end: string }
+  selectedOption?: { summaryId: Id; pollId: Id; optionId: Id }
+}
 export type PlanRequest =
-  | { kind: 'draft' }
-  | { kind: 'revise'; instruction: string }
+  | { kind: 'draft'; instruction?: string; context?: PlanContext }
+  | { kind: 'revise'; instruction: string; context?: PlanContext }
   | { kind: 'manual'; changes: ManualChange[] }
 export type Base = { planVersion: number; memoryRevision: number }
 export type Warning = { code: string; message: string; stopId?: Id }
@@ -341,9 +405,10 @@ export type Proposal = {
   id: Id; base: Base; status: 'pending' | 'accepted' | 'rejected' | 'stale'
   preview: Itinerary; differences: string[]; warnings: Warning[]; sourceIds: Id[]
 }
+export type PlanningOption = { id: Id; label: string; sourceIds: Id[] }
 export type Outcome =
   | { kind: 'proposal'; proposalId: Id }
-  | { kind: 'clarify'; question: string }
+  | { kind: 'clarify'; question: string; options?: PlanningOption[] }
   | { kind: 'memory'; revision: number }
   | { kind: 'summary'; summaryId: Id; sourceIds: Id[] }
 export type ApiError = { error: { code: string; message: string; current?: Base } }
@@ -355,13 +420,15 @@ export type JobRef = { jobId: Id }
 
 export type TripInfo = {
   id: Id; name: string; channelId: Id; timezone: string; firstDate: string; lastDate: string
+  creatorId?: Id; channelName?: string
+  details?: { cities: string[]; stay: string | null; flights: string | null; pace: string[] }
 }
 export type TripView = {
   trip: TripInfo; members: Member[]; collection: 'inactive' | 'active' | 'paused'
   epoch: number; scope: ReadScope | null; memory: MemorySnapshot
   accepted: AcceptedPlan | null; pending: Proposal[]
 }
-export type NewTrip = Omit<TripInfo, 'id'>
+export type NewTrip = Omit<TripInfo, 'id' | 'creatorId' | 'channelName'>
 export type SyncCommand =
   | { kind: 'collect'; scope: ReadScope }
   | { kind: 'pause' }
@@ -370,8 +437,10 @@ export type SyncCommand =
   | { kind: 'confirm' | 'unconfirm'; planVersion: number }
 export type AsyncCommand =
   | { kind: 'summarize'; range: SummaryRange }
+  | { kind: 'retry_import'; sourceId: Id }
   | { kind: 'plan'; base: Base; request: PlanRequest; replacesProposalId?: Id }
-  | { kind: 'answer'; jobId: Id; text: string }
+  | { kind: 'answer'; jobId: Id; text: string; optionId?: never }
+  | { kind: 'answer'; jobId: Id; optionId: Id; text?: never }
 export type Command = SyncCommand | AsyncCommand
 
 // Session and event identity enter through B. Ports below run inside the shared server.
@@ -388,7 +457,7 @@ export interface TripPort {
   calendar(actor: Actor, tripId: Id, version: number): Promise<string>
   onMessage(channelId: Id, source: Source, media: ScopedSource['media']): Promise<JobRef | null>
   run(actor: Actor, tripId: Id, cmd: SyncCommand, key: Id): Promise<TripView>
-  run(actor: Actor, tripId: Id, cmd: AsyncCommand, key: Id): Promise<JobRef>
+  run(actor: Actor, tripId: Id, cmd: AsyncCommand, key: Id, discordSource?: Source): Promise<JobRef>
 }
 export type PlaceFacts = {
   placeId: Id; openingIntervals: { start: string; end: string }[] | null
@@ -406,7 +475,8 @@ export interface TranscriptionPort {
 }
 export type GenerationInput = {
   trip: TripInfo; members: Member[]; memory: MemorySnapshot; accepted: AcceptedPlan | null
-  request: PlanRequest; requestSourceId: Id; answers: Source[]; editing: Proposal | null
+  request: PlanRequest; requestSourceId: Id; editing: Proposal | null
+  answers: (Source & { selectedOption?: PlanningOption })[]
 }
 export type DraftResult =
   | { kind: 'drafted'; preview: Itinerary; sourceIds: Id[]; warnings: Warning[] }

@@ -22,8 +22,13 @@ export type SavedSummary = {
   notes: { id: Id; state: 'decided' | 'undecided'; text: string; sourceIds: Id[] }[]
   poll: { id: Id; question: string; options: { id: Id; label: string; voterIds: Id[] }[] } | null
 }
+export type ImportState =
+  | { status: 'queued' | 'running' | 'cancelled' | 'imported' | 'needs_details'; jobId: Id }
+  | { status: 'failed'; jobId: Id; reason: string }
 export type Source = {
   id: Id; authorId: Id; text: string; url: string | null; at: string
+  origin?: 'app' | 'discord'
+  importState?: ImportState
   sharedPost?: { url: string; platform: string; author: string | null; thumbnailUrl: string | null }
 }
 export type ScopedSource = {
@@ -32,11 +37,13 @@ export type ScopedSource = {
 }
 export type Place = {
   id: Id; name: string; coordinates: { lat: number; lng: number } | null
+  address?: string; city?: string
 }
 export type Candidate = {
   id: Id; label: string; state: 'unresolved' | 'resolved' | 'excluded'
   place: Place | null; choices: Place[]; sourceIds: Id[]
   votes: { memberId: Id; value: Reaction }[]
+  notes?: { memberId: Id; text: string }[]
   tags?: string[]; description?: string
 }
 export type Preference = {
@@ -52,6 +59,7 @@ export type MemoryEdit =
   | { kind: 'exclude'; candidateId: Id }
   | { kind: 'preference'; preferenceId: Id; text: string; confirmed: boolean }
   | { kind: 'vote'; candidateId: Id; value: Reaction | null }
+  | { kind: 'set_candidate_note'; candidateId: Id; text: string | null }
   | { kind: 'edit_note'; summaryId: Id; noteId: Id; text: string }
   | { kind: 'vote_option'; summaryId: Id; pollId: Id; optionId: Id | null }
 
@@ -81,9 +89,14 @@ export type ManualChange =
   | { kind: 'reorder'; date: string; stopIds: Id[] }
   | { kind: 'split'; date: string; split: Day['split'] }
   | { kind: 'choose_route'; fromStopId: Id; toStopId: Id; optionId: Id }
+export type PlanContext = {
+  date: string
+  window?: { start: string; end: string }
+  selectedOption?: { summaryId: Id; pollId: Id; optionId: Id }
+}
 export type PlanRequest =
-  | { kind: 'draft' }
-  | { kind: 'revise'; instruction: string }
+  | { kind: 'draft'; instruction?: string; context?: PlanContext }
+  | { kind: 'revise'; instruction: string; context?: PlanContext }
   | { kind: 'manual'; changes: ManualChange[] }
 export type Base = { planVersion: number; memoryRevision: number }
 export type Warning = { code: string; message: string; stopId?: Id }
@@ -91,9 +104,10 @@ export type Proposal = {
   id: Id; base: Base; status: 'pending' | 'accepted' | 'rejected' | 'stale'
   preview: Itinerary; differences: string[]; warnings: Warning[]; sourceIds: Id[]
 }
+export type PlanningOption = { id: Id; label: string; sourceIds: Id[] }
 export type Outcome =
   | { kind: 'proposal'; proposalId: Id }
-  | { kind: 'clarify'; question: string }
+  | { kind: 'clarify'; question: string; options?: PlanningOption[] }
   | { kind: 'memory'; revision: number }
   | { kind: 'summary'; summaryId: Id; sourceIds: Id[] }
 export type ApiError = { error: { code: string; message: string; current?: Base } }
@@ -105,13 +119,15 @@ export type JobRef = { jobId: Id }
 
 export type TripInfo = {
   id: Id; name: string; channelId: Id; timezone: string; firstDate: string; lastDate: string
+  creatorId?: Id; channelName?: string
+  details?: { cities: string[]; stay: string | null; flights: string | null; pace: string[] }
 }
 export type TripView = {
   trip: TripInfo; members: Member[]; collection: 'inactive' | 'active' | 'paused'
   epoch: number; scope: ReadScope | null; memory: MemorySnapshot
   accepted: AcceptedPlan | null; pending: Proposal[]
 }
-export type NewTrip = Omit<TripInfo, 'id'>
+export type NewTrip = Omit<TripInfo, 'id' | 'creatorId' | 'channelName'>
 export type SyncCommand =
   | { kind: 'collect'; scope: ReadScope }
   | { kind: 'pause' }
@@ -120,8 +136,10 @@ export type SyncCommand =
   | { kind: 'confirm' | 'unconfirm'; planVersion: number }
 export type AsyncCommand =
   | { kind: 'summarize'; range: SummaryRange }
+  | { kind: 'retry_import'; sourceId: Id }
   | { kind: 'plan'; base: Base; request: PlanRequest; replacesProposalId?: Id }
-  | { kind: 'answer'; jobId: Id; text: string }
+  | { kind: 'answer'; jobId: Id; text: string; optionId?: never }
+  | { kind: 'answer'; jobId: Id; optionId: Id; text?: never }
 export type Command = SyncCommand | AsyncCommand
 
 // Session and event identity enter through B. Ports below run inside the shared server.
@@ -138,7 +156,7 @@ export interface TripPort {
   calendar(actor: Actor, tripId: Id, version: number): Promise<string>
   onMessage(channelId: Id, source: Source, media: ScopedSource['media']): Promise<JobRef | null>
   run(actor: Actor, tripId: Id, cmd: SyncCommand, key: Id): Promise<TripView>
-  run(actor: Actor, tripId: Id, cmd: AsyncCommand, key: Id): Promise<JobRef>
+  run(actor: Actor, tripId: Id, cmd: AsyncCommand, key: Id, discordSource?: Source): Promise<JobRef>
 }
 export type PlaceFacts = {
   placeId: Id; openingIntervals: { start: string; end: string }[] | null
@@ -156,7 +174,8 @@ export interface TranscriptionPort {
 }
 export type GenerationInput = {
   trip: TripInfo; members: Member[]; memory: MemorySnapshot; accepted: AcceptedPlan | null
-  request: PlanRequest; requestSourceId: Id; answers: Source[]; editing: Proposal | null
+  request: PlanRequest; requestSourceId: Id; editing: Proposal | null
+  answers: (Source & { selectedOption?: PlanningOption })[]
 }
 export type DraftResult =
   | { kind: 'drafted'; preview: Itinerary; sourceIds: Id[]; warnings: Warning[] }
