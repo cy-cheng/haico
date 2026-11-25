@@ -1,10 +1,10 @@
 # Waymark M3｜團隊分工與 API 契約 v1
 
-**2026-11-25 · Group 4 · 12/02 提交。** Waymark 幫朋友把 Discord 群聊裡陸續出現的景點和偏好整理成一份共用行程。AI 提出草案，成員可以追查來源、修正理解、接受或拒絕變更。本地 `milestone3/` 目前在設計階段。四個工作包開放認領，A–D 是工作代號，姓名由團隊填入。
+**2026-11-25 · Group 4 · 12/02 提交。** M3 要交付能裝在 iPhone 和 Android 手機上的 Waymark 測試版。朋友繼續在 Discord 分享景點，點卡片上的 **Open in app** 就能在手機檢查來源、修改行程、核准提案。目前 repo 裡有分工、API 契約與測資，App 和後端待實作。四個工作包 A–D 開放認領。
 
 ## 以 M2 上台版驗收
 
-以 [M2 正式簡報，共 38 頁](../milestone2/slides_presentation.pdf) 為準。A–D 是工程分工，整合展示沿用第 17–20 頁的三個使用情境。
+M2 第 24、30 頁原提案是 Discord Bot 搭配 Web App。M3 把行程介面做成可安裝的手機 App，沿用第 17–20 頁的三個使用情境，以及 Discord 和行程介面各自負責的操作。[M2 正式簡報，共 38 頁](../milestone2/slides_presentation.pdf)
 
 | 簡報 | 使用者要能做什麼 | 誰負責接起來 |
 |---|---|---|
@@ -18,14 +18,14 @@
 
 第 17 頁的流程圖有 nearby picks 示意，第 26 頁將主動探索新地點列入 Later，正式報告的 A2 也註明為未來功能。M3 讓成員用已分享的候選規劃，並保留手動從地圖加入地點的功能。[M2 正式報告](../milestone2/GROUP_4_MILESTONE_2.pdf)
 
-**版本整合案例（p.37）**　Mia 在 Discord 提及 `@Waymark` 並說「第三天十一點再出發，跳過大阪城」。Alex 在網頁看到第三天的變更預覽。Alex 按 **Apply**，兩邊都顯示 v2。Mia 再按 **Confirm**，畫面顯示「1 of 4 confirmed」。這兩個按鈕各有一個後端操作。
+**版本整合案例（p.37）**　Mia 在 Discord 提及 `@Waymark` 並說「第三天十一點再出發，跳過大阪城」。Alex 點卡片上的 **Open in app**，手機直接開啟第三天的變更預覽。Alex 按 **Apply**，兩邊都顯示 v2。Mia 再按 **Confirm**，畫面顯示「1 of 4 confirmed」。這兩個按鈕各有一個後端操作。
 
 ## 1. 認領哪一塊
 
 | 工作包 | 誰來做 | 交給其他人的成果 | 可以獨立驗收的第一件事 |
 |---|---|---|---|
-| **A · 網頁前端** | ＿＿ | React / Vite 網頁、登入入口、API client、旅程／記憶／提案畫面。接地圖、分組、來源修正、直接編輯與日曆下載按鈕 | 用下方範例顯示 v1 與待審差異。按 Apply 時送出契約指定的請求。收到過期錯誤時重新顯示目前版本 |
-| **B · Discord、Trip 與系統整合** | ＿＿ | Discord Bot、讀取範圍、身分登入、Fastify HTTP、旅程成員、事件與工作佇列。組裝 C、D 的介面，讓 Bot 與網頁讀寫同一個旅程 | 真實測試頻道可啟用收集。From now on 排除舊訊息。Include earlier messages 只匯入獲准歷史。停止後的新訊息不交給 C |
+| **A · 手機 App 與測試版發佈** | ＿＿ | 在 `apps/mobile/` 用 Expo / React Native 共用一份 iOS、Android 前端。負責登入回跳、旅程連結、地圖與分組、來源修正、提案核准、分享日曆檔，以及兩平台安裝包 | 在實機安裝測試版，從 Discord 開啟大阪範例的指定提案。顯示 v1 與差異，按 Apply 送出請求，遇到 409 時讀回最新版本 |
+| **B · Discord、Trip 與後端部署** | ＿＿ | Discord Bot、讀取範圍、Fastify API、手機登入與旅程權限、工作佇列。部署常駐後端，讓手機與 Bot 讀寫同一趟旅程 | 手機透過行動網路登入、讀到自己的測試旅程。測試頻道只匯入成員同意的訊息，停止收集後不再送給 C |
 | **C · 旅程記憶與地點辨識** | ＿＿ | Memory 模組、模型呼叫工具、擷取 prompt、Places 查詢。將獲准的圖文整理成有來源的候選與偏好，接受澄清、投票與修正 | 兩則分享同一景點只產生一筆候選，能回到兩個來源。無法辨識的店名會出現在待澄清清單 |
 | **D · 行程生成、交通與版本核准** | ＿＿ | Planner、PlanReview、規劃 prompt、Routes 查詢。產生草案、計算差異、保存接受版本與個別確認，提供日曆內容 | 給定 v1 和同一份記憶，能生成待審提案。拒絕保留 v1，接受只建立一份 v2，舊提案無法覆蓋 v2 |
 
@@ -33,30 +33,57 @@
 
 ```mermaid
 flowchart TD
-    Web["A · 行程網頁"] <-->|HTTP / JSON| Trip["B · Trip 與共用入口"]
-    Bot["B · Discord Bot"] <-->|同程序呼叫| Trip
+    Card["Discord 卡片"] -->|Open in app| Mobile["A · iOS / Android App"]
+    Mobile <-->|HTTPS / JSON| Trip["B · Fastify / Trip"]
+    Bot["B · Discord Bot"] -->|發佈或更新| Card
+    Bot <-->|同程序呼叫| Trip
     Trip -->|已授權的訊息| Memory["C · Memory"]
     Memory -->|記憶快照| Planner["D · Planner"]
     Trip -->|成員要求規劃| Planner
     Planner -->|候選行程| Review["D · PlanReview"]
     Trip -->|成員按 Apply / Confirm| Review
-    Trip --> DB[("共用 SQLite")]
+    Trip --> DB[("持久化磁碟上的 SQLite")]
     Memory --> DB
     Review --> DB
 ```
 
+### 從 Discord 開啟手機上的那一筆提案
+
+B 在卡片放同一網域的 HTTPS 連結。旅程用 `/trips/{t}`，指定提案用 `/trips/{t}/proposals/{p}`。例如 Alex 點 `/trips/osaka/proposals/p7`，A 在 App 開啟或已在背景時都導到 p7。需登入時先記下目的地，完成 Discord 授權後再讀 p7。B 仍要檢查頻道與旅程權限。
+
+A 提供 iOS App ID、Android 套件名稱與測試版簽章指紋，設定 Universal Links / App Links。B 在部署網域的 `/.well-known/` 提供對應的 `apple-app-site-association` 和 `assetlinks.json`。手機還沒安裝或 Discord 先開內建瀏覽器時，同一網址會顯示安裝方式及用系統瀏覽器開啟的指引。安裝後再點原卡片即可回到原提案。[Expo 連結與平台設定](https://docs.expo.dev/linking/overview/)
+
+### 測試版部署
+
+| 誰交付 | 要交給測試者的東西 |
+|---|---|
+| A · Android | 用 EAS Build 的 `preview` 設定產生已簽署的 APK，交付安裝連結及版本號，確認關掉開發電腦後仍可使用。 |
+| A · iOS | 用同一份程式建立 ad hoc 測試版。先由團隊的 Apple Developer Program 帳號登記測試機 UDID、簽署後再提供安裝連結。新增測試機時更新簽署檔並重新簽署或建置。[Expo 測試版發佈](https://docs.expo.dev/build/internal-distribution/) |
+| B · 線上後端 | 提供手機外網可連的固定 HTTPS 網域，以單一常駐 Node 程序執行 Fastify、Discord Bot 與工作處理。SQLite 放在重新部署後仍保留的磁碟。把公開 API 網址交給 A 打進測試版，Discord 憑證與模型金鑰留在主機。 |
+
 ## 2. 大家共用的 API
 
-HTTP 前綴為 `/api/v1`。A 使用 HTTP，B 的 Bot 在同一個 Node.js 程序呼叫 `TripPort`。兩者取得相同的資料格式、走相同的權限與版本檢查。下面大寫名稱的完整 TypeScript 欄位在本文末，也可直接從 repo 的 [contracts](packages/contracts/src/index.ts) 匯入。**只收到這一份 Markdown 也有完整型別。**
+HTTP 前綴為 `/api/v1`。A 的手機 App 透過 HTTPS 呼叫 API，B 的 Bot 在同一個 Node.js 程序呼叫 `TripPort`。兩者取得相同的資料格式、走相同的權限與版本檢查。下面大寫名稱的完整 TypeScript 欄位在本文末，也可直接從 repo 的 [contracts](packages/contracts/src/index.ts) 匯入。**只收到這一份 Markdown 也有完整型別。**
 
-### 登入、加入與讀取
+### 手機從 Discord 登入
+
+使用者從 Discord 開啟旅程或提案時，A 先在手機保存要開的 `tripId`、選用的 `proposalId` 與加入意圖。若尚未登入，A 產生隨機 `state` 和 PKCE `code_verifier`，暫存於 SecureStore，再用系統瀏覽器開啟登入網址。`code_challenge` 是 verifier 的 SHA-256 雜湊經 base64url 編碼（無 padding）。[原生 App 登入流程](https://www.rfc-editor.org/rfc/rfc8252) · [PKCE S256](https://www.rfc-editor.org/rfc/rfc7636)
+
+| 方法與路徑 | 輸入 | 成功回應與用途 |
+|---|---|---|
+| GET `/auth/discord` | `MobileAuthStart` 的 query 欄位 | B 將 App 的 state 與 challenge 綁到本次登入，另產生一次性 Discord OAuth state 並綁定瀏覽器工作階段，302 到 Discord |
+| GET `/auth/discord/callback` | Discord 回傳的 `state`，以及 `code` 或拒絕授權的 `error` | Discord 只回到已登記的後端 HTTPS 位址。B 驗證瀏覽器工作階段並核銷 OAuth state，在後端交換 Discord code、取得身分。B 只導向固定的 `waymark://auth/callback`，query 為 `MobileAuthReturn`，帶回原 App state。成功時附 Waymark 的一次性 code，使用者拒絕時附 `error=access_denied` |
+| POST `/auth/mobile/exchange` | JSON `MobileExchange` | B 以原 challenge 驗證 verifier，再以單筆交易核銷綁定該成員、有效 60 秒的 Waymark code 並建立 session。200 `MobileSession`，`expiresAt` 是 24 小時後的 UTC ISO 8601 時間 |
+| POST `/auth/logout` | `Authorization: Bearer <accessToken>`，空 body | B 撤銷本次手機 session，回 204。A 清除本機憑證，已失效回 401 時亦清除 |
+
+A 只處理對應本次登入的 callback 和 state。成功後把 verifier 換成 Waymark session，將 token 存在 SecureStore，呼叫受保護的 API 時放入 Authorization header。App 回到先前保存的畫面，需要加入時先呼叫 `join` 再讀提案。B 只在後端保存 Discord 憑證，App 回呼網址只攜帶一次性結果。若取消或關掉瀏覽器，A 清除本次 verifier 和 state，保留目的畫面供重試。code 過期、已使用或 verifier 不符都回 401 `UNAUTHENTICATED`，A 重新啟動登入。B 遇到未通過驗證的 Discord state，在瀏覽器結束流程。
+
+### 加入與讀取旅程
 
 | 方法與路徑 | 送什麼 | 成功回應與用途 |
 |---|---|---|
-| GET `/auth/discord` | 無 body | 302 到 Discord。B 保存 OAuth state |
-| GET `/auth/discord/callback` | Discord 提供的 code、state | B 驗證後建立 HttpOnly session cookie，302 回網頁。登入後可在同一瀏覽器開啟原本的旅程連結 |
-| GET `/me` | session cookie | 200 `Member`。未登入回 401 |
-| GET `/trips` | session cookie | 200 `TripInfo[]`，列出已加入的旅程 |
+| GET `/me` | Waymark bearer token | 200 `Member`。未登入回 401 |
+| GET `/trips` | Waymark bearer token | 200 `TripInfo[]`，列出已加入的旅程 |
 | POST `/trips` | `NewTrip` | 201 `TripInfo`。建立者成為成員，每個測試頻道綁定一趟旅程。重複建立回 409 |
 | POST `/trips/{t}/join` | 空 body | 200 `TripView`。B 驗證該成員可讀取對應頻道。Bot 的邀請網址包含 trip ID |
 | GET `/trips/{t}` | 無 body | 200 `TripView`。單趟完整快照包括成員、收集狀態、記憶、目前已接受行程與待審提案。第一版用於小型旅程，整份讀取 |
@@ -64,9 +91,9 @@ HTTP 前綴為 `/api/v1`。A 使用 HTTP，B 的 Bot 在同一個 Node.js 程序
 | GET `/trips/{t}/jobs/{j}` | 無 body | 200 `Job`。輪詢至終態，取回提案、澄清問題、摘要、記憶版本或失敗原因 |
 | GET `/trips/{t}/places/search?q=...` | 成員輸入的地名或地址 | 200 `Place[]`。B 驗證成員，C 搜尋 Places。選中的 placeId 可綁回原候選，或從地圖加新地點 |
 | GET `/trips/{t}/routes?version=2&from=s1&to=s2&modes=rail,bus` | 已接受版本、同一段交通的站點 ID、允許的方式 | 200 `RouteOption[]`。預設 Rail + Bus。顯示可取得的時間、票價、轉乘、步驟。Use 將 optionId 送入手動提案。無可用選項回空陣列 |
-| GET `/trips/{t}/calendar.ics?version=2` | 已接受版本號 | 200 `text/calendar`。D 匯出指定版本，A 提供下載。版本不存在回 404 |
+| GET `/trips/{t}/calendar.ics?version=2` | 已接受版本號 | 200 `text/calendar`。D 匯出指定版本，A 以登入憑證讀取檔案，透過手機的分享選單匯出。版本不存在回 404 |
 
-新旅程的 `collection` 是 `inactive`，`accepted` 是 `null`，基準行程版本是 0。B 先由 cookie 或 Discord event 取得操作者，逐次驗證旅程與頻道存取權。Discord 按鈕記住 trip / proposal / version，操作時仍以**實際按鈕者**身分執行。
+新旅程的 `collection` 是 `inactive`，`accepted` 是 `null`，基準行程版本是 0。B 先由 Waymark bearer token 或 Discord event 取得操作者，逐次驗證旅程與頻道存取權。Discord 按鈕記住 trip / proposal / version，操作時仍以**實際按鈕者**身分執行。
 
 ### 操作與回應
 
@@ -85,13 +112,13 @@ HTTP 前綴為 `/api/v1`。A 使用 HTTP，B 的 Bot 在同一個 Node.js 程序
 
 以上成功回應中，`sources[].id` 可用來查該則來源，`candidates[].id` 是旅程內候選 ID，`candidates[].place.id` 是地點供應商的 ID。行程站點只引用候選 ID，一個景點的多次造訪各有自己的 stop ID。
 
-每個 POST 帶 `Idempotency-Key`，例如一次點擊產生的 UUID。Bot 使用 Discord interaction ID。索引以操作者、路徑、key 為範圍。完全相同的重試回原先結果或同一個 job ID，用相同 key 送不同內容回 409。A 以伺服器回傳的版本為準，背景短輪詢更新其他成員的變更。
+旅程的三種 POST（建立、加入、commands）各帶 `Idempotency-Key`，例如一次點擊產生的 UUID。Bot 使用 Discord interaction ID。索引以操作者、路徑、key 為範圍。完全相同的重試回原先結果或同一個 job ID，用相同 key 送不同內容回 409。登入交換與登出各用上方的憑證規則。A 在旅程畫面開啟時短輪詢，App 回到前景時重讀快照，以伺服器回傳的版本為準。
 
 ### 錯誤與狀態
 
 | 情況 | 回應 | 呼叫端行為 |
 |---|---|---|
-| 尚未登入／無權存取旅程 | 401 `UNAUTHENTICATED`／403 `FORBIDDEN` | 顯示登入入口或所需頻道權限 |
+| 尚未登入、session 過期或已撤銷／無權存取旅程 | 401 `UNAUTHENTICATED`／403 `FORBIDDEN` | 401 清除失效憑證，保存原畫面目的地並顯示登入入口。403 說明所需頻道權限 |
 | 旅程中的物件不存在 | 404 `NOT_FOUND` | 重新載入旅程 |
 | 格式或參照錯誤／已知不可行的行程 | 422 `INVALID_INPUT`／`INFEASIBLE` | 顯示原因，讓使用者修改 |
 | 基準過期／提案已結案／key 重用 | 409 `STALE_BASE`／`ALREADY_DECIDED`／`KEY_REUSED` | 取回最新快照，重新預覽後再操作 |
@@ -128,7 +155,7 @@ HTTP 前綴為 `/api/v1`。A 使用 HTTP，B 的 Bot 在同一個 Node.js 程序
 | 1 | B 收到 Mia 對 `@Waymark` 的要求「第三天十一點再出發，跳過大阪城」。以該訊息作為操作來源，送 `{"kind":"plan","base":{"planVersion":1,"memoryRevision":4},"request":{"kind":"revise","instruction":"第三天十一點再出發，跳過大阪城"}}` | 202 `{"jobId":"j7"}`，當前行程仍是 v1 |
 | 2 | A 或 B 查 `GET /jobs/j7`（相對於該旅程） | 完成時得到 `{"id":"j7","status":"succeeded","result":{"kind":"proposal","proposalId":"p7"}}` |
 | 3 | A 查 `GET /proposals/p7` | `status=pending`，可看到原本與建議的時間、大阪城的移除、變動後的交通，以及受影響的站點。其他天不變 |
-| 4 | Alex 送 `{"kind":"decide","proposalId":"p7","action":"apply"}` | 200 `TripView`，`accepted.version=2`、`confirmedBy=[]`。Bot 和網頁各自重讀都顯示 v2 |
+| 4 | Alex 在手機送 `{"kind":"decide","proposalId":"p7","action":"apply"}` | 200 `TripView`，`accepted.version=2`、`confirmedBy=[]`。Discord 卡片與手機重新開啟的旅程都顯示 v2 |
 | 5 | Mia 送 `{"kind":"confirm","planVersion":2}` | `accepted.confirmedBy=["mia"]`，畫面顯示 1/4。重試同一個操作維持 1/4 |
 
 <details>
@@ -190,28 +217,28 @@ HTTP 前綴為 `/api/v1`。A 使用 HTTP，B 的 Bot 在同一個 Node.js 程序
 
 | 人員 | 可直接交給 AI 的第一個任務 |
 |---|---|
-| A | 「我負責 Waymark 網頁。請依 v1 契約，在 `apps/web/` 用大阪範例做行程與修改差異畫面，串接 Import log、地點反應、摘要紀錄、地圖／列表／分組／Drafts、路線比較與提案核准。提供可切換的測試資料，讓我能驗收 v1、v2 和 409 三種結果。」 |
-| B | 「我負責 Waymark 的 Discord 與共用後端入口。請建立 Node/Fastify 的啟動流程、SQLite migrations 和 TripPort，把 Discord 與 HTTP 操作轉給 C、D。先在測試頻道以 @Waymark 選範圍，分享連結後自動出現可投票的卡片，再示範叫出摘要與按 Generate plan。提供給 A 一個能讀取大阪旅程的本機網址。」 |
+| A | 「我負責 Waymark 手機 App。請在 `apps/mobile/` 用 Expo／React Native 做大阪行程和提案差異畫面，可切換 v1、v2 與 409 測資。先讓 iPhone 和 Android 從 Discord 的提案連結開到這個畫面，登入後仍停在原提案。第二步再串接 Import log、地點反應、摘要、Map／Timeline／Groups／Drafts、交通比較與核准。」 |
+| B | 「我負責 Discord 與共用後端。請將 Node/Fastify、Bot 和 TripPort 部署到真機可連的 HTTPS 網域，讓 SQLite 使用持久磁碟。依第 2 節串 Discord 登入，給 A 旅程和提案各一個可測的連結。從測試頻道選收集範圍，確認分享連結後可投票、叫出摘要、按 Generate plan，再從卡片打開指定提案。」 |
 | C | 「我負責 Memory、Places 和共用 ModelPort。請從兩筆不同 ID 的同地點分享開始，接一次真實模型擷取，保存一筆候選及兩個來源，示範 Decided／Undecided 摘要可回到原始訊息。另測模糊名稱的澄清、人工修正及晚到的擷取結果。輸出可供 D 規劃的 MemorySnapshot。」 |
 | D | 「我負責 Planner、Routes 和 PlanReview。請用大阪 v1 與 revision 4 的記憶，透過 ModelPort 取得調整出發時間和移除景點的 typed changes，套用到基準版算出前後差異並保存 pending。用 SQLite 實測接受、拒絕、重送、兩人同時接受及個別確認，交給 A、B 一筆可操作的提案。」 |
 
-B 維護 `apps/server/src/trip/`、`discord/`、`http/`、`jobs/` 與整合入口。C 維護同層的 `memory/`、`places/`、`model/`。D 維護 `planner/`、`review/`、`routes/`。A 維護 `apps/web/`。需要 SQLite 的工作包各交獨立 migration。B 統整 workspace 與 lockfile。共用契約由提出修改者與使用方一起檢查。
+以下路徑皆相對於 `milestone3/`。A 維護 `apps/mobile/`、App 連結設定與雙平台簽署測試版。B 維護 `apps/server/src/` 下的 `trip/`、`discord/`、`http/`、`jobs/`，也負責後端部署及安裝引導頁。C 維護同層的 `memory/`、`places/`、`model/`，D 維護 `planner/`、`review/`、`routes/`。B、C、D 各交所屬資料表的 SQLite migration，B 統整 workspace 與 lockfile。共用契約由提出修改者與使用方一起檢查。
 
 ## 6. 接起來的時間與提交內容
 
 | 日期 | 團隊一起驗收的成果 |
 |---|---|
-| **11/25** | 認領 A–D，確認是否已有其他分支可接。B 確認 Discord 權限與登入，C、D 確認模型及地圖服務可用。四人對齊第 4 節的案例 |
-| **11/26–27** | 在同一台電腦接通真 Discord → 真 AI 擷取與規劃 → 網頁預覽 → Apply → 兩個入口讀回同版。先錄一次內部操作 |
-| **11/28–29** | 對照 M2 完成來源卡片與補正、圖文與媒體、地圖／交通、手動編輯、兩組分支與集合點、日曆、個別確認及停止收集；各負責人列出可操作與仍卡住的項目 |
-| **11/30** | 用三個情境實測。每人交操作畫面與實際結果，共同整理失敗案例、限制和重現方法 |
-| **12/01–02** | 12/01 用乾淨環境照 README 重跑，同一版程式錄製英文影片、完成英文報告及 ZIP。12/02 由一人提交 |
+| **11/25** | 認領 A–D，確認可沿用的分支。A 確認 Android 測試機及 Apple Developer Program 付費團隊可用，登記測試 iPhone 的 UDID。B 確認 HTTPS 網域、持久磁碟、Discord 權限與登入。C、D 確認模型與地圖服務。四人對齊第 4 節案例 |
+| **11/26–27** | A 交第一個簽署的 Android APK 與 iOS ad hoc 安裝連結。B 用測試頻道、已部署的 API 和真實 AI 串起大阪案例。兩支手機離開開發電腦的網路，從 Discord 的 `/trips/{t}` 或 `/trips/{t}/proposals/{p}` 連結開到對應畫面。未安裝時可開安裝說明，安裝後再點原連結 |
+| **11/28–29** | 對照 M2 完成來源卡與補正、圖文與媒體、地圖／交通、手動編輯、分組與集合點、日曆、個別確認和停止收集。在一支手機按 Apply，另一支手機與 Discord 應顯示同版。關閉並重開 App，再重啟後端，核對已接受版本、確認人與來源 |
+| **11/30** | 用三個情境實測，記下手機型號、系統版本、安裝包版本與結果。各人交操作畫面、失敗案例與重現方式 |
+| **12/01–02** | 12/01 請一位組員從乾淨環境依 README 安裝，登入並走一次完整流程。以同一版程式錄製英文影片、完成英文報告與 ZIP。12/02 由一人提交 |
 
 **評估計畫（p.26、32）**　目標為約三份經同意的聊天，標註地點、偏好與重複分享，量測擷取／合併正確率與虛構地點數（目標 0）。另規劃邀 3–5 組朋友測試對收集範圍、核准與信任的理解，報告列實際參與組數與結果。
 
 **三個測試情境**　① 大阪三日遊，記錄重複地點合併、來源正確率、已確認偏好是否保留與任務完成時間。② 模糊店名或私人 Reels，確認補件與人工修正能進入下一次規劃。③ 分組後要求局部修改，測試同時套用、拒絕、確認與暫停時仍在執行的擷取。每個情境各寫 Task / Expected / Actual，註明哪些輸入是合成範例、哪些取得參與者同意。影片使用實際模型呼叫與成員操作。
 
-**交付責任**　B 統整可重現的程式 ZIP、安裝說明、外部帳號設定與 `.env.example`。A 統整 2–4 分鐘英文 MP4，各組提供實際畫面。C 整理擷取與修正評估，D 整理規劃與版本評估，兩人彙編 6–8 頁英文 PDF，四人確認報告與提交版一致。LINE、主動推薦未分享景點、向量檢索維持後續方向。若某項 M2 關鍵功能交不出來，應在組內提早說明，記錄範圍變更與實測限制。[M3 作業規格](https://docs.google.com/document/d/1f_e977FQVdIpVFO7rHM773MVLVu1sZUJekJLDzXhDFg/edit) · [M2 原型](https://claude.ai/artifact/75jXxDxX1EwALYK2eui1Xs)
+**交付責任**　A 提供有版本號的 Android APK、已登記 iPhone 的安裝連結與安裝步驟，並統整 2–4 分鐘英文 MP4。B 統整可重現的程式 ZIP、部署網址、README、外部帳號設定與 `.env.example`。C 整理擷取與修正評估，D 整理規劃與版本評估，兩人彙編 6–8 頁英文 PDF。四人確認報告、影片與測試版一致，並記錄尚未達成的 M2 項目。LINE、主動推薦未分享景點、向量檢索維持後續方向。[M3 作業規格](https://docs.google.com/document/d/1f_e977FQVdIpVFO7rHM773MVLVu1sZUJekJLDzXhDFg/edit) · [M2 原型](https://claude.ai/artifact/75jXxDxX1EwALYK2eui1Xs) · [Expo 測試版簽署與安裝說明](https://docs.expo.dev/build/internal-distribution/)
 
 ## 附錄 · 可直接交給 AI 的 TypeScript 契約
 
@@ -221,10 +248,16 @@ B 維護 `apps/server/src/trip/`、`discord/`、`http/`、`jobs/` 與整合入�
 <summary>展開完整型別與模組函式簽名</summary>
 
 ```ts
-// Waymark v1. These declarations are shared by the web client, Discord adapter and server.
+// Waymark v1. These declarations are shared by the mobile app, Discord adapter and server.
 export type Id = string
 export type Actor = { memberId: Id } // Created by the server from an authenticated session or Gateway event.
 export type Member = { id: Id; name: string }
+export type MobileAuthStart = { state: string; code_challenge: string; code_challenge_method: 'S256' }
+export type MobileAuthReturn =
+  | { state: string; code: string }
+  | { state: string; error: 'access_denied' }
+export type MobileExchange = { code: string; code_verifier: string }
+export type MobileSession = { tokenType: 'Bearer'; accessToken: string; expiresAt: string }
 export type ReadScope =
   | { mode: 'from_now' | 'history' }
   | { mode: 'from_message'; messageId: Id }

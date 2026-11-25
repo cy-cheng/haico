@@ -1,7 +1,13 @@
-// Waymark v1. These declarations are shared by the web client, Discord adapter and server.
+// Waymark v1. These declarations are shared by the mobile app, Discord adapter and server.
 export type Id = string
 export type Actor = { memberId: Id } // Created by the server from an authenticated session or Gateway event.
 export type Member = { id: Id; name: string }
+export type MobileAuthStart = { state: string; code_challenge: string; code_challenge_method: 'S256' }
+export type MobileAuthReturn =
+  | { state: string; code: string }
+  | { state: string; error: 'access_denied' }
+export type MobileExchange = { code: string; code_verifier: string }
+export type MobileSession = { tokenType: 'Bearer'; accessToken: string; expiresAt: string }
 export type ReadScope =
   | { mode: 'from_now' | 'history' }
   | { mode: 'from_message'; messageId: Id }
